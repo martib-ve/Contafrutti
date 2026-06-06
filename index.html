@@ -89,7 +89,7 @@
         
         <div style="margin-top: 10px;">
             <input type="text" id="nuovo-cantiere-nome" placeholder="Es: Giuseppe case gialle" style="margin-bottom: 8px;">
-            <button onclick="creaCantiere()" ontouchstart="creaCantiere()" class="btn-success" style="margin: 0;">+ Nuovo Cantiere</button>
+            <button onclick="creaCantiere(event)" class="btn-success" style="margin: 0;">+ Nuovo Cantiere</button>
         </div>
         
         <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top:15px; padding:6px; font-size:0.8rem;">Elimina Questo Cantiere</button>
@@ -110,10 +110,10 @@
                 <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi altro materiale di consumo:</p>
                 <div>
                     <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale plastico 40x40..." style="margin-bottom: 8px; background: white;">
-                    <button onclick="apriModalAggiunta('materiale')" ontouchstart="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
+                    <button onclick="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
                 </div>
             </div>
-            <button onclick="salvaMaterialeGenerale()" ontouchstart="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary);">💾 Salva Materiale Generale</button>
+            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary);">💾 Salva Materiale Generale</button>
         </div>
     </div>
 
@@ -123,7 +123,7 @@
         
         <div style="margin-top:15px;">
             <input type="text" id="nuova-stanza-nome" placeholder="Es: Cucina, Garage, Centralino..." style="margin-bottom: 8px;">
-            <button onclick="creaStanza()" ontouchstart="creaStanza()" class="btn-success" style="margin: 0;">+ Aggiungi Stanza</button>
+            <button onclick="creaStanza()" class="btn-success" style="margin: 0;">+ Aggiungi Stanza</button>
         </div>
     </div>
 
@@ -140,11 +140,11 @@
                 <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Manca qualcosa? Aggiungilo al catalogo frutti:</p>
                 <div>
                     <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin-bottom: 8px; background: white;">
-                    <button onclick="apriModalAggiunta('frutto')" ontouchstart="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
+                    <button onclick="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
                 </div>
             </div>
 
-            <button onclick="salvaConteggioStanza()" ontouchstart="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">💾 Salva Questa Stanza</button>
+            <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">💾 Salva Questa Stanza</button>
         </div>
     </div>
 
@@ -161,9 +161,9 @@
 
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Riepilogo e Condivisione</h2>
-        <button onclick="generaRiepilogoTesto()" ontouchstart="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
+        <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
         <div id="output-box" style="display:none; margin-top:15px;">
-            <button onclick="inviaWhatsApp()" ontouchstart="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">💬 Invia ordine su WhatsApp</button>
+            <button onclick="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">💬 Invia ordine su WhatsApp</button>
             <div id="output"></div>
         </div>
     </div>
@@ -183,7 +183,7 @@
             <input type="text" id="modal-nuova-cat-input" placeholder="Scrivi il nome della nuova categoria..." style="display:none;">
             <div class="flex-btn" style="margin-top: 15px;">
                 <button onclick="chiudiModalAggiunta()" class="btn-danger">Annulla</button>
-                <button onclick="confermaAggiuntaElemento()" ontouchstart="confermaAggiuntaElemento()" class="btn-success">Conferma</button>
+                <button onclick="confermaAggiuntaElemento()" class="btn-success">Conferma</button>
             </div>
         </div>
     </div>
@@ -491,7 +491,7 @@
             }
         }
 
-        // CANTIERI - FIX SAFARI TOUCH
+        // CANTIERI - FIX COMPLETO MULTI-PIATTAFORMA
         let bloccoDoppioClicCantiere = false;
 
         function aggiornaSelectCantieri() {
@@ -509,9 +509,8 @@
         }
 
         function creaCantiere(e) {
-            if (e) {
+            if (e && e.preventDefault) {
                 e.preventDefault();
-                e.stopPropagation();
             }
             
             if (bloccoDoppioClicCantiere) return;
@@ -538,9 +537,7 @@
             document.getElementById('cantiere-select').value = nome;
             inputField.value = "";
             
-            // Rimuove il focus dalla tastiera iOS
             inputField.blur();
-            
             caricaCantiere();
             alert(`Cantiere "${nome}" aggiunto correttamente! 🎉`);
         }
@@ -873,13 +870,4 @@
         }
 
         function resetTotaleApplicazione() {
-            if(confirm("Vuoi resettare l'applicazione per allineare le modifiche grafiche?")) {
-                localStorage.clear();
-                db = {}; catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
-                salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
-                alert("Applicazione aggiornata correttamente!");
-            }
-        }
-    </script>
-</body>
-</html>
+            if(
