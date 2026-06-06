@@ -58,7 +58,7 @@
 
         /* Pallini colore per le cordine - Più grandi, senza bordo, con ombra leggera */
         .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
-        .dot-nero { background-color: #1e293b; } /* Un nero cantiere leggermente più morbido */
+        .dot-nero { background-color: #1e293b; }
         .dot-blu { background-color: #2563eb; }
         .dot-marrone { background-color: #78350f; }
         .dot-grigio { background-color: #64748b; }
@@ -245,7 +245,7 @@
             
             ["Tubi e Corrugati", "Tubo Corrugato Ø 16 mm"],
             ["Tubi e Corrugati", "Tubo Corrugato Ø 20 mm"],
-            ["Tubi e Corrugati", "Tubo Corrugato Ø 25 mm"],
+            ["Tubo Corrugato Ø 25 mm"],
             ["Tubi e Corrugati", "Tubo Corrugato Ø 32 mm"],
             
             ["Materiale Consumo", "Nastro Isolante"],
@@ -303,8 +303,8 @@
 
         function ordinaCatalogo(catalogo) {
             catalogo.sort((a, b) => {
-                let catA = a[0].toLowerCase();
-                let catB = b[0].toLowerCase();
+                let catA = a[0] ? a[0].toLowerCase() : "";
+                let catB = b[0] ? b[0].toLowerCase() : "";
                 
                 let aE_Cordina = catA.includes("cordina") || catA.includes("cavi");
                 let bE_Cordina = catB.includes("cordina") || catB.includes("cavi");
@@ -334,7 +334,7 @@
             let categorieEsistenti = [];
             let sorgente = tipo === 'frutto' ? catalogoFrutti : catalogoMateriali;
             sorgente.forEach(item => {
-                if(!categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]);
+                if(item[0] && !categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]);
             });
 
             categorieEsistenti.forEach(cat => {
@@ -417,7 +417,7 @@
             let optG2 = document.createElement('optgroup'); optG2.label = "MATERIALE CANTIERE";
             catalogoMateriali.forEach(m => {
                 let opt = document.createElement('option');
-                opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0]}] ${m[1]}`;
+                opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0] || 'Varie'}] ${m[1]}`;
                 optG2.appendChild(opt);
             });
             select.appendChild(optG2);
@@ -435,7 +435,7 @@
             nuovoNome = nuevoNome.trim();
 
             if (tipo === 'frutto') {
-                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
+                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuevoNome; });
                 ordinaCatalogo(catalogoFrutti);
                 for (let cant in db) {
                     for (let stz in db[cant]._stanze) {
@@ -470,7 +470,6 @@
             alert("Voce corretta con successo!");
         }
 
-        function定位eliminaVoceCatalogo() {}
         function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
@@ -528,16 +527,24 @@
 
         function caricaCantiere() {
             cantiereCorrente = document.getElementById('cantiere-select').value;
-            const elementiCantiere = [document.getElementById('sec-stanze'), document.getElementById('sec-riepilogo'), document.getElementById('sec-materiale-generale')];
+            
+            const secStanze = document.getElementById('sec-stanze');
+            const secRiepilogo = document.getElementById('sec-riepilogo');
+            const secMateriale = document.getElementById('sec-materiale-generale');
             
             if(!cantiereCorrente || !db[cantiereCorrente]) {
-                elementiCantiere.forEach(el => el.style.display = "none");
+                if(secStanze) secStanze.style.display = "none";
+                if(secRiepilogo) secRiepilogo.style.display = "none";
+                if(secMateriale) secMateriale.style.display = "none";
                 document.getElementById('sec-conteggio').style.display = "none";
                 return;
             }
 
             document.getElementById('nome-cantiere-titolo').innerText = cantiereCorrente;
-            elementiCantiere.forEach(el => el.style.display = "block");
+            if(secStanze) secStanze.style.display = "block";
+            if(secRiepilogo) secRiepilogo.style.display = "block";
+            if(secMateriale) secMateriale.style.display = "block";
+            
             document.getElementById('sec-conteggio').style.display = "none";
             document.getElementById('output-box').style.display = "none";
             
@@ -570,7 +577,7 @@
             let ultimaCategoria = "";
 
             catalogoMateriali.forEach(m => {
-                let categoria = m[0];
+                let categoria = m[0] || "Varie";
                 let nome = m[1];
                 
                 if(categoria !== ultimaCategoria) {
@@ -607,7 +614,8 @@
             let nuovo = num + cambio;
             if(nuovo < 0) nuovo = 0;
             materialiTemporanei[nome] = nuovo.toString();
-            document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`).innerText = nuovo;
+            let el = document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`);
+            if(el) el.innerText = nuovo;
         }
 
         function ModificaLiberaMateriale(nome) {
@@ -615,7 +623,8 @@
             let risp = prompt(`Quantità per:\n${nome}`, attuale);
             if(risp !== null) {
                 materialiTemporanei[nome] = risp.trim() === "" ? "0" : risp.trim();
-                document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`).innerText = materialiTemporanei[nome];
+                let el = document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`);
+                if(el) el.innerText = materialiTemporanei[nome];
             }
         }
 
@@ -727,7 +736,8 @@
             let nuovaQta = (conteggioTemporaneo[nome] || 0) + cambio;
             if(nuovaQta < 0) nuovaQta = 0;
             conteggioTemporaneo[nome] = nuovaQta;
-            document.getElementById(`val-${btoa(nome).replace(/=/g,'')}`).innerText = nuovaQta;
+            let el = document.getElementById(`val-${btoa(nome).replace(/=/g,'')}`);
+            if(el) el.innerText = nuovaQta;
         }
 
         function salvaConteggioStanza() {
@@ -737,7 +747,7 @@
                 if(conteggioTemporaneo[nome] > 0) db[cantiereCorrente]._stanze[stanzaCorrente][nome] = conteggioTemporaneo[nome];
             });
             salvaNelStorage();
-            alert(`Stanza "${stanzaCorrente}" saved!`);
+            alert(`Stanza "${stanzaCorrente}" salvata!`);
             
             document.getElementById('content-frutti').classList.remove('active');
             document.getElementById('indicator-content-frutti').innerText = "▶ Espandi";
