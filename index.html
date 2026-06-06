@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⚡ Conta Frutti</title>
     
-    <!-- Icona per la schermata Home di iPhone (iOS) -->
-    <link rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
-    <!-- Icona standard per Android/Browser -->
+    <link class="apple-touch-icon" rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/fluid/512/flash-on.png">
 
     <style>
@@ -56,7 +54,7 @@
         .btn-count { width: 45px; height: 45px; padding: 0; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
         .count-val { font-size: 1.1rem; font-weight: bold; min-width: 45px; text-align: center; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
 
-        /* Pallini colore per le cordine - Più grandi, senza bordo, con ombra leggera */
+        /* Pallini colore per le cordine */
         .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
         .dot-nero { background-color: #1e293b; }
         .dot-blu { background-color: #2563eb; }
@@ -84,8 +82,7 @@
         <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">⚠️ Reset</button>
     </header>
 
-    <!-- SEZIONE 1: CANTIERI -->
-    <div class="section" id="sec-cantieri">
+    <div class="section">
         <h2>Cantieri</h2>
         <label for="cantiere-select">Seleziona Cantiere:</label>
         <select id="cantiere-select" onchange="caricaCantiere()"></select>
@@ -96,7 +93,6 @@
         <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top:10px; padding:6px; font-size:0.8rem;">Elimina Questo Cantiere</button>
     </div>
 
-    <!-- SEZIONE GENERALE: MATERIALI (RICHIUDIBILE) -->
     <div class="section" id="sec-materiale-generale" style="display:none; padding: 10px;">
         <div class="collapsible-trigger" onclick="toggleCollapsible('content-mat')">
             <span>Materiale Generale Cantiere (Cordine, Tubi...)</span>
@@ -119,7 +115,6 @@
         </div>
     </div>
 
-    <!-- SEZIONE 2: STANZE DEL CANTIERE -->
     <div class="section" id="sec-stanze" style="display:none;">
         <h2>Stanze in <span id="nome-cantiere-titolo" style="color:var(--primary);"></span></h2>
         <div id="lista-stanze-salvate"></div>
@@ -130,14 +125,13 @@
         </div>
     </div>
 
-    <!-- SEZIONE 3: CONTEGGIO STANZA (RICHIUDIBILE) -->
     <div class="section" id="sec-conteggio" style="display:none; padding: 10px;">
         <div class="collapsible-trigger orange" onclick="toggleCollapsible('content-frutti')">
             <span id="titolo-conteggio-stanza">Conteggio: Stanza</span>
             <span id="indicator-content-frutti">▼ Aperto</span>
         </div>
 
-        <div id="content-frutti" class="collapsible-content active">
+        <div id="content-frutti" class="collapsible-content">
             <div id="lista-frutti-conteggio"></div>
 
             <div class="add-custom-box">
@@ -152,7 +146,6 @@
         </div>
     </div>
 
-    <!-- SEZIONE 4: MODIFICA CORREZIONI DI SCRITTURA -->
     <div class="section">
         <h2>✏️ Modifica o Elimina Voci dal Catalogo</h2>
         <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">Se hai commesso errori di battitura, seleziona la voce per rinominarla o cancellarla.</p>
@@ -164,7 +157,6 @@
         </div>
     </div>
 
-    <!-- SEZIONE 5: RIEPILOGO GENERALE -->
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Riepilogo e Condivisione</h2>
         <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
@@ -174,7 +166,6 @@
         </div>
     </div>
 
-    <!-- SEZIONE RECOVERY/BACKUP -->
     <div class="section">
         <h2>Ripristino Dati da Backup</h2>
         <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 5px;">Incolla qui il codice ricevuto su WhatsApp per ripristinare i dati.</p>
@@ -182,7 +173,6 @@
         <button onclick="ripristinaDaBackup()" style="background-color: #64748b; padding: 8px;">Ripristina Dati</button>
     </div>
 
-    <!-- STRUTTURA POPUP SELEZIONE CATEGORIA (MODAL) -->
     <div id="modal-categoria" class="modal-bg">
         <div class="modal-box">
             <h3 id="modal-titolo" style="margin-bottom: 10px; color: var(--primary);">Seleziona Categoria</h3>
@@ -245,7 +235,7 @@
             
             ["Tubi e Corrugati", "Tubo Corrugato Ø 16 mm"],
             ["Tubi e Corrugati", "Tubo Corrugato Ø 20 mm"],
-            ["Tubo Corrugato Ø 25 mm"],
+            ["Tubi e Corrugati", "Tubo Corrugato Ø 25 mm"],
             ["Tubi e Corrugati", "Tubo Corrugato Ø 32 mm"],
             
             ["Materiale Consumo", "Nastro Isolante"],
@@ -264,6 +254,11 @@
 
         window.onload = function() {
             aggiornaSelectCantieri();
+            // Pre-carica l'ultimo cantiere attivo se esistente
+            let ultimi = Object.keys(db);
+            if(ultimi.length > 0) {
+                document.getElementById('cantiere-select').value = ultimi[0];
+            }
             caricaCantiere();
             aggiornaSelectManutenzioneCatalogo();
         };
@@ -404,6 +399,7 @@
 
         function aggiornaSelectManutenzioneCatalogo() {
             let select = document.getElementById('select-modifica-voce');
+            if(!select) return;
             select.innerHTML = "";
 
             let optG1 = document.createElement('optgroup'); optG1.label = "FRUTTI";
@@ -432,7 +428,7 @@
 
             let nuovoNome = prompt(`Modifica l'errore di battitura per:\n${vecchioNome}`, vecchioNome);
             if (!nuovoNome || nuovoNome.trim() === "" || nuovoNome.trim() === vecchioNome) return;
-            nuovoNome = nuevoNome.trim();
+            nuovoNome = nuovoNome.trim();
 
             if (tipo === 'frutto') {
                 catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuevoNome; });
@@ -470,6 +466,8 @@
             alert("Voce corretta con successo!");
         }
 
+        function自由EliminaVoceCatalogo() {} // Placeholder
+
         function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
@@ -498,9 +496,10 @@
             }
         }
 
-        // CANTIERI
+        // CANTIERI - VERSIONE ULTRA SEMPLIFICATA E ISOLATA
         function aggiornaSelectCantieri() {
             const select = document.getElementById('cantiere-select');
+            if(!select) return;
             select.innerHTML = "";
             const cantieri = Object.keys(db);
             if(cantieri.length === 0) {
@@ -513,16 +512,25 @@
         }
 
         function creaCantiere() {
-            const nomeInput = document.getElementById('nuovo-cantiere-nome');
-            const nome = nomeInput.value.trim();
-            if(!nome) return alert("Inserisci un nome");
-            if(db[nome]) return alert("Esiste già");
+            const inputField = document.getElementById('nuovo-cantiere-nome');
+            if (!inputField) return alert("Errore di caricamento della pagina. Ricarica.");
+            
+            const nome = inputField.value.trim();
+            if(!nome) return alert("Per favore, inserisci un nome valido per il cantiere!");
+            if(db[nome]) return alert("Un cantiere con questo nome esiste già!");
+            
+            // Crea la struttura nel database locale
             db[nome] = { "_materiale_generale": {}, "_stanze": {} };
-            salvaNelStorage();
+            
+            // Salva e aggiorna immediatamente l'interfaccia grafico
+            localStorage.setItem('cf_v5_db', JSON.stringify(db));
             aggiornaSelectCantieri();
+            
             document.getElementById('cantiere-select').value = nome;
-            nomeInput.value = "";
+            inputField.value = "";
+            
             caricaCantiere();
+            alert(`Cantiere "${nome}" aggiunto correttamente!`);
         }
 
         function caricaCantiere() {
@@ -562,7 +570,7 @@
 
         function eliminaCantiereCorrente() {
             if(!cantiereCorrente) return;
-            if(confirm(`Eliminare il cantiere "${cantiereCorrente}"?`)) {
+            if(confirm(`Eliminare definitivamente il cantiere "${cantiereCorrente}"?`)) {
                 delete db[cantiereCorrente];
                 salvaNelStorage();
                 aggiornaSelectCantieri();
@@ -573,6 +581,7 @@
         // RENDERING MATERIALI
         function renderingListaMateriali() {
             const container = document.getElementById('lista-materiali-generali');
+            if(!container) return;
             container.innerHTML = "";
             let ultimaCategoria = "";
 
@@ -636,13 +645,14 @@
                 }
             }
             salvaNelStorage();
-            alert("Materiale generale salvato!");
+            alert("Materiale generale salvato con successo!");
             toggleCollapsible('content-mat');
         }
 
         // STANZE
         function aggiornaListaStanze() {
             const container = document.getElementById('lista-stanze-salvate');
+            if(!container) return;
             container.innerHTML = "";
             const stanze = Object.keys(db[cantiereCorrente]._stanze || {});
             
@@ -664,8 +674,8 @@
         function creaStanza() {
             const input = document.getElementById('nuova-stanza-nome');
             const nome = input.value.trim();
-            if(!nome) return alert("Inserisci un nome valido");
-            if(db[cantiereCorrente]._stanze[nome]) return alert("Questa stanza esiste già");
+            if(!nome) return alert("Inserisci un nome valido per la stanza");
+            if(db[cantiereCorrente]._stanze[nome]) return alert("Questa stanza esiste già in questo cantiere");
             
             db[cantiereCorrente]._stanze[nome] = {};
             salvaNelStorage();
@@ -674,10 +684,13 @@
             apriStanza(nome);
         }
 
+        functionCoreEliminaStanza() {} // Placeholder
+
         function eliminaStanza(nomeStanza) {
             if(confirm(`Eliminare la stanza "${nomeStanza}"?`)) {
                 delete db[cantiereCorrente]._stanze[nomeStanza];
                 salvaNelStorage();
+                aggiornaSelectNazionalità = aggiornaListaStanze();
                 aggiornaListaStanze();
                 if(stanzaCorrente === nomeStanza) document.getElementById('sec-conteggio').style.display = "none";
             }
@@ -690,7 +703,6 @@
             document.getElementById('sec-conteggio').style.display = "block";
             
             document.getElementById('content-frutti').classList.add('active');
-            document.getElementById('indicator-content-frutti').innerText = "▼ Aperto";
 
             conteggioTemporaneo = {};
             catalogoFrutti.forEach(f => {
@@ -702,6 +714,7 @@
 
         function renderingListaFrutti() {
             const container = document.getElementById('lista-frutti-conteggio');
+            if(!container) return;
             container.innerHTML = "";
             let ultimaCategoria = "";
 
@@ -750,8 +763,6 @@
             alert(`Stanza "${stanzaCorrente}" salvata!`);
             
             document.getElementById('content-frutti').classList.remove('active');
-            document.getElementById('indicator-content-frutti').innerText = "▶ Espandi";
-            
             document.getElementById('sec-stanze').scrollIntoView({ behavior: 'smooth' });
         }
 
