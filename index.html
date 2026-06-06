@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>⚡ Conta Frutti</title>
     
     <link class="apple-touch-icon" rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
@@ -33,8 +33,8 @@
         .collapsible-content { display: none; margin-top: 10px; }
         .collapsible-content.active { display: block; }
         
-        select, input, button { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
-        button { background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        select, input, button { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; -webkit-appearance: none; }
+        button { background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.2s; touch-action: manipulation; }
         button:active { opacity: 0.9; }
         
         .flex-btn { display: flex; gap: 10px; margin-top: 5px; }
@@ -86,11 +86,13 @@
         <h2>Cantieri</h2>
         <label for="cantiere-select">Seleziona Cantiere:</label>
         <select id="cantiere-select" onchange="caricaCantiere()"></select>
-        <div class="flex-btn">
-            <input type="text" id="nuovo-cantiere-nome" placeholder="Es: Giuseppe case gialle" style="margin:0; flex-grow:1;">
-            <button onclick="creaCantiere()" class="btn-success" style="width:auto; white-space:nowrap;">+ Nuovo</button>
+        
+        <div style="margin-top: 10px;">
+            <input type="text" id="nuovo-cantiere-nome" placeholder="Es: Giuseppe case gialle" style="margin-bottom: 8px;">
+            <button onclick="creaCantiere()" ontouchstart="creaCantiere()" class="btn-success" style="margin: 0;">+ Nuovo Cantiere</button>
         </div>
-        <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top:10px; padding:6px; font-size:0.8rem;">Elimina Questo Cantiere</button>
+        
+        <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top:15px; padding:6px; font-size:0.8rem;">Elimina Questo Cantiere</button>
     </div>
 
     <div class="section" id="sec-materiale-generale" style="display:none; padding: 10px;">
@@ -106,12 +108,12 @@
             
             <div class="add-custom-box">
                 <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi altro materiale di consumo:</p>
-                <div class="flex-btn">
-                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale plastico 40x40..." style="margin:0; flex-grow:1; background: white;">
-                    <button onclick="apriModalAggiunta('materiale')" class="btn-success" style="width:auto; white-space:nowrap;">+ Inserisci</button>
+                <div>
+                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale plastico 40x40..." style="margin-bottom: 8px; background: white;">
+                    <button onclick="apriModalAggiunta('materiale')" ontouchstart="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
                 </div>
             </div>
-            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary);">💾 Salva Materiale Generale</button>
+            <button onclick="salvaMaterialeGenerale()" ontouchstart="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary);">💾 Salva Materiale Generale</button>
         </div>
     </div>
 
@@ -119,9 +121,9 @@
         <h2>Stanze in <span id="nome-cantiere-titolo" style="color:var(--primary);"></span></h2>
         <div id="lista-stanze-salvate"></div>
         
-        <div class="flex-btn" style="margin-top:15px;">
-            <input type="text" id="nuova-stanza-nome" placeholder="Es: Cucina, Garage, Centralino..." style="margin:0; flex-grow:1;">
-            <button onclick="creaStanza()" class="btn-success" style="width:auto; white-space:nowrap;">+ Aggiungi Stanza</button>
+        <div style="margin-top:15px;">
+            <input type="text" id="nuova-stanza-nome" placeholder="Es: Cucina, Garage, Centralino..." style="margin-bottom: 8px;">
+            <button onclick="creaStanza()" ontouchstart="creaStanza()" class="btn-success" style="margin: 0;">+ Aggiungi Stanza</button>
         </div>
     </div>
 
@@ -136,13 +138,13 @@
 
             <div class="add-custom-box">
                 <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Manca qualcosa? Aggiungilo al catalogo frutti:</p>
-                <div class="flex-btn">
-                    <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin:0; flex-grow:1; background: white;">
-                    <button onclick="apriModalAggiunta('frutto')" class="btn-success" style="width:auto; white-space:nowrap;">+ Inserisci</button>
+                <div>
+                    <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin-bottom: 8px; background: white;">
+                    <button onclick="apriModalAggiunta('frutto')" ontouchstart="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
                 </div>
             </div>
 
-            <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">💾 Salva Questa Stanza</button>
+            <button onclick="salvaConteggioStanza()" ontouchstart="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">💾 Salva Questa Stanza</button>
         </div>
     </div>
 
@@ -152,16 +154,16 @@
         <label for="select-modifica-voce">Seleziona Voce da Sistemare:</label>
         <select id="select-modifica-voce"></select>
         <div class="flex-btn">
-            <button onclick="rinominaVoceCatalogo()" class="btn-success">Rinomina / Correggi</button>
+            <button onclick="rinominaVoceCatalogo()" class="btn-success">Rinomina</button>
             <button onclick="eliminaVoceCatalogo()" class="btn-danger">Elimina dal tutto</button>
         </div>
     </div>
 
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Riepilogo e Condivisione</h2>
-        <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
+        <button onclick="generaRiepilogoTesto()" ontouchstart="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
         <div id="output-box" style="display:none; margin-top:15px;">
-            <button onclick="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">💬 Invia ordine su WhatsApp</button>
+            <button onclick="inviaWhatsApp()" ontouchstart="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">💬 Invia ordine su WhatsApp</button>
             <div id="output"></div>
         </div>
     </div>
@@ -170,7 +172,7 @@
         <h2>Ripristino Dati da Backup</h2>
         <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 5px;">Incolla qui il codice ricevuto su WhatsApp per ripristinare i dati.</p>
         <input type="text" id="backup-string-input" placeholder="Incolla qui il codice di backup...">
-        <button onclick="ripristinaDaBackup()" style="background-color: #64748b; padding: 8px;">Ripristina Dati</button>
+        <button onclick="ripristinaDaBackup()" class="btn-success" style="background-color: #64748b; padding: 8px; margin: 0;">Ripristina Dati</button>
     </div>
 
     <div id="modal-categoria" class="modal-bg">
@@ -181,7 +183,7 @@
             <input type="text" id="modal-nuova-cat-input" placeholder="Scrivi il nome della nuova categoria..." style="display:none;">
             <div class="flex-btn" style="margin-top: 15px;">
                 <button onclick="chiudiModalAggiunta()" class="btn-danger">Annulla</button>
-                <button onclick="confermaAggiuntaElemento()" class="btn-success">Conferma e Inserisci</button>
+                <button onclick="confermaAggiuntaElemento()" ontouchstart="confermaAggiuntaElemento()" class="btn-success">Conferma</button>
             </div>
         </div>
     </div>
@@ -254,7 +256,6 @@
 
         window.onload = function() {
             aggiornaSelectCantieri();
-            // Pre-carica l'ultimo cantiere attivo se esistente
             let ultimi = Object.keys(db);
             if(ultimi.length > 0) {
                 document.getElementById('cantiere-select').value = ultimi[0];
@@ -300,13 +301,10 @@
             catalogo.sort((a, b) => {
                 let catA = a[0] ? a[0].toLowerCase() : "";
                 let catB = b[0] ? b[0].toLowerCase() : "";
-                
                 let aE_Cordina = catA.includes("cordina") || catA.includes("cavi");
                 let bE_Cordina = catB.includes("cordina") || catB.includes("cavi");
-
                 if (aE_Cordina && !bE_Cordina) return -1;
                 if (!aE_Cordina && bE_Cordina) return 1;
-                
                 if (a[0] !== b[0]) return a[0].localeCompare(b[0]);
                 return a[1].localeCompare(b[1]);
             });
@@ -393,7 +391,6 @@
                 salvaNelStorage();
                 renderingListaMateriali();
             }
-
             chiudiModalAggiunta();
         }
 
@@ -466,8 +463,6 @@
             alert("Voce corretta con successo!");
         }
 
-        function自由EliminaVoceCatalogo() {} // Placeholder
-
         function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
@@ -496,7 +491,9 @@
             }
         }
 
-        // CANTIERI - VERSIONE ULTRA SEMPLIFICATA E ISOLATA
+        // CANTIERI - FIX SAFARI TOUCH
+        let bloccoDoppioClicCantiere = false;
+
         function aggiornaSelectCantieri() {
             const select = document.getElementById('cantiere-select');
             if(!select) return;
@@ -511,26 +508,41 @@
             });
         }
 
-        function creaCantiere() {
+        function creaCantiere(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            if (bloccoDoppioClicCantiere) return;
+            bloccoDoppioClicCantiere = true;
+            setTimeout(() => { bloccoDoppioClicCantiere = false; }, 400);
+
             const inputField = document.getElementById('nuovo-cantiere-nome');
-            if (!inputField) return alert("Errore di caricamento della pagina. Ricarica.");
+            if (!inputField) return;
             
             const nome = inputField.value.trim();
-            if(!nome) return alert("Per favore, inserisci un nome valido per il cantiere!");
-            if(db[nome]) return alert("Un cantiere con questo nome esiste già!");
+            if(!nome) {
+                alert("Per favore, inserisci un nome valido per il cantiere!");
+                return;
+            }
+            if(db[nome]) {
+                alert("Un cantiere con questo nome esiste già!");
+                return;
+            }
             
-            // Crea la struttura nel database locale
             db[nome] = { "_materiale_generale": {}, "_stanze": {} };
-            
-            // Salva e aggiorna immediatamente l'interfaccia grafico
             localStorage.setItem('cf_v5_db', JSON.stringify(db));
-            aggiornaSelectCantieri();
             
+            aggiornaSelectCantieri();
             document.getElementById('cantiere-select').value = nome;
             inputField.value = "";
             
+            // Rimuove il focus dalla tastiera iOS
+            inputField.blur();
+            
             caricaCantiere();
-            alert(`Cantiere "${nome}" aggiunto correttamente!`);
+            alert(`Cantiere "${nome}" aggiunto correttamente! 🎉`);
         }
 
         function caricaCantiere() {
@@ -680,17 +692,15 @@
             db[cantiereCorrente]._stanze[nome] = {};
             salvaNelStorage();
             input.value = "";
+            input.blur();
             aggiornaListaStanze();
             apriStanza(nome);
         }
-
-        functionCoreEliminaStanza() {} // Placeholder
 
         function eliminaStanza(nomeStanza) {
             if(confirm(`Eliminare la stanza "${nomeStanza}"?`)) {
                 delete db[cantiereCorrente]._stanze[nomeStanza];
                 salvaNelStorage();
-                aggiornaSelectNazionalità = aggiornaListaStanze();
                 aggiornaListaStanze();
                 if(stanzaCorrente === nomeStanza) document.getElementById('sec-conteggio').style.display = "none";
             }
@@ -701,7 +711,6 @@
             stanzaCorrente = nomeStanza;
             document.getElementById('titolo-conteggio-stanza').innerText = `Conteggio: ${nomeStanza}`;
             document.getElementById('sec-conteggio').style.display = "block";
-            
             document.getElementById('content-frutti').classList.add('active');
 
             conteggioTemporaneo = {};
@@ -761,7 +770,6 @@
             });
             salvaNelStorage();
             alert(`Stanza "${stanzaCorrente}" salvata!`);
-            
             document.getElementById('content-frutti').classList.remove('active');
             document.getElementById('sec-stanze').scrollIntoView({ behavior: 'smooth' });
         }
