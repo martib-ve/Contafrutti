@@ -244,9 +244,10 @@
             ["Materiale Consumo", "Fascette Cablaggio Varie"]
         ];
 
-        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v5_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
-        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v5_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
-        let db = JSON.parse(localStorage.getItem('cf_v5_db')) || {};
+        // Cambiate le chiavi locali per forzare una lettura fresca senza cache difettosa
+        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v6_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
+        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v6_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
+        let db = JSON.parse(localStorage.getItem('cf_v6_db')) || {};
         
         let cantiereCorrente = "";
         let stanzaCorrente = "";
@@ -265,9 +266,9 @@
         };
 
         function salvaNelStorage() {
-            localStorage.setItem('cf_v5_db', JSON.stringify(db));
-            localStorage.setItem('cf_v5_cat_frutti', JSON.stringify(catalogoFrutti));
-            localStorage.setItem('cf_v5_cat_mat', JSON.stringify(catalogoMateriali));
+            localStorage.setItem('cf_v6_db', JSON.stringify(db));
+            localStorage.setItem('cf_v6_cat_frutti', JSON.stringify(catalogoFrutti));
+            localStorage.setItem('cf_v6_cat_mat', JSON.stringify(catalogoMateriali));
             aggiornaSelectManutenzioneCatalogo();
         }
 
@@ -284,7 +285,6 @@
         }
 
         function generaIdSicuro(nome) {
-            // Sostituisce i caratteri speciali per creare un ID valido senza usare btoa che rompe Safari Mobile
             return "id-" + nome.toLowerCase().replace(/[^a-z0-9]/g, "-");
         }
 
@@ -433,7 +433,7 @@
             nuovoNome = nuovoNome.trim();
 
             if (tipo === 'frutto') {
-                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuevoNome; });
+                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
                 ordinaCatalogo(catalogoFrutti);
                 for (let cant in db) {
                     for (let stz in db[cant]._stanze) {
@@ -468,7 +468,7 @@
             alert("Voce corretta con successo!");
         }
 
-        function打eliminaVoceCatalogo() {
+        function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
             let parti = selectVal.split("|");
@@ -534,7 +534,7 @@
             }
             
             db[nome] = { "_materiale_generale": {}, "_stanze": {} };
-            localStorage.setItem('cf_v5_db', JSON.stringify(db));
+            salvaNelStorage();
             
             aggiornaSelectCantieri();
             document.getElementById('cantiere-select').value = nome;
