@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conta Frutti e Materiali Cantiere v5.2</title>
+    <title>⚡ Conta Frutti</title>
+    
+    <!-- Icona per la schermata Home di iPhone (iOS) -->
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
+    <!-- Icona standard per Android/Browser -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluid/512/flash-on.png">
+
     <style>
         :root {
             --primary: #2563eb;
@@ -44,22 +50,22 @@
         /* Righe del catalogo e Categorie */
         .category-row { background: var(--category-bg); color: #334155; font-weight: bold; font-size: 0.9rem; padding: 8px 10px; margin-top: 15px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
         .frutto-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid #e2e8f0; }
-        .frutto-info { flex-grow: 1; padding-right: 10px; display: flex; align-items: center; gap: 8px; }
+        .frutto-info { flex-grow: 1; padding-right: 10px; display: flex; align-items: center; gap: 12px; }
         .frutto-name { font-weight: bold; font-size: 1rem; }
         .counter-controls { display: flex; align-items: center; gap: 12px; }
         .btn-count { width: 45px; height: 45px; padding: 0; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
         .count-val { font-size: 1.1rem; font-weight: bold; min-width: 45px; text-align: center; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
 
-        /* Pallini colore per le cordine */
-        .color-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid #94a3b8; flex-shrink: 0; }
-        .dot-nero { background-color: #000000; }
+        /* Pallini colore per le cordine - Più grandi, senza bordo, con ombra leggera */
+        .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+        .dot-nero { background-color: #1e293b; } /* Un nero cantiere leggermente più morbido */
         .dot-blu { background-color: #2563eb; }
         .dot-marrone { background-color: #78350f; }
         .dot-grigio { background-color: #64748b; }
         .dot-rosso { background-color: #dc2626; }
         .dot-viola { background-color: #7c3aed; }
-        .dot-terra-g { background-color: #eab308; border-radius: 50% 0 0 50%; border-right: none; margin-right: -4px; }
-        .dot-terra-v { background-color: #22c55e; border-radius: 0 50% 50% 0; border-left: none; }
+        .dot-terra-g { background-color: #eab308; border-radius: 24px 0 0 24px; border-right: none; margin-right: -4px; }
+        .dot-terra-v { background-color: #22c55e; border-radius: 0 24px 24px 0; border-left: none; }
 
         #output { white-space: pre-wrap; background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin-top: 10px; overflow-x: auto; }
         .add-custom-box { background: #f8fafc; border: 2px dashed var(--border); padding: 15px; border-radius: 6px; margin-top: 20px; }
@@ -73,14 +79,14 @@
 
     <header>
         <div>
-            <h1>⚡ Conta Frutti & Cantiere</h1>
-            <p>Versione v5.2 - Correzione Errore Sintassi</p>
+            <h1>⚡ Conta Frutti</h1>
         </div>
         <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">⚠️ Reset</button>
     </header>
 
+    <!-- SEZIONE 1: CANTIERI -->
     <div class="section" id="sec-cantieri">
-        <h2>Gestione Cantiere</h2>
+        <h2>Cantieri</h2>
         <label for="cantiere-select">Seleziona Cantiere:</label>
         <select id="cantiere-select" onchange="caricaCantiere()"></select>
         <div class="flex-btn">
@@ -90,6 +96,7 @@
         <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top:10px; padding:6px; font-size:0.8rem;">Elimina Questo Cantiere</button>
     </div>
 
+    <!-- SEZIONE GENERALE: MATERIALI (RICHIUDIBILE) -->
     <div class="section" id="sec-materiale-generale" style="display:none; padding: 10px;">
         <div class="collapsible-trigger" onclick="toggleCollapsible('content-mat')">
             <span>Materiale Generale Cantiere (Cordine, Tubi...)</span>
@@ -112,6 +119,7 @@
         </div>
     </div>
 
+    <!-- SEZIONE 2: STANZE DEL CANTIERE -->
     <div class="section" id="sec-stanze" style="display:none;">
         <h2>Stanze in <span id="nome-cantiere-titolo" style="color:var(--primary);"></span></h2>
         <div id="lista-stanze-salvate"></div>
@@ -122,6 +130,7 @@
         </div>
     </div>
 
+    <!-- SEZIONE 3: CONTEGGIO STANZA (RICHIUDIBILE) -->
     <div class="section" id="sec-conteggio" style="display:none; padding: 10px;">
         <div class="collapsible-trigger orange" onclick="toggleCollapsible('content-frutti')">
             <span id="titolo-conteggio-stanza">Conteggio: Stanza</span>
@@ -143,9 +152,10 @@
         </div>
     </div>
 
+    <!-- SEZIONE 4: MODIFICA CORREZIONI DI SCRITTURA -->
     <div class="section">
         <h2>✏️ Modifica o Elimina Voci dal Catalogo</h2>
-        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">Se hai commesso errori di battitura o dislessia, seleziona la voce per rinominarla o cancellarla.</p>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">Se hai commesso errori di battitura, seleziona la voce per rinominarla o cancellarla.</p>
         <label for="select-modifica-voce">Seleziona Voce da Sistemare:</label>
         <select id="select-modifica-voce"></select>
         <div class="flex-btn">
@@ -154,6 +164,7 @@
         </div>
     </div>
 
+    <!-- SEZIONE 5: RIEPILOGO GENERALE -->
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Riepilogo e Condivisione</h2>
         <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
@@ -163,6 +174,7 @@
         </div>
     </div>
 
+    <!-- SEZIONE RECOVERY/BACKUP -->
     <div class="section">
         <h2>Ripristino Dati da Backup</h2>
         <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 5px;">Incolla qui il codice ricevuto su WhatsApp per ripristinare i dati.</p>
@@ -170,6 +182,7 @@
         <button onclick="ripristinaDaBackup()" style="background-color: #64748b; padding: 8px;">Ripristina Dati</button>
     </div>
 
+    <!-- STRUTTURA POPUP SELEZIONE CATEGORIA (MODAL) -->
     <div id="modal-categoria" class="modal-bg">
         <div class="modal-box">
             <h3 id="modal-titolo" style="margin-bottom: 10px; color: var(--primary);">Seleziona Categoria</h3>
@@ -419,7 +432,7 @@
 
             let nuovoNome = prompt(`Modifica l'errore di battitura per:\n${vecchioNome}`, vecchioNome);
             if (!nuovoNome || nuovoNome.trim() === "" || nuovoNome.trim() === vecchioNome) return;
-            nuovoNome = nuovoNome.trim();
+            nuovoNome = nuevoNome.trim();
 
             if (tipo === 'frutto') {
                 catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
@@ -457,6 +470,7 @@
             alert("Voce corretta con successo!");
         }
 
+        function定位eliminaVoceCatalogo() {}
         function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
@@ -539,7 +553,6 @@
             aggiornaListaStanze();
         }
 
-        function chimneyCantiereCorrente() {}
         function eliminaCantiereCorrente() {
             if(!cantiereCorrente) return;
             if(confirm(`Eliminare il cantiere "${cantiereCorrente}"?`)) {
@@ -724,7 +737,7 @@
                 if(conteggioTemporaneo[nome] > 0) db[cantiereCorrente]._stanze[stanzaCorrente][nome] = conteggioTemporaneo[nome];
             });
             salvaNelStorage();
-            alert(`Stanza "${stanzaCorrente}" salvata!`);
+            alert(`Stanza "${stanzaCorrente}" saved!`);
             
             document.getElementById('content-frutti').classList.remove('active');
             document.getElementById('indicator-content-frutti').innerText = "▶ Espandi";
@@ -741,7 +754,7 @@
             let totaleGenerale = {};
             let totalePezzi = 0;
             
-            let testo = `⚡ *CONTA FRUTTI & MATERIALI* ⚡\nCantiere: *${cantiereCorrente.toUpperCase()}*\n\n`;
+            let testo = `⚡ *CONTA FRUTTI* ⚡\nCantiere: *${cantiereCorrente.toUpperCase()}*\n\n`;
             
             testo += `=========================\n`;
             testo += `MATERIALE GENERALE CANTIERE:\n`;
@@ -831,11 +844,11 @@
         }
 
         function resetTotaleApplicazione() {
-            if(confirm("Vuoi resettare l'applicazione per sbloccare la versione fissa v5.2?")) {
+            if(confirm("Vuoi resettare l'applicazione per allineare le modifiche grafiche?")) {
                 localStorage.clear();
                 db = {}; catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
                 salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
-                alert("Applicazione pulita ed eseguita!");
+                alert("Applicazione aggiornata correttamente!");
             }
         }
     </script>
