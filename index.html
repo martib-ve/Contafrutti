@@ -283,6 +283,11 @@
             }
         }
 
+        function generaIdSicuro(nome) {
+            // Sostituisce i caratteri speciali per creare un ID valido senza usare btoa che rompe Safari Mobile
+            return "id-" + nome.toLowerCase().replace(/[^a-z0-9]/g, "-");
+        }
+
         function ottieniTagColore(nomeFlusso) {
             let nome = nomeFlusso.toLowerCase();
             if (nome.includes("giallo/verde") || nome.includes("terra")) {
@@ -463,7 +468,7 @@
             alert("Voce corretta con successo!");
         }
 
-        function eliminaVoceCatalogo() {
+        function打eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
             let parti = selectVal.split("|");
@@ -491,7 +496,7 @@
             }
         }
 
-        // CANTIERI - FIX COMPLETO MULTI-PIATTAFORMA
+        // CANTIERI
         let bloccoDoppioClicCantiere = false;
 
         function aggiornaSelectCantieri() {
@@ -509,9 +514,7 @@
         }
 
         function creaCantiere(e) {
-            if (e && e.preventDefault) {
-                e.preventDefault();
-            }
+            if (e && e.preventDefault) e.preventDefault();
             
             if (bloccoDoppioClicCantiere) return;
             bloccoDoppioClicCantiere = true;
@@ -608,6 +611,7 @@
 
                 let valore = materialiTemporanei[nome] !== undefined ? materialiTemporanei[nome] : "0";
                 let badgeColore = ottieniTagColore(nome);
+                let idPulito = generaIdSicuro(nome);
                 
                 let row = document.createElement('div');
                 row.className = "frutto-row";
@@ -618,7 +622,7 @@
                     </div>
                     <div class="counter-controls">
                         <button type="button" class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nome}', -1)">-</button>
-                        <span class="count-val" onclick="ModificaLiberaMateriale('${nome}')" id="mat-${btoa(nome).replace(/=/g,'')}">${valore}</span>
+                        <span class="count-val" onclick="ModificaLiberaMateriale('${nome}')" id="mat-${idPulito}">${valore}</span>
                         <button type="button" class="btn-count btn-success" onclick="cambiaQtaMateriale('${nome}', 1)">+</button>
                     </div>
                 `;
@@ -632,7 +636,7 @@
             let nuovo = num + cambio;
             if(nuovo < 0) nuovo = 0;
             materialiTemporanei[nome] = nuovo.toString();
-            let el = document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`);
+            let el = document.getElementById(`mat-${generaIdSicuro(nome)}`);
             if(el) el.innerText = nuovo;
         }
 
@@ -641,7 +645,7 @@
             let risp = prompt(`Quantità per:\n${nome}`, attuale);
             if(risp !== null) {
                 materialiTemporanei[nome] = risp.trim() === "" ? "0" : risp.trim();
-                let el = document.getElementById(`mat-${btoa(nome).replace(/=/g,'')}`);
+                let el = document.getElementById(`mat-${generaIdSicuro(nome)}`);
                 if(el) el.innerText = materialiTemporanei[nome];
             }
         }
@@ -737,13 +741,14 @@
                 }
 
                 let qta = conteggioTemporaneo[nome] || 0;
+                let idPulito = generaIdSicuro(nome);
                 let row = document.createElement('div');
                 row.className = "frutto-row";
                 row.innerHTML = `
                     <div class="frutto-info"><span class="frutto-name">${nome}</span></div>
                     <div class="counter-controls">
                         <button type="button" class="btn-count btn-danger" onclick="cambiaQta('${nome}', -1)">-</button>
-                        <span class="count-val" id="val-${btoa(nome).replace(/=/g,'')}">${qta}</span>
+                        <span class="count-val" id="val-${idPulito}">${qta}</span>
                         <button type="button" class="btn-count btn-success" onclick="cambiaQta('${nome}', 1)">+</button>
                     </div>
                 `;
@@ -755,7 +760,7 @@
             let nuovaQta = (conteggioTemporaneo[nome] || 0) + cambio;
             if(nuovaQta < 0) nuovaQta = 0;
             conteggioTemporaneo[nome] = nuovaQta;
-            let el = document.getElementById(`val-${btoa(nome).replace(/=/g,'')}`);
+            let el = document.getElementById(`val-${generaIdSicuro(nome)}`);
             if(el) el.innerText = nuovaQta;
         }
 
@@ -870,4 +875,13 @@
         }
 
         function resetTotaleApplicazione() {
-            if(
+            if(confirm("Vuoi resettare l'applicazione per allineare le modifiche grafiche?")) {
+                localStorage.clear();
+                db = {}; catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
+                salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
+                alert("Applicazione aggiornata correttamente!");
+            }
+        }
+    </script>
+</body>
+</html>
