@@ -244,10 +244,10 @@
             ["Materiale Consumo", "Fascette Cablaggio Varie"]
         ];
 
-        // Chiavi stabili e pulite
-        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v7_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
-        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v7_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
-        let db = JSON.parse(localStorage.getItem('cf_v7_db')) || {};
+        // Chiavi stabili rigenerate per aggirare la vecchia cache mobile
+        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v8_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
+        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v8_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
+        let db = JSON.parse(localStorage.getItem('cf_v8_db')) || {};
         
         let cantiereCorrente = "";
         let stanzaCorrente = "";
@@ -266,9 +266,9 @@
         };
 
         function salvaNelStorage() {
-            localStorage.setItem('cf_v7_db', JSON.stringify(db));
-            localStorage.setItem('cf_v7_cat_frutti', JSON.stringify(catalogoFrutti));
-            localStorage.setItem('cf_v7_cat_mat', JSON.stringify(catalogoMateriali));
+            localStorage.setItem('cf_v8_db', JSON.stringify(db));
+            localStorage.setItem('cf_v8_cat_frutti', JSON.stringify(catalogoFrutti));
+            localStorage.setItem('cf_v8_cat_mat', JSON.stringify(catalogoMateriali));
             aggiornaSelectManutenzioneCatalogo();
         }
 
@@ -433,7 +433,7 @@
             nuovoNome = nuovoNome.trim();
 
             if (tipo === 'frutto') {
-                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuevoNome; });
+                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
                 ordinaCatalogo(catalogoFrutti);
                 for (let cant in db) {
                     for (let stz in db[cant]._stanze) {
@@ -450,7 +450,7 @@
                 salvaNelStorage();
                 renderingListaFrutti();
             } else {
-                catalogoMateriali.forEach(m => { if(m[1] === vecchioNome) m[1] = nuevoNome; });
+                catalogoMateriali.forEach(m => { if(m[1] === vecchioNome) m[1] = nuovoNome; });
                 ordinaCatalogo(catalogoMateriali);
                 for (let cant in db) {
                     if (db[cant]._materiale_generale && db[cant]._materiale_generale[vecchioNome] !== undefined) {
@@ -580,7 +580,7 @@
             aggiornaListaStanze();
         }
 
-        functionBoxeliminaCantiereCorrente() {
+        function eliminaCantiereCorrente() {
             if(!cantiereCorrente) return;
             if(confirm(`Eliminare definitivamente il cantiere "${cantiereCorrente}"?`)) {
                 delete db[cantiereCorrente];
@@ -589,9 +589,6 @@
                 caricaCantiere();
             }
         }
-        
-        // Per sicurezza mappiamo correttamente la funzione nel caso venisse invocata con variazioni di nome
-        window.eliminaCantiereCorrente = functionBoxeliminaCantiereCorrente;
 
         // RENDERING MATERIALI
         function renderingListaMateriali() {
