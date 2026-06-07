@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ Conta Frutti</title>
+    <title>Conta Frutti</title>
     
     <link class="apple-touch-icon" rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/fluid/512/flash-on.png">
@@ -54,16 +54,17 @@
         .btn-count { width: 45px; height: 45px; padding: 0; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
         .count-val { font-size: 1.1rem; font-weight: bold; min-width: 45px; text-align: center; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
 
-        /* Pallini colore per le cordine */
-        .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+        /* Pallini colore per le cordine (Aggiunto il bianco) */
+        .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); border: 1px solid #ccc; }
         .dot-nero { background-color: #1e293b; }
         .dot-blu { background-color: #2563eb; }
         .dot-marrone { background-color: #78350f; }
         .dot-grigio { background-color: #64748b; }
         .dot-rosso { background-color: #dc2626; }
         .dot-viola { background-color: #7c3aed; }
-        .dot-terra-g { background-color: #eab308; border-radius: 24px 0 0 24px; border-right: none; margin-right: -4px; }
-        .dot-terra-v { background-color: #22c55e; border-radius: 0 24px 24px 0; border-left: none; }
+        .dot-bianco { background-color: #ffffff; }
+        .dot-terra-g { background-color: #eab308; border-radius: 24px 0 0 24px; border-right: none; margin-right: -4px; border: 1px solid #ccc; border-right: none;}
+        .dot-terra-v { background-color: #22c55e; border-radius: 0 24px 24px 0; border-left: none; border: 1px solid #ccc; border-left: none;}
 
         #output { white-space: pre-wrap; background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin-top: 10px; overflow-x: auto; }
         .add-custom-box { background: #f8fafc; border: 2px dashed var(--border); padding: 15px; border-radius: 6px; margin-top: 20px; }
@@ -77,9 +78,9 @@
 
     <header>
         <div>
-            <h1>⚡ Conta Frutti</h1>
+            <h1>Conta Frutti</h1>
         </div>
-        <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">⚠️ Reset</button>
+        <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">Reset</button>
     </header>
 
     <div class="section">
@@ -97,23 +98,23 @@
 
     <div class="section" id="sec-materiale-generale" style="display:none; padding: 10px;">
         <div class="collapsible-trigger" onclick="toggleCollapsible('content-mat')">
-            <span>Materiale Generale Cantiere (Cordine, Tubi...)</span>
+            <span>Materiale Generale Cantiere</span>
             <span id="indicator-content-mat">▶ Espandi</span>
         </div>
         
         <div id="content-mat" class="collapsible-content">
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">💡 Clicca sul numero per scrivere liberamente (es: "50m" o "2 matasse").</p>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">Clicca sul numero per scrivere liberamente (es: "50m").</p>
             
             <div id="lista-materiali-generali"></div>
             
             <div class="add-custom-box">
-                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi altro materiale di consumo:</p>
+                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi altro materiale:</p>
                 <div>
-                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale plastico 40x40..." style="margin-bottom: 8px; background: white;">
-                    <button onclick="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
+                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale 40x40..." style="margin-bottom: 8px; background: white;">
+                    <button onclick="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">Aggiungi al Catalogo</button>
                 </div>
             </div>
-            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary);">💾 Salva Materiale Generale</button>
+            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; background-color: var(--secondary); padding: 15px;">Salva Materiale Generale</button>
         </div>
     </div>
 
@@ -122,7 +123,7 @@
         <div id="lista-stanze-salvate"></div>
         
         <div style="margin-top:15px;">
-            <input type="text" id="nuova-stanza-nome" placeholder="Es: Cucina, Garage, Centralino..." style="margin-bottom: 8px;">
+            <input type="text" id="nuova-stanza-nome" placeholder="Es: Cucina, Garage..." style="margin-bottom: 8px;">
             <button onclick="creaStanza()" class="btn-success" style="margin: 0;">+ Aggiungi Stanza</button>
         </div>
     </div>
@@ -137,50 +138,46 @@
             <div id="lista-frutti-conteggio"></div>
 
             <div class="add-custom-box">
-                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Manca qualcosa? Aggiungilo al catalogo frutti:</p>
+                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi al catalogo frutti:</p>
                 <div>
                     <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin-bottom: 8px; background: white;">
-                    <button onclick="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">+ Inserisci nel Catalogo</button>
+                    <button onclick="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">Aggiungi al Catalogo</button>
                 </div>
             </div>
 
-            <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">💾 Salva Questa Stanza</button>
+            <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; font-size:1.2rem; padding:15px;">Salva Questa Stanza</button>
         </div>
     </div>
 
     <div class="section">
-        <h2>✏️ Modifica o Elimina Voci dal Catalogo</h2>
-        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">Se hai commesso errori di battitura, seleziona la voce per rinominarla o cancellarla.</p>
-        <label for="select-modifica-voce">Seleziona Voce da Sistemare:</label>
+        <h2>Modifica Voci Catalogo</h2>
         <select id="select-modifica-voce"></select>
         <div class="flex-btn">
             <button onclick="rinominaVoceCatalogo()" class="btn-success">Rinomina</button>
-            <button onclick="eliminaVoceCatalogo()" class="btn-danger">Elimina dal tutto</button>
+            <button onclick="eliminaVoceCatalogo()" class="btn-danger">Elimina</button>
         </div>
     </div>
 
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Riepilogo e Condivisione</h2>
-        <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo Aggiornato</button>
+        <button onclick="generaRiepilogoTesto()" class="btn-success">Genera Riepilogo</button>
         <div id="output-box" style="display:none; margin-top:15px;">
-            <button onclick="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">💬 Invia ordine su WhatsApp</button>
+            <button onclick="inviaWhatsApp()" style="background-color: #25d366; margin-bottom:10px;">Invia su WhatsApp</button>
             <div id="output"></div>
         </div>
     </div>
 
     <div class="section">
-        <h2>Ripristino Dati da Backup</h2>
-        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 5px;">Incolla qui il codice ricevuto su WhatsApp per ripristinare i dati.</p>
-        <input type="text" id="backup-string-input" placeholder="Incolla qui il codice di backup...">
-        <button onclick="ripristinaDaBackup()" class="btn-success" style="background-color: #64748b; padding: 8px; margin: 0;">Ripristina Dati</button>
+        <h2>Ripristino Backup</h2>
+        <input type="text" id="backup-string-input" placeholder="Incolla il codice di backup...">
+        <button onclick="ripristinaDaBackup()" class="btn-success" style="background-color: #64748b; padding: 8px; margin: 0;">Ripristina</button>
     </div>
 
     <div id="modal-categoria" class="modal-bg">
         <div class="modal-box">
             <h3 id="modal-titolo" style="margin-bottom: 10px; color: var(--primary);">Seleziona Categoria</h3>
-            <p style="font-size: 0.85rem; color:#64748b; margin-bottom: 12px;">Scegli dove catalogare il nuovo elemento:</p>
             <select id="modal-select-cat" onchange="gestisciCambioModalSelect()"></select>
-            <input type="text" id="modal-nuova-cat-input" placeholder="Scrivi il nome della nuova categoria..." style="display:none;">
+            <input type="text" id="modal-nuova-cat-input" placeholder="Nuova categoria..." style="display:none; margin-top:10px;">
             <div class="flex-btn" style="margin-top: 15px;">
                 <button onclick="chiudiModalAggiunta()" class="btn-danger">Annulla</button>
                 <button onclick="confermaAggiuntaElemento()" class="btn-success">Conferma</button>
@@ -189,7 +186,24 @@
     </div>
 
     <script>
-        // Cataloghi Iniziali Standard
+        // ORDINE FISSO DELLE CATEGORIE PER IMPEDIRE CHE SALTINO IN ALTO
+        const ORDINE_CATEGORIE_FRUTTI = [
+            "Supporti e Scatole",
+            "Comandi",
+            "Prese energia e dati",
+            "Centralino",
+            "Varie"
+        ];
+        
+        const ORDINE_CATEGORIE_MATERIALE = [
+            "Cordine 1.5 mm²",
+            "Cordine 2.5 mm²",
+            "Cordine 4 mm²",
+            "Tubi e Corrugati",
+            "Materiale Consumo"
+        ];
+
+        // Cataloghi Iniziali Aggiornati (Nomi puliti, no parentesi, centralino 18 aggiunto)
         const STRUTTURA_FRUTTI_INIZIALE = [
             ["Supporti e Scatole", "Supporto / Scatola 503"],
             ["Supporti e Scatole", "Supporto / Scatola 504"],
@@ -197,43 +211,48 @@
             ["Supporti e Scatole", "Scatola esterna 503"],
             ["Supporti e Scatole", "Scatola 503/703 Cartongesso"],
             ["Supporti e Scatole", "Coperchio 503"],
-            ["Comandi", "Interruttore (Int)"],
-            ["Comandi", "Deviatore (Dev)"],
-            ["Comandi", "Invertitore (Inv)"],
-            ["Comandi", "Pulsante (Puls)"],
+            ["Comandi", "Interruttore"],
+            ["Comandi", "Deviatore"],
+            ["Comandi", "Invertitore"],
+            ["Comandi", "Pulsante"],
             ["Comandi", "Commutatore Tapparella/Tenda"],
             ["Comandi", "Interruttore Bipolare"],
             ["Prese energia e dati", "Presa 10A"],
             ["Prese energia e dati", "Presa 16A"],
-            ["Prese energia e dati", "Presa Schuko (Sukko)"],
+            ["Prese energia e dati", "Presa Schuko"],
             ["Prese energia e dati", "Presa Dati (RJ45)"],
             ["Prese energia e dati", "Presa TV Passante"],
             ["Prese energia e dati", "Presa TV Terminale/Finale"],
-            ["Varie", "Tappo (Copriforo)"],
-            ["Varie", "Emergenza Estraibile"],
+            ["Centralino", "Centralino 18 Moduli"],
             ["Centralino", "Centralino: Sezionatore 32A"],
             ["Centralino", "Centralino: Salvavita 25A"],
             ["Centralino", "Centralino: Salvavita 10A"],
             ["Centralino", "Centralino: Magnetotermico 16A"],
-            ["Centralino", "Centralino: Magnetotermico 25A"]
+            ["Centralino", "Centralino: Magnetotermico 25A"],
+            ["Varie", "Tappo Copriforo"],
+            ["Varie", "Emergenza Estraibile"]
         ];
 
         const STRUTTURA_MATERIALE_INIZIALE = [
-            ["Cordine 1.5 mm²", "Cordina 1.5 Nero"],
-            ["Cordine 1.5 mm²", "Cordina 1.5 Blu"],
+            // Corde 1.5 - Ordine: Marrone, Grigio, Nero, Bianco (Poi le altre)
             ["Cordine 1.5 mm²", "Cordina 1.5 Marrone"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Grigio"],
+            ["Cordine 1.5 mm²", "Cordina 1.5 Nero"],
+            ["Cordine 1.5 mm²", "Cordina 1.5 Bianco"],
+            ["Cordine 1.5 mm²", "Cordina 1.5 Blu"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Rosso"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Viola"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Giallo/Verde (Terra)"],
             
-            ["Cordine 2.5 mm²", "Cordina 2.5 Nero"],
-            ["Cordine 2.5 mm²", "Cordina 2.5 Blu"],
+            // Corde 2.5 - Solo Marrone, Blu, Terra
             ["Cordine 2.5 mm²", "Cordina 2.5 Marrone"],
-            ["Cordine 2.5 mm²", "Cordina 2.5 Grigio"],
-            ["Cordine 2.5 mm²", "Cordina 2.5 Rosso"],
-            ["Cordine 2.5 mm²", "Cordina 2.5 Viola"],
+            ["Cordine 2.5 mm²", "Cordina 2.5 Blu"],
             ["Cordine 2.5 mm²", "Cordina 2.5 Giallo/Verde (Terra)"],
+            
+            // Corde 4 - Solo Marrone, Blu, Terra
+            ["Cordine 4 mm²", "Cordina 4 Marrone"],
+            ["Cordine 4 mm²", "Cordina 4 Blu"],
+            ["Cordine 4 mm²", "Cordina 4 Giallo/Verde (Terra)"],
             
             ["Tubi e Corrugati", "Tubo Corrugato Ø 16 mm"],
             ["Tubi e Corrugati", "Tubo Corrugato Ø 20 mm"],
@@ -241,13 +260,13 @@
             ["Tubi e Corrugati", "Tubo Corrugato Ø 32 mm"],
             
             ["Materiale Consumo", "Nastro Isolante"],
-            ["Materiale Consumo", "Fascette Cablaggio Varie"]
+            ["Materiale Consumo", "Fascette Cablaggio"]
         ];
 
-        // Chiavi stabili rigenerate per aggirare la vecchia cache mobile
-        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v8_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
-        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v8_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
-        let db = JSON.parse(localStorage.getItem('cf_v8_db')) || {};
+        // Chiavi stabili v9 per forzare ricaricamento da zero e allineare le modifiche
+        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v9_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
+        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v9_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
+        let db = JSON.parse(localStorage.getItem('cf_v9_db')) || {};
         
         let cantiereCorrente = "";
         let stanzaCorrente = "";
@@ -266,9 +285,9 @@
         };
 
         function salvaNelStorage() {
-            localStorage.setItem('cf_v8_db', JSON.stringify(db));
-            localStorage.setItem('cf_v8_cat_frutti', JSON.stringify(catalogoFrutti));
-            localStorage.setItem('cf_v8_cat_mat', JSON.stringify(catalogoMateriali));
+            localStorage.setItem('cf_v9_db', JSON.stringify(db));
+            localStorage.setItem('cf_v9_cat_frutti', JSON.stringify(catalogoFrutti));
+            localStorage.setItem('cf_v9_cat_mat', JSON.stringify(catalogoMateriali));
             aggiornaSelectManutenzioneCatalogo();
         }
 
@@ -299,18 +318,41 @@
             if (nome.includes("grigio")) return '<span class="color-dot dot-grigio"></span>';
             if (nome.includes("rosso")) return '<span class="color-dot dot-rosso"></span>';
             if (nome.includes("viola")) return '<span class="color-dot dot-viola"></span>';
+            if (nome.includes("bianco")) return '<span class="color-dot dot-bianco"></span>';
             return '';
         }
 
-        function ordinaCatalogo(catalogo) {
+        function getIndiceCategoria(cat, arrayOrdine) {
+            let idx = arrayOrdine.indexOf(cat);
+            return idx === -1 ? 999 : idx; // Se la categoria è nuova, la mette in fondo
+        }
+
+        function ordinaCatalogoFrutti(catalogo) {
             catalogo.sort((a, b) => {
-                let catA = a[0] ? a[0].toLowerCase() : "";
-                let catB = b[0] ? b[0].toLowerCase() : "";
-                let aE_Cordina = catA.includes("cordina") || catA.includes("cavi");
-                let bE_Cordina = catB.includes("cordina") || catB.includes("cavi");
-                if (aE_Cordina && !bE_Cordina) return -1;
-                if (!aE_Cordina && bE_Cordina) return 1;
-                if (a[0] !== b[0]) return a[0].localeCompare(b[0]);
+                let catA = a[0] ? a[0] : "";
+                let catB = b[0] ? b[0] : "";
+                
+                let idxA = getIndiceCategoria(catA, ORDINE_CATEGORIE_FRUTTI);
+                let idxB = getIndiceCategoria(catB, ORDINE_CATEGORIE_FRUTTI);
+                
+                if(idxA !== idxB) return idxA - idxB;
+                return a[1].localeCompare(b[1]);
+            });
+        }
+        
+        function ordinaCatalogoMateriali(catalogo) {
+            catalogo.sort((a, b) => {
+                let catA = a[0] ? a[0] : "";
+                let catB = b[0] ? b[0] : "";
+                
+                let idxA = getIndiceCategoria(catA, ORDINE_CATEGORIE_MATERIALE);
+                let idxB = getIndiceCategoria(catB, ORDINE_CATEGORIE_MATERIALE);
+                
+                if(idxA !== idxB) return idxA - idxB;
+                
+                // Le cordine non si ordinano alfabeticamente per mantenere l'ordine tecnico
+                if(catA.toLowerCase().includes("cordine")) return 0;
+                
                 return a[1].localeCompare(b[1]);
             });
         }
@@ -334,6 +376,10 @@
             sorgente.forEach(item => {
                 if(item[0] && !categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]);
             });
+
+            // Riordina la select in base all'ordine fisso delle categorie
+            let arrayOrdineRif = tipo === 'frutto' ? ORDINE_CATEGORIE_FRUTTI : ORDINE_CATEGORIE_MATERIALE;
+            categorieEsistenti.sort((a,b) => getIndiceCategoria(a, arrayOrdineRif) - getIndiceCategoria(b, arrayOrdineRif));
 
             categorieEsistenti.forEach(cat => {
                 let opt = document.createElement('option');
@@ -381,7 +427,7 @@
                 let inputNome = document.getElementById('nuovo-frutto-nome');
                 let nome = inputNome.value.trim();
                 catalogoFrutti.push([categoriaFinale, nome]);
-                ordinaCatalogo(catalogoFrutti);
+                ordinaCatalogoFrutti(catalogoFrutti);
                 conteggioTemporaneo[nome] = 0;
                 inputNome.value = "";
                 salvaNelStorage();
@@ -390,7 +436,7 @@
                 let inputNome = document.getElementById('nuovo-materiale-nome');
                 let nome = inputNome.value.trim();
                 catalogoMateriali.push([categoriaFinale, nome]);
-                ordinaCatalogo(catalogoMateriali);
+                ordinaCatalogoMateriali(catalogoMateriali);
                 materialiTemporanei[nome] = "0";
                 inputNome.value = "";
                 salvaNelStorage();
@@ -428,13 +474,13 @@
             let tipo = parti[0];
             let vecchioNome = parti[1];
 
-            let nuovoNome = prompt(`Modifica l'errore di battitura per:\n${vecchioNome}`, vecchioNome);
+            let nuovoNome = prompt(`Modifica il nome per:\n${vecchioNome}`, vecchioNome);
             if (!nuovoNome || nuovoNome.trim() === "" || nuovoNome.trim() === vecchioNome) return;
             nuovoNome = nuovoNome.trim();
 
             if (tipo === 'frutto') {
                 catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
-                ordinaCatalogo(catalogoFrutti);
+                ordinaCatalogoFrutti(catalogoFrutti);
                 for (let cant in db) {
                     for (let stz in db[cant]._stanze) {
                         if (db[cant]._stanze[stz][vecchioNome] !== undefined) {
@@ -451,7 +497,7 @@
                 renderingListaFrutti();
             } else {
                 catalogoMateriali.forEach(m => { if(m[1] === vecchioNome) m[1] = nuovoNome; });
-                ordinaCatalogo(catalogoMateriali);
+                ordinaCatalogoMateriali(catalogoMateriali);
                 for (let cant in db) {
                     if (db[cant]._materiale_generale && db[cant]._materiale_generale[vecchioNome] !== undefined) {
                         db[cant]._materiale_generale[nuovoNome] = db[cant]._materiale_generale[vecchioNome];
@@ -542,7 +588,7 @@
             
             inputField.blur();
             caricaCantiere();
-            alert(`Cantiere "${nome}" aggiunto correttamente! 🎉`);
+            alert(`Cantiere "${nome}" aggiunto correttamente!`);
         }
 
         function caricaCantiere() {
@@ -597,6 +643,8 @@
             container.innerHTML = "";
             let ultimaCategoria = "";
 
+            ordinaCatalogoMateriali(catalogoMateriali);
+
             catalogoMateriali.forEach(m => {
                 let categoria = m[0] || "Varie";
                 let nome = m[1];
@@ -613,12 +661,14 @@
                 let badgeColore = ottieniTagColore(nome);
                 let idPulito = generaIdSicuro(nome);
                 
+                let isCordina = categoria.toLowerCase().includes("cordine");
+                
                 let row = document.createElement('div');
                 row.className = "frutto-row";
                 row.innerHTML = `
                     <div class="frutto-info">
                         ${badgeColore}
-                        <span class="frutto-name">${nome}</span>
+                        <span class="frutto-name">${isCordina ? '' : nome}</span>
                     </div>
                     <div class="counter-controls">
                         <button type="button" class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nome}', -1)">-</button>
@@ -658,7 +708,7 @@
                 }
             }
             salvaNelStorage();
-            alert("Materiale generale salvato con successo!");
+            alert("Salvato!");
             toggleCollapsible('content-mat');
         }
 
@@ -728,6 +778,8 @@
             container.innerHTML = "";
             let ultimaCategoria = "";
 
+            ordinaCatalogoFrutti(catalogoFrutti);
+
             catalogoFrutti.forEach(f => {
                 let category = f[0];
                 let nome = f[1];
@@ -771,7 +823,7 @@
                 if(conteggioTemporaneo[nome] > 0) db[cantiereCorrente]._stanze[stanzaCorrente][nome] = conteggioTemporaneo[nome];
             });
             salvaNelStorage();
-            alert(`Stanza "${stanzaCorrente}" salvata!`);
+            alert(`Salvato!`);
             document.getElementById('content-frutti').classList.remove('active');
             document.getElementById('sec-stanze').scrollIntoView({ behavior: 'smooth' });
         }
@@ -785,7 +837,7 @@
             let totaleGenerale = {};
             let totalePezzi = 0;
             
-            let testo = `⚡ *CONTA FRUTTI* ⚡\nCantiere: *${cantiereCorrente.toUpperCase()}*\n\n`;
+            let testo = `CONTA FRUTTI\nCantiere: *${cantiereCorrente.toUpperCase()}*\n\n`;
             
             testo += `=========================\n`;
             testo += `MATERIALE GENERALE CANTIERE:\n`;
