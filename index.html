@@ -690,7 +690,7 @@
 
             catalogoMateriali.forEach(m => {
                 let categoria = m[0] || "Varie";
-                let nome = m[1];
+                let nomeCompleto = m[1]; // Es: "Cordina 1.5 Blu"
                 
                 if(categoria !== ultimaCategoria) {
                     let catDiv = document.createElement('div');
@@ -700,23 +700,31 @@
                     ultimaCategoria = categoria;
                 }
 
-                let valore = materialiTemporanei[nome] !== undefined ? materialiTemporanei[nome] : "0";
-                let badgeColore = ottieniTagColore(nome);
-                let idPulito = generaIdSicuro(nome);
+                let valore = materialiTemporanei[nomeCompleto] !== undefined ? materialiTemporanei[nomeCompleto] : "0";
+                let badgeColore = ottieniTagColore(nomeCompleto);
+                let idPulito = generaIdSicuro(nomeCompleto);
                 
-                let isCordina = categoria.toLowerCase().includes("cordine");
+                // Logica per mostrare solo il colore se è una cordina
+                let nomeVisualizzato = nomeCompleto;
+                if (categoria.toLowerCase().includes("cordine")) {
+                    // Estrae il colore dal nome (es: "Cordina 1.5 Blu" -> "Blu")
+                    let parti = nomeCompleto.split(" ");
+                    nomeVisualizzato = parti[parti.length - 1]; 
+                    // Gestione speciale per la terra
+                    if(nomeVisualizzato.toLowerCase().includes("terra")) nomeVisualizzato = "Terra";
+                }
                 
                 let row = document.createElement('div');
                 row.className = "frutto-row";
                 row.innerHTML = `
                     <div class="frutto-info">
                         ${badgeColore}
-                        <span class="frutto-name">${isCordina ? '' : nome}</span>
+                        <span class="frutto-name">${nomeVisualizzato}</span>
                     </div>
                     <div class="counter-controls">
-                        <button type="button" class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nome}', -1)">-</button>
-                        <span class="count-val" onclick="ModificaLiberaMateriale('${nome}')" id="mat-${idPulito}">${valore}</span>
-                        <button type="button" class="btn-count btn-success" onclick="cambiaQtaMateriale('${nome}', 1)">+</button>
+                        <button type="button" class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nomeCompleto}', -1)">-</button>
+                        <span class="count-val" onclick="ModificaLiberaMateriale('${nomeCompleto}')" id="mat-${idPulito}">${valore}</span>
+                        <button type="button" class="btn-count btn-success" onclick="cambiaQtaMateriale('${nomeCompleto}', 1)">+</button>
                     </div>
                 `;
                 container.appendChild(row);
