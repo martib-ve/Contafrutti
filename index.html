@@ -10,69 +10,95 @@
     <link rel="manifest" href="manifest.json">
 
     <style>
+        /* TEMA SCURO (DI DEFAULT) */
         :root {
-            --primary: #2563eb;
+            --bg-body: #121212;
+            --bg-section: #1e1e1e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            
+            --primary: #3b82f6; 
+            --secondary: #0ea5e9;
             --success: #16a34a;
             --danger: #dc2626;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --border: #cbd5e1;
+            
+            --bg-category: #334155;
+            --bg-item: #1e293b;
+            --bg-input: #0f172a;
+        }
+
+        /* TEMA CHIARO (ATTIVATO DAL PULSANTE) */
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-section: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            
+            --primary: #2563eb;
             --secondary: #0ea5e9;
-            --category-bg: #e2e8f0;
+            --success: #16a34a;
+            --danger: #dc2626;
+            
+            --bg-category: #e2e8f0;
+            --bg-item: #f1f5f9;
+            --bg-input: #ffffff;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--light); color: var(--dark); padding: 15px; padding-bottom: 80px; }
-        header { margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        body { background-color: var(--bg-body); color: var(--text-main); padding: 15px; padding-bottom: 80px; transition: background-color 0.3s, color 0.3s; }
+        
+        header { margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         h1 { font-size: 1.5rem; margin-bottom: 5px; color: var(--primary); }
         
-        .section { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        h2 { font-size: 1.1rem; margin-bottom: 10px; color: var(--dark); display: flex; justify-content: space-between; align-items: center; }
+        .section { background: var(--bg-section); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: background-color 0.3s; }
+        h2 { font-size: 1.1rem; margin-bottom: 10px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
         
         .collapsible-trigger { background: var(--secondary); color: white; padding: 12px; border-radius: 6px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 10px; }
         .collapsible-trigger.orange { background: var(--primary); }
         .collapsible-content { display: none; margin-top: 10px; }
         .collapsible-content.active { display: block; }
         
-        select, input, button { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; -webkit-appearance: none; }
-        button { background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: background 0.2s; touch-action: manipulation; }
-        button:active { opacity: 0.9; }
+        select, input { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid var(--border-color); border-radius: 6px; font-size: 1rem; background: var(--bg-input); color: var(--text-main); -webkit-appearance: none; }
+        button { width: 100%; padding: 12px; margin: 5px 0 10px 0; border-radius: 6px; font-size: 1rem; background-color: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: opacity 0.2s; touch-action: manipulation; }
+        button:active { opacity: 0.8; }
         
         .flex-btn { display: flex; gap: 10px; margin-top: 5px; }
         .flex-btn button { margin: 0; }
         .btn-danger { background-color: var(--danger); }
         .btn-success { background-color: var(--success); }
 
-        .stanza-item { background: #f1f5f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; }
+        .stanza-item { background: var(--bg-item); padding: 10px; border-radius: 6px; margin-bottom: 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
         .stanza-item button { width: auto; padding: 5px 10px; margin: 0; font-size: 0.8rem; }
 
         /* Righe del catalogo e Categorie */
-        .category-row { background: var(--category-bg); color: #334155; font-weight: bold; font-size: 0.9rem; padding: 8px 10px; margin-top: 15px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .frutto-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid #e2e8f0; }
+        .category-row { background: var(--bg-category); color: var(--text-main); font-weight: bold; font-size: 0.9rem; padding: 8px 10px; margin-top: 15px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .frutto-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid var(--border-color); }
         .frutto-info { flex-grow: 1; padding-right: 10px; display: flex; align-items: center; gap: 12px; }
         .frutto-name { font-weight: bold; font-size: 1rem; }
         .counter-controls { display: flex; align-items: center; gap: 12px; }
         .btn-count { width: 45px; height: 45px; padding: 0; border-radius: 50%; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
-        .count-val { font-size: 1.1rem; font-weight: bold; min-width: 45px; text-align: center; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+        .count-val { font-size: 1.1rem; font-weight: bold; min-width: 45px; text-align: center; background: var(--bg-item); padding: 4px 8px; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); }
 
-        /* Pallini colore per le cordine (Aggiunto il bianco) */
-        .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.15); border: 1px solid #ccc; }
-        .dot-nero { background-color: #1e293b; }
-        .dot-blu { background-color: #2563eb; }
-        .dot-marrone { background-color: #78350f; }
-        .dot-grigio { background-color: #64748b; }
-        .dot-rosso { background-color: #dc2626; }
-        .dot-viola { background-color: #7c3aed; }
+        /* Pallini colore per le cordine */
+        .color-dot { display: inline-block; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 1px solid #ccc; }
+        .dot-nero { background-color: #1e293b; border: none; }
+        .dot-blu { background-color: #2563eb; border: none; }
+        .dot-marrone { background-color: #78350f; border: none; }
+        .dot-grigio { background-color: #64748b; border: none; }
+        .dot-rosso { background-color: #dc2626; border: none; }
+        .dot-viola { background-color: #7c3aed; border: none; }
         .dot-bianco { background-color: #ffffff; }
-        .dot-terra-g { background-color: #eab308; border-radius: 24px 0 0 24px; border-right: none; margin-right: -4px; border: 1px solid #ccc; border-right: none;}
-        .dot-terra-v { background-color: #22c55e; border-radius: 0 24px 24px 0; border-left: none; border: 1px solid #ccc; border-left: none;}
+        .dot-terra-g { background-color: #eab308; border-radius: 24px 0 0 24px; border-right: none;}
+        .dot-terra-v { background-color: #22c55e; border-radius: 0 24px 24px 0; border-left: none;}
 
-        #output { white-space: pre-wrap; background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin-top: 10px; overflow-x: auto; }
-        .add-custom-box { background: #f8fafc; border: 2px dashed var(--border); padding: 15px; border-radius: 6px; margin-top: 20px; }
+        #output { white-space: pre-wrap; background: #000000; color: #38bdf8; padding: 15px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin-top: 10px; overflow-x: auto; border: 1px solid var(--border-color); }
+        .add-custom-box { background: var(--bg-item); border: 2px dashed var(--border-color); padding: 15px; border-radius: 6px; margin-top: 20px; }
         
         /* Modal popup selezione categorie */
-        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: var(--bg-section); padding: 20px; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -81,7 +107,10 @@
         <div>
             <h1>Conta Frutti</h1>
         </div>
-        <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">Reset</button>
+        <div style="display: flex; gap: 10px;">
+            <button id="btn-tema" onclick="toggleTema()" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0; background: var(--bg-item); color: var(--text-main); border: 1px solid var(--border-color);">☀️ Chiaro</button>
+            <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 6px 10px; font-size: 0.75rem; margin: 0;">Reset</button>
+        </div>
     </header>
 
     <div class="section">
@@ -104,14 +133,14 @@
         </div>
         
         <div id="content-mat" class="collapsible-content">
-            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">Clicca sul numero per scrivere liberamente (es: "50m").</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Clicca sul numero per scrivere liberamente (es: "50m").</p>
             
             <div id="lista-materiali-generali"></div>
             
             <div class="add-custom-box">
-                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi altro materiale:</p>
+                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: var(--text-main);">Aggiungi altro materiale:</p>
                 <div>
-                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale 40x40..." style="margin-bottom: 8px; background: white;">
+                    <input type="text" id="nuovo-materiale-nome" placeholder="Es: Canale 40x40..." style="margin-bottom: 8px;">
                     <button onclick="apriModalAggiunta('materiale')" class="btn-success" style="margin: 0;">Aggiungi al Catalogo</button>
                 </div>
             </div>
@@ -139,9 +168,9 @@
             <div id="lista-frutti-conteggio"></div>
 
             <div class="add-custom-box">
-                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: #475569;">Aggiungi al catalogo frutti:</p>
+                <p style="font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; color: var(--text-main);">Aggiungi al catalogo frutti:</p>
                 <div>
-                    <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin-bottom: 8px; background: white;">
+                    <input type="text" id="nuovo-frutto-nome" placeholder="Es: Rilevatore Gas..." style="margin-bottom: 8px;">
                     <button onclick="apriModalAggiunta('frutto')" class="btn-success" style="margin: 0;">Aggiungi al Catalogo</button>
                 </div>
             </div>
@@ -187,7 +216,28 @@
     </div>
 
     <script>
-        // ORDINE FISSO DELLE CATEGORIE PER IMPEDIRE CHE SALTINO IN ALTO
+        // GESTIONE DEL TEMA SCURO/CHIARO
+        function inizializzaTema() {
+            let temaSalvato = localStorage.getItem('cf_tema') || 'dark';
+            document.documentElement.setAttribute('data-theme', temaSalvato);
+            aggiornaTestoPulsanteTema(temaSalvato);
+        }
+
+        function toggleTema() {
+            let temaAttuale = document.documentElement.getAttribute('data-theme') || 'dark';
+            let nuovoTema = temaAttuale === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', nuovoTema);
+            localStorage.setItem('cf_tema', nuovoTema);
+            aggiornaTestoPulsanteTema(nuovoTema);
+        }
+
+        function aggiornaTestoPulsanteTema(tema) {
+            let btn = document.getElementById('btn-tema');
+            if (btn) {
+                btn.innerText = tema === 'dark' ? '☀️ Chiaro' : '🌙 Scuro';
+            }
+        }
+
         const ORDINE_CATEGORIE_FRUTTI = [
             "Supporti e Scatole",
             "Comandi",
@@ -204,7 +254,6 @@
             "Materiale Consumo"
         ];
 
-        // Cataloghi Iniziali Aggiornati (Nomi puliti, no parentesi, centralino 18 aggiunto)
         const STRUTTURA_FRUTTI_INIZIALE = [
             ["Supporti e Scatole", "Supporto / Scatola 503"],
             ["Supporti e Scatole", "Supporto / Scatola 504"],
@@ -235,7 +284,6 @@
         ];
 
         const STRUTTURA_MATERIALE_INIZIALE = [
-            // Corde 1.5 - Ordine: Marrone, Grigio, Nero, Bianco (Poi le altre)
             ["Cordine 1.5 mm²", "Cordina 1.5 Marrone"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Grigio"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Nero"],
@@ -245,12 +293,10 @@
             ["Cordine 1.5 mm²", "Cordina 1.5 Viola"],
             ["Cordine 1.5 mm²", "Cordina 1.5 Giallo/Verde (Terra)"],
             
-            // Corde 2.5 - Solo Marrone, Blu, Terra
             ["Cordine 2.5 mm²", "Cordina 2.5 Marrone"],
             ["Cordine 2.5 mm²", "Cordina 2.5 Blu"],
             ["Cordine 2.5 mm²", "Cordina 2.5 Giallo/Verde (Terra)"],
             
-            // Corde 4 - Solo Marrone, Blu, Terra
             ["Cordine 4 mm²", "Cordina 4 Marrone"],
             ["Cordine 4 mm²", "Cordina 4 Blu"],
             ["Cordine 4 mm²", "Cordina 4 Giallo/Verde (Terra)"],
@@ -264,7 +310,6 @@
             ["Materiale Consumo", "Fascette Cablaggio"]
         ];
 
-        // Chiavi stabili v9 per forzare ricaricamento da zero e allineare le modifiche
         let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v9_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
         let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v9_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
         let db = JSON.parse(localStorage.getItem('cf_v9_db')) || {};
@@ -276,6 +321,7 @@
         let tipoAggiuntaCorrente = ""; 
 
         window.onload = function() {
+            inizializzaTema();
             aggiornaSelectCantieri();
             let ultimi = Object.keys(db);
             if(ultimi.length > 0) {
@@ -351,7 +397,6 @@
                 
                 if(idxA !== idxB) return idxA - idxB;
                 
-                // Le cordine non si ordinano alfabeticamente per mantenere l'ordine tecnico
                 if(catA.toLowerCase().includes("cordine")) return 0;
                 
                 return a[1].localeCompare(b[1]);
@@ -378,7 +423,6 @@
                 if(item[0] && !categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]);
             });
 
-            // Riordina la select in base all'ordine fisso delle categorie
             let arrayOrdineRif = tipo === 'frutto' ? ORDINE_CATEGORIE_FRUTTI : ORDINE_CATEGORIE_MATERIALE;
             categorieEsistenti.sort((a,b) => getIndiceCategoria(a, arrayOrdineRif) - getIndiceCategoria(b, arrayOrdineRif));
 
@@ -543,7 +587,6 @@
             }
         }
 
-        // CANTIERI
         let bloccoDoppioClicCantiere = false;
 
         function aggiornaSelectCantieri() {
@@ -637,7 +680,6 @@
             }
         }
 
-        // RENDERING MATERIALI
         function renderingListaMateriali() {
             const container = document.getElementById('lista-materiali-generali');
             if(!container) return;
@@ -713,7 +755,6 @@
             toggleCollapsible('content-mat');
         }
 
-        // STANZE
         function aggiornaListaStanze() {
             const container = document.getElementById('lista-stanze-salvate');
             if(!container) return;
@@ -721,7 +762,7 @@
             const stanze = Object.keys(db[cantiereCorrente]._stanze || {});
             
             if(stanze.length === 0) {
-                container.innerHTML = "<p style='color:#64748b; font-style:italic;'>Nessuna stanza inserita.</p>";
+                container.innerHTML = "<p style='color:var(--text-muted); font-style:italic;'>Nessuna stanza inserita.</p>";
                 return;
             }
             stanze.forEach(s => {
@@ -758,7 +799,6 @@
             }
         }
 
-        // CONTEGGIO STANZA
         function apriStanza(nomeStanza) {
             stanzaCorrente = nomeStanza;
             document.getElementById('titolo-conteggio-stanza').innerText = `Conteggio: ${nomeStanza}`;
@@ -829,7 +869,6 @@
             document.getElementById('sec-stanze').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // OUTPUT E BACKUP
         let testoRiepilogoGlobale = "";
 
         function generaRiepilogoTesto() {
