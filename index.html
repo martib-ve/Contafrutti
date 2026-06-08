@@ -72,7 +72,7 @@
         .stanza-item { background: var(--bg-item); padding: 10px; border-radius: 6px; margin-bottom: 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
         .stanza-item button { width: auto; padding: 5px 10px; margin: 0; font-size: 0.8rem; }
 
-        /* GRIGLIA PULSANTIERA PROFESSIONALE (FASE 4) */
+        /* GRIGLIA PULSANTIERA PROFESSIONALE */
         .griglia-pulsantiera { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; margin-top: 10px; }
         .category-row { grid-column: 1 / -1; background: var(--bg-category); color: var(--text-main); font-weight: bold; font-size: 0.85rem; padding: 8px 10px; margin-top: 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
         
@@ -221,7 +221,6 @@
     </div>
 
     <script>
-        // GESTIONE DEL TEMA SCURO/CHIARO
         function inizializzaTema() {
             let temaSalvato = localStorage.getItem('cf_tema') || 'dark';
             document.documentElement.setAttribute('data-theme', temaSalvato);
@@ -554,6 +553,7 @@
             }
             alert("Voce corretta!");
         }
+
         function eliminaVoceCatalogo() {
             let selectVal = document.getElementById('select-modifica-voce').value;
             if(!selectVal) return;
@@ -657,7 +657,6 @@
             }
         }
 
-        // RENDERING MATERIALI CON PULSANTIERA A SCHEDE GIGANTI (FASE 4)
         function renderingListaMateriali() {
             const container = document.getElementById('lista-materiali-generali');
             if(!container) return;
@@ -795,7 +794,6 @@
             document.getElementById('sec-conteggio').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // RENDERING CONTEGGIO FRUTTI CON PULSANTIERA A SCHEDE GIGANTI (FASE 4)
         function renderingListaFrutti() {
             const container = document.getElementById('lista-frutti-conteggio');
             if(!container) return;
