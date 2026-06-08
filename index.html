@@ -26,27 +26,23 @@
         h1 { font-size: 1.5rem; color: var(--primary); }
         .section { background: var(--bg-section); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
         h2 { font-size: 1.1rem; margin-bottom: 10px; }
+        
+        /* Griglia Pulsantiera */
+        .griglia-frutti { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 15px; }
+        .card-frutto { background: var(--bg-item); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .card-nome { font-size: 0.9rem; font-weight: bold; text-align: center; height: 2.4em; display: flex; align-items: center; }
+        .valore-gigante { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .btn-pulsantiera { width: 60px; height: 60px; font-size: 1.8rem; border-radius: 50%; border: none; color: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); cursor: pointer; }
+        
         .collapsible-trigger { background: var(--secondary); color: white; padding: 12px; border-radius: 6px; font-weight: bold; display: flex; justify-content: space-between; cursor: pointer; margin-bottom: 10px; }
         .collapsible-content { display: none; margin-top: 10px; }
         .collapsible-content.active { display: block; }
         select, input { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-input); color: var(--text-main); }
-        button { width: 100%; padding: 12px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
+        button { padding: 12px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: var(--danger); color: white; }
         .btn-success { background-color: var(--success); color: white; }
         .stanza-item { background: var(--bg-item); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
-        .category-row { background: var(--bg-category); color: var(--text-main); font-weight: bold; font-size: 0.8rem; padding: 6px 10px; margin-top: 10px; border-radius: 4px; text-transform: uppercase; }
-        .griglia-frutti { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 15px; }
-        .card-frutto { background: var(--bg-item); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.1s, border-color 0.2s; }
-        .card-frutto:active { transform: scale(0.96); border-color: var(--primary); }
-        .card-nome { font-size: 0.9rem; font-weight: bold; text-align: center; color: var(--text-main); height: 2.4em; display: flex; align-items: center; }
-        .btn-pulsantiera { width: 60px; height: 60px; font-size: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .valore-gigante { font-size: 2rem; font-weight: 800; color: var(--primary); }
-        .frutto-info { display: flex; align-items: center; gap: 10px; }
-        .btn-count { width: 40px; height: 40px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-        .count-val { font-size: 1.1rem; font-weight: bold; min-width: 40px; text-align: center; }
         .color-dot { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #ccc; flex-shrink: 0; }
-        .modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-box { background: var(--bg-section); padding: 20px; border-radius: 8px; width: 100%; max-width: 400px; border: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -62,15 +58,15 @@
     <div class="section">
         <h2>Cantieri</h2>
         <select id="cantiere-select" onchange="caricaCantiere()"></select>
-        <input type="text" id="nuovo-cantiere-nome" placeholder="Nuovo cantiere...">
-        <button onclick="creaCantiere()" class="btn-success">+ Aggiungi</button>
+        <input type="text" id="nuovo-cantiere-nome" placeholder="Nome nuovo cantiere...">
+        <button onclick="creaCantiere()" class="btn-success" style="width:100%;">+ Aggiungi Cantiere</button>
     </div>
 
     <div class="section" id="sec-materiale-generale" style="display:none;">
         <div class="collapsible-trigger" onclick="toggleCollapsible('content-mat')">Materiale Generale <span>▼</span></div>
         <div id="content-mat" class="collapsible-content">
-            <div id="lista-materiali-generali"></div>
-            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px;">Salva Materiale</button>
+            <div id="lista-materiali-generali" class="griglia-frutti"></div>
+            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:15px; width:100%;">Salva Materiale</button>
         </div>
     </div>
 
@@ -78,17 +74,16 @@
         <h2>Stanze</h2>
         <div id="lista-stanze-salvate"></div>
         <input type="text" id="nuova-stanza-nome" placeholder="Nome nuova stanza...">
-        <button onclick="creaStanza()" class="btn-success">+ Aggiungi Stanza</button>
+        <button onclick="creaStanza()" class="btn-success" style="width:100%;">+ Aggiungi Stanza</button>
     </div>
 
     <div class="section" id="sec-conteggio" style="display:none;">
         <h2 id="titolo-conteggio-stanza"></h2>
         <div id="lista-frutti-conteggio"></div>
-        <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:15px;">Salva Stanza</button>
+        <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:15px; width:100%;">Salva Stanza</button>
     </div>
 
     <script>
-        // --- FUNZIONI DI BASE ---
         function inizializzaTema() { document.documentElement.setAttribute('data-theme', localStorage.getItem('cf_tema') || 'dark'); }
         function toggleTema() { 
             let nuovo = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -97,12 +92,8 @@
         function toggleCollapsible(id) { document.getElementById(id).classList.toggle('active'); }
         function generaIdSicuro(nome) { return "id-" + nome.toLowerCase().replace(/[^a-z0-9]/g, "-"); }
         
-        // --- LOGICA DATI ---
-        const ORDINE_CATEGORIE_FRUTTI = ["Supporti e Scatole", "Comandi", "Prese energia e dati", "Centralino", "Varie"];
-        const ORDINE_CATEGORIE_MATERIALE = ["Cordine 1.5 mm²", "Cordine 2.5 mm²", "Cordine 4 mm²", "Tubi e Corrugati", "Materiale Consumo"];
-        
-        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v9_cat_frutti')) || [["Supporti e Scatole", "Supporto 503"], ["Comandi", "Interruttore"], ["Prese energia e dati", "Presa 16A"]];
-        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v9_cat_mat')) || [["Cordine 1.5 mm²", "Cordina 1.5 Blu"], ["Cordine 1.5 mm²", "Cordina 1.5 Marrone"]];
+        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v9_cat_frutti')) || [["Comandi", "Interruttore"], ["Prese", "Presa 16A"]];
+        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v9_cat_mat')) || [["Cordine", "Cordina 1.5 Blu"], ["Cordine", "Cordina 1.5 Marrone"]];
         let db = JSON.parse(localStorage.getItem('cf_v9_db')) || {};
         let cantiereCorrente = "", stanzaCorrente = "", conteggioTemporaneo = {}, materialiTemporanei = {};
 
@@ -119,21 +110,38 @@
             container.innerHTML = "";
             catalogoMateriali.forEach(m => {
                 let nomeCompleto = m[1];
-                let nomeVisualizzato = m[0].toLowerCase().includes("cordine") ? nomeCompleto.split(" ").pop() : nomeCompleto;
-                let id = generaIdSicuro(nomeCompleto);
+                let nomeVisualizzato = m[0].includes("Cordine") ? nomeCompleto.split(" ").pop() : nomeCompleto;
                 container.innerHTML += `
-                    <div class="frutto-row">
-                        <div class="frutto-info">${ottieniTagColore(nomeCompleto)} <span>${nomeVisualizzato}</span></div>
-                        <div class="counter-controls">
-                            <button class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nomeCompleto}', -1)">-</button>
-                            <span class="count-val" id="mat-${id}">${materialiTemporanei[nomeCompleto] || 0}</span>
-                            <button class="btn-count btn-success" onclick="cambiaQtaMateriale('${nomeCompleto}', 1)">+</button>
+                    <div class="card-frutto">
+                        <div style="display:flex; align-items:center; gap:8px;">${ottieniTagColore(nomeCompleto)} <span class="card-nome">${nomeVisualizzato}</span></div>
+                        <span class="valore-gigante" id="mat-${generaIdSicuro(nomeCompleto)}">${materialiTemporanei[nomeCompleto] || 0}</span>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn-pulsantiera btn-danger" onclick="cambiaQtaMateriale('${nomeCompleto}', -1)">-</button>
+                            <button class="btn-pulsantiera btn-success" onclick="cambiaQtaMateriale('${nomeCompleto}', 1)">+</button>
                         </div>
                     </div>`;
             });
         }
 
-        // ... (il resto delle funzioni rimane invariato, basta incollare tutto fino in fondo)
+        function renderingListaFrutti() {
+            const container = document.getElementById('lista-frutti-conteggio');
+            container.innerHTML = '<div class="griglia-frutti"></div>';
+            const grid = container.querySelector('.griglia-frutti');
+            catalogoFrutti.forEach(f => {
+                let nome = f[1];
+                grid.innerHTML += `
+                    <div class="card-frutto">
+                        <span class="card-nome">${nome}</span>
+                        <span class="valore-gigante" id="val-${generaIdSicuro(nome)}">${conteggioTemporaneo[nome] || 0}</span>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn-pulsantiera btn-danger" onclick="cambiaQta('${nome}', -1)">-</button>
+                            <button class="btn-pulsantiera btn-success" onclick="cambiaQta('${nome}', 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // --- GESTIONE LOGICA ---
         window.onload = () => { inizializzaTema(); aggiornaSelectCantieri(); };
         function salvaNelStorage() { localStorage.setItem('cf_v9_db', JSON.stringify(db)); }
         function aggiornaSelectCantieri() { 
@@ -151,6 +159,12 @@
             materialiTemporanei[nome] = Math.max(0, (parseInt(materialiTemporanei[nome]||0) + val));
             document.getElementById('mat-' + generaIdSicuro(nome)).innerText = materialiTemporanei[nome];
         }
+        function cambiaQta(nome, val) { 
+            conteggioTemporaneo[nome] = Math.max(0, (parseInt(conteggioTemporaneo[nome]||0) + val));
+            document.getElementById('val-' + generaIdSicuro(nome)).innerText = conteggioTemporaneo[nome];
+        }
+        function creaStanza() { let n = document.getElementById('nuova-stanza-nome').value; if(n) { db[cantiereCorrente]._stanze[n] = {}; salvaNelStorage(); } }
+        function salvaConteggioStanza() { alert("Stanza salvata!"); }
         function salvaMaterialeGenerale() { alert("Materiale salvato!"); }
         function resetTotaleApplicazione() { localStorage.clear(); location.reload(); }
     </script>
