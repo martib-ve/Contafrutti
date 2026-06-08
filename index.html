@@ -35,9 +35,13 @@
         .btn-success { background-color: var(--success); color: white; }
         .stanza-item { background: var(--bg-item); padding: 10px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
         .category-row { background: var(--bg-category); color: var(--text-main); font-weight: bold; font-size: 0.8rem; padding: 6px 10px; margin-top: 10px; border-radius: 4px; text-transform: uppercase; }
-        .frutto-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid var(--border-color); }
+        .griglia-frutti { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 15px; }
+        .card-frutto { background: var(--bg-item); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 0.1s, border-color 0.2s; }
+        .card-frutto:active { transform: scale(0.96); border-color: var(--primary); }
+        .card-nome { font-size: 0.9rem; font-weight: bold; text-align: center; color: var(--text-main); height: 2.4em; display: flex; align-items: center; }
+        .btn-pulsantiera { width: 60px; height: 60px; font-size: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .valore-gigante { font-size: 2rem; font-weight: 800; color: var(--primary); }
         .frutto-info { display: flex; align-items: center; gap: 10px; }
-        .counter-controls { display: flex; align-items: center; gap: 10px; }
         .btn-count { width: 40px; height: 40px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
         .count-val { font-size: 1.1rem; font-weight: bold; min-width: 40px; text-align: center; }
         .color-dot { width: 20px; height: 20px; border-radius: 50%; border: 1px solid #ccc; flex-shrink: 0; }
