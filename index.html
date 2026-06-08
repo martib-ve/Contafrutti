@@ -72,20 +72,20 @@
         .stanza-item { background: var(--bg-item); padding: 10px; border-radius: 6px; margin-bottom: 8px; font-weight: 500; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
         .stanza-item button { width: auto; padding: 5px 10px; margin: 0; font-size: 0.8rem; }
 
-        /* GRIGLIA PULSANTIERA PROFESSIONALE */
-        .griglia-pulsantiera { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; margin-top: 10px; }
+       /* GRIGLIA PULSANTIERA PROFESSIONALE (VISTA A LISTA RETTANGOLARE) */
+        .griglia-pulsantiera { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
         .category-row { grid-column: 1 / -1; background: var(--bg-category); color: var(--text-main); font-weight: bold; font-size: 0.85rem; padding: 8px 10px; margin-top: 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; }
         
-        .card-pulsantiera { background: var(--bg-item); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); transition: transform 0.1s, border-color 0.2s; }
-        .card-pulsantiera:active { transform: scale(0.97); border-color: var(--primary); }
+        .card-pulsantiera { background: var(--bg-item); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.1s, border-color 0.2s; }
+        .card-pulsantiera:active { transform: scale(0.98); border-color: var(--primary); }
         
-        .card-nome { font-size: 0.9rem; font-weight: bold; text-align: center; color: var(--text-main); min-height: 2.6em; display: flex; align-items: center; justify-content: center; }
-        .valore-gigante { font-size: 2rem; font-weight: 800; color: var(--primary); min-width: 50px; text-align: center; cursor: pointer; padding: 2px 8px; border-radius: 6px; }
+        .card-nome { font-size: 0.95rem; font-weight: bold; text-align: left; color: var(--text-main); line-height: 1.2; word-break: break-word; }
+        .valore-gigante { font-size: 1.6rem; font-weight: 800; color: var(--primary); min-width: 40px; text-align: center; cursor: pointer; padding: 2px 4px; border-radius: 6px; }
         .valore-gigante:active { background: var(--bg-input); }
         
-        .controls-layout { display: flex; gap: 12px; width: 100%; justify-content: center; }
-        .btn-pulsante-giga { width: 55px; height: 55px; font-size: 1.6rem; border-radius: 50%; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-
+        .controls-layout { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        .btn-pulsante-giga { width: 44px; height: 44px; font-size: 1.6rem; border-radius: 8px; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        
         /* Pallini colore per le cordine */
         .color-dot { display: inline-block; width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 1px solid #ccc; }
         .dot-nero { background-color: #1e293b; border: none; }
@@ -691,13 +691,13 @@
                 let card = document.createElement('div');
                 card.className = "card-pulsantiera";
                 card.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:10px; flex-grow:1;">
                         ${badgeColore}
                         <span class="card-nome">${nomeVisualizzato}</span>
                     </div>
-                    <span class="valore-gigante" onclick="ModificaLiberaMateriale('${nomeCompleto}')" id="mat-${idPulito}">${valore}</span>
                     <div class="controls-layout">
                         <button type="button" class="btn-pulsante-giga btn-danger" onclick="cambiaQtaMateriale('${nomeCompleto}', -1)">-</button>
+                        <span class="valore-gigante" onclick="ModificaLiberaMateriale('${nomeCompleto}')" id="mat-${idPulito}">${valore}</span>
                         <button type="button" class="btn-pulsante-giga btn-success" onclick="cambiaQtaMateriale('${nomeCompleto}', 1)">+</button>
                     </div>
                 `;
@@ -820,10 +820,12 @@
                 let card = document.createElement('div');
                 card.className = "card-pulsantiera";
                 card.innerHTML = `
-                    <span class="card-nome">${nome}</span>
-                    <span class="valore-gigante" id="val-${idPulito}">${qta}</span>
+                    <div style="display:flex; align-items:center; gap:10px; flex-grow:1;">
+                        <span class="card-nome">${nome}</span>
+                    </div>
                     <div class="controls-layout">
                         <button type="button" class="btn-pulsante-giga btn-danger" onclick="cambiaQta('${nome}', -1)">-</button>
+                        <span class="valore-gigante" id="val-${idPulito}">${qta}</span>
                         <button type="button" class="btn-pulsante-giga btn-success" onclick="cambiaQta('${nome}', 1)">+</button>
                     </div>
                 `;
