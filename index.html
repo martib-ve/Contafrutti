@@ -86,7 +86,7 @@
         .btn-stepper { width: 44px; height: 44px; font-size: 1.5rem; font-weight: 400; border-radius: 8px; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-stepper); color: var(--text-main); border: none; }
         .valore-stepper { font-size: 1.4rem; font-weight: 600; color: var(--text-main); min-width: 34px; text-align: center; cursor: pointer; }
         
-        /* PALLINI COLORI CORDINE (Con bordo sottile per contrastare lo sfondo nero) */
+        /* PALLINI COLORI CORDINE */
         .color-dot { display: inline-block; width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--border-color); }
         .dot-nero { background-color: #111111; }
         .dot-blu { background-color: #3b82f6; border: none; }
@@ -110,8 +110,8 @@
     <header>
         <h1>Conta Frutti</h1>
         <div style="display: flex; gap: 8px;">
-            <button id="btn-tema" onclick="toggleTema()" class="btn-secondary" style="width: auto; padding: 8px 12px; font-size: 0.85rem; margin: 0; border: none;">☀️</button>
-            <button onclick="resetTotaleApplicazione()" class="btn-secondary" style="width: auto; padding: 8px 12px; font-size: 0.85rem; margin: 0; border: none;">Reset</button>
+            <button type="button" id="btn-tema" onclick="toggleTema()" class="btn-secondary" style="width: auto; padding: 8px 12px; font-size: 0.85rem; margin: 0; border: none;">☀️</button>
+            <button type="button" onclick="resetTotaleApplicazione()" class="btn-secondary" style="width: auto; padding: 8px 12px; font-size: 0.85rem; margin: 0; border: none;">Reset</button>
         </div>
     </header>
 
@@ -121,10 +121,10 @@
         
         <div style="margin-top: 15px;">
             <input type="text" id="nuovo-cantiere-nome" placeholder="Nome nuovo cantiere...">
-            <button onclick="creaCantiere(event)" class="btn-secondary">Aggiungi Cantiere</button>
+            <button type="button" onclick="creaCantiere()" class="btn-secondary">Aggiungi Cantiere</button>
         </div>
         
-        <button onclick="eliminaCantiereCorrente()" class="btn-secondary" style="margin-top:20px; color: #ef4444; border-color: #ef4444;">Elimina Questo Cantiere</button>
+        <button type="button" onclick="eliminaCantiereCorrente()" class="btn-secondary" style="margin-top:20px; color: #ef4444; border-color: #ef4444;">Elimina Questo Cantiere</button>
     </div>
 
     <div class="section" id="sec-materiale-generale" style="display:none;">
@@ -138,9 +138,9 @@
             
             <div style="margin-top: 25px;">
                 <input type="text" id="nuovo-materiale-nome" placeholder="Aggiungi voce mancante...">
-                <button onclick="apriModalAggiunta('materiale')" class="btn-secondary">Inserisci a Catalogo</button>
+                <button type="button" onclick="apriModalAggiunta('materiale')" class="btn-secondary">Inserisci a Catalogo</button>
             </div>
-            <button onclick="salvaMaterialeGenerale()" class="btn-primary" style="margin-top:20px; padding: 18px;">Salva Materiale Generale</button>
+            <button type="button" onclick="salvaMaterialeGenerale()" class="btn-primary" style="margin-top:20px; padding: 18px;">Salva Materiale Generale</button>
         </div>
     </div>
 
@@ -150,7 +150,7 @@
         
         <div style="margin-top:20px;">
             <input type="text" id="nuova-stanza-nome" placeholder="Es. Cucina, Bagno, Garage...">
-            <button onclick="creaStanza()" class="btn-secondary">Aggiungi Stanza</button>
+            <button type="button" onclick="creaStanza()" class="btn-secondary">Aggiungi Stanza</button>
         </div>
     </div>
 
@@ -165,10 +165,10 @@
 
             <div style="margin-top: 25px;">
                 <input type="text" id="nuovo-frutto-nome" placeholder="Aggiungi voce mancante...">
-                <button onclick="apriModalAggiunta('frutto')" class="btn-secondary">Inserisci a Catalogo</button>
+                <button type="button" onclick="apriModalAggiunta('frutto')" class="btn-secondary">Inserisci a Catalogo</button>
             </div>
 
-            <button onclick="salvaConteggioStanza()" class="btn-primary" style="margin-top:25px; padding: 18px;">Salva Questa Stanza</button>
+            <button type="button" onclick="salvaConteggioStanza()" class="btn-primary" style="margin-top:25px; padding: 18px;">Salva Questa Stanza</button>
         </div>
     </div>
 
@@ -176,16 +176,16 @@
         <h2>Manutenzione Catalogo</h2>
         <select id="select-modifica-voce"></select>
         <div style="display: flex; gap: 10px;">
-            <button onclick="rinominaVoceCatalogo()" class="btn-secondary">Rinomina</button>
-            <button onclick="eliminaVoceCatalogo()" class="btn-secondary" style="color: #ef4444; border-color: #ef4444;">Elimina</button>
+            <button type="button" onclick="rinominaVoceCatalogo()" class="btn-secondary">Rinomina</button>
+            <button type="button" onclick="eliminaVoceCatalogo()" class="btn-secondary" style="color: #ef4444; border-color: #ef4444;">Elimina</button>
         </div>
     </div>
 
     <div class="section" id="sec-riepilogo" style="display:none;">
         <h2>Esporta Dati</h2>
-        <button onclick="generaRiepilogoTesto()" class="btn-primary">Genera Riepilogo</button>
+        <button type="button" onclick="generaRiepilogoTesto()" class="btn-primary">Genera Riepilogo</button>
         <div id="output-box" style="display:none; margin-top:20px;">
-            <button onclick="inviaWhatsApp()" class="btn-secondary" style="color: #22c55e; border-color: #22c55e;">Invia su WhatsApp</button>
+            <button type="button" onclick="inviaWhatsApp()" class="btn-secondary" style="color: #22c55e; border-color: #22c55e;">Invia su WhatsApp</button>
             <div id="output"></div>
         </div>
     </div>
@@ -193,7 +193,7 @@
     <div class="section">
         <h2>Ripristino</h2>
         <input type="text" id="backup-string-input" placeholder="Incolla codice...">
-        <button onclick="ripristinaDaBackup()" class="btn-secondary">Ripristina Backup</button>
+        <button type="button" onclick="ripristinaDaBackup()" class="btn-secondary">Ripristina Backup</button>
     </div>
 
     <div id="modal-categoria" class="modal-bg">
@@ -202,8 +202,8 @@
             <select id="modal-select-cat" onchange="gestisciCambioModalSelect()"></select>
             <input type="text" id="modal-nuova-cat-input" placeholder="Scrivi nuova categoria..." style="display:none;">
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button onclick="chiudiModalAggiunta()" class="btn-secondary">Annulla</button>
-                <button onclick="confermaAggiuntaElemento()" class="btn-primary">Conferma</button>
+                <button type="button" onclick="chiudiModalAggiunta()" class="btn-secondary">Annulla</button>
+                <button type="button" onclick="confermaAggiuntaElemento()" class="btn-primary">Conferma</button>
             </div>
         </div>
     </div>
@@ -247,19 +247,51 @@
             ["Materiale Consumo", "Nastro Isolante"], ["Materiale Consumo", "Fascette Cablaggio"]
         ];
 
-        let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v9_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
-        let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v9_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
-        let db = JSON.parse(localStorage.getItem('cf_v9_db')) || {};
+        let catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE;
+        let catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
+        let db = {};
         
+        // Caricamento sicuro da LocalStorage con protezione anti-crash se la struttura precedente è obsoleta
+        try {
+            let localFrutti = localStorage.getItem('cf_v9_cat_frutti');
+            if (localFrutti) {
+                let parsed = JSON.parse(localFrutti);
+                if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0])) catalogoFrutti = parsed;
+            }
+        } catch(e) { console.error("Reset catalogo frutti causa incompatibilità vecchi dati."); }
+
+        try {
+            let localMat = localStorage.getItem('cf_v9_cat_mat');
+            if (localMat) {
+                let parsed = JSON.parse(localMat);
+                if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0])) catalogoMateriali = parsed;
+            }
+        } catch(e) { console.error("Reset catalogo materiali causa incompatibilità vecchi dati."); }
+
+        try {
+            let localDb = localStorage.getItem('cf_v9_db');
+            if (localDb) {
+                let parsed = JSON.parse(localDb);
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) db = parsed;
+            }
+        } catch(e) { console.error("Reset database causa dati corrotti."); }
+
         let cantiereCorrente = "", stanzaCorrente = "", conteggioTemporaneo = {}, materialiTemporanei = {}, tipoAggiuntaCorrente = ""; 
 
         window.onload = function() {
-            inizializzaTema();
-            aggiornaSelectCantieri();
-            let ultimi = Object.keys(db);
-            if(ultimi.length > 0) document.getElementById('cantiere-select').value = ultimi[0];
-            caricaCantiere();
-            aggiornaSelectManutenzioneCatalogo();
+            try {
+                inizializzaTema();
+                aggiornaSelectCantieri();
+                let ultimi = Object.keys(db);
+                if(ultimi.length > 0) {
+                    let sel = document.getElementById('cantiere-select');
+                    if(sel) sel.value = ultimi[0];
+                }
+                caricaCantiere();
+                aggiornaSelectManutenzioneCatalogo();
+            } catch(err) {
+                console.error("Errore nel caricamento iniziale dell'interfaccia: ", err);
+            }
         };
 
         function salvaNelStorage() {
@@ -271,7 +303,7 @@
 
         function toggleCollapsible(id) {
             const el = document.getElementById(id);
-            el.classList.toggle('active');
+            if(el) el.classList.toggle('active');
         }
 
         function generaIdSicuro(nome) {
@@ -296,39 +328,48 @@
         }
 
         function ordinaCatalogoFrutti(catalogo) {
+            if (!Array.isArray(catalogo)) return;
             catalogo.sort((a, b) => {
+                if (!Array.isArray(a) || !Array.isArray(b)) return 0;
                 let idxA = getIndiceCategoria(a[0]||"", ORDINE_CATEGORIE_FRUTTI);
                 let idxB = getIndiceCategoria(b[0]||"", ORDINE_CATEGORIE_FRUTTI);
                 if(idxA !== idxB) return idxA - idxB;
-                return a[1].localeCompare(b[1]);
+                let nomeA = a[1] ? String(a[1]) : "";
+                let nomeB = b[1] ? String(b[1]) : "";
+                return nomeA.localeCompare(nomeB);
             });
         }
         
         function ordinaCatalogoMateriali(catalogo) {
+            if (!Array.isArray(catalogo)) return;
             catalogo.sort((a, b) => {
+                if (!Array.isArray(a) || !Array.isArray(b)) return 0;
                 let idxA = getIndiceCategoria(a[0]||"", ORDINE_CATEGORIE_MATERIALE);
                 let idxB = getIndiceCategoria(b[0]||"", ORDINE_CATEGORIE_MATERIALE);
                 if(idxA !== idxB) return idxA - idxB;
                 if((a[0]||"").toLowerCase().includes("cordine")) return 0;
-                return a[1].localeCompare(b[1]);
+                let nomeA = a[1] ? String(a[1]) : "";
+                let nomeB = b[1] ? String(b[1]) : "";
+                return nomeA.localeCompare(nomeB);
             });
         }
 
         function apriModalAggiunta(tipo) {
             tipoAggiuntaCorrente = tipo;
             let inputNome = document.getElementById(tipo === 'frutto' ? 'nuovo-frutto-nome' : 'nuovo-materiale-nome');
+            if(!inputNome) return;
             let nome = inputNome.value.trim();
             if (!nome) return alert("Inserisci prima il nome del componente!");
 
-            if (tipo === 'frutto' && catalogoFrutti.some(f => f[1].toLowerCase() === nome.toLowerCase())) return alert("Questo frutto esiste già nel catalogo!");
-            if (tipo === 'materiale' && catalogoMateriali.some(m => m[1].toLowerCase() === nome.toLowerCase())) return alert("Questo materiale esiste già nel catalogo!");
+            if (tipo === 'frutto' && catalogoFrutti.some(f => Array.isArray(f) && f[1] && f[1].toLowerCase() === nome.toLowerCase())) return alert("Questo frutto esiste già nel catalogo!");
+            if (tipo === 'materiale' && catalogoMateriali.some(m => Array.isArray(m) && m[1] && m[1].toLowerCase() === nome.toLowerCase())) return alert("Questo materiale esiste già nel catalogo!");
 
             document.getElementById('modal-titolo').innerText = tipo === 'frutto' ? "Seleziona Categoria Frutto" : "Seleziona Categoria Materiale";
             
-            let selectCat = document.getElementById('modal-select-cat'); selectCat.innerHTML = "";
+            let selectCat = document.getElementById('modal-select-cat'); if(!selectCat) return; selectCat.innerHTML = "";
             let categorieEsistenti = [];
             let sorgente = tipo === 'frutto' ? catalogoFrutti : catalogoMateriali;
-            sorgente.forEach(item => { if(item[0] && !categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]); });
+            sorgente.forEach(item => { if(Array.isArray(item) && item[0] && !categorieEsistenti.includes(item[0])) categorieEsistenti.push(item[0]); });
 
             let arrayOrdineRif = tipo === 'frutto' ? ORDINE_CATEGORIE_FRUTTI : ORDINE_CATEGORIE_MATERIALE;
             categorieEsistenti.sort((a,b) => getIndiceCategoria(a, arrayOrdineRif) - getIndiceCategoria(b, arrayOrdineRif));
@@ -343,13 +384,16 @@
 
         function gestisciCambioModalSelect() {
             let select = document.getElementById('modal-select-cat'); let inputNuova = document.getElementById('modal-nuova-cat-input');
-            if (select.value === "__NEW__") { inputNuova.style.display = "block"; inputNuova.focus(); } else { inputNuova.style.display = "none"; }
+            if(select && inputNuova) {
+                if (select.value === "__NEW__") { inputNuova.style.display = "block"; inputNuova.focus(); } else { inputNuova.style.display = "none"; }
+            }
         }
 
-        function chiudiModalAggiunta() { document.getElementById('modal-categoria').style.display = "none"; }
+        function chiudiModalAggiunta() { let m = document.getElementById('modal-categoria'); if(m) m.style.display = "none"; }
 
         function confermaAggiuntaElemento() {
             let select = document.getElementById('modal-select-cat'); let inputNuova = document.getElementById('modal-nuova-cat-input');
+            if(!select || !inputNuova) return;
             let categoriaFinale = select.value === "__NEW__" ? inputNuova.value.trim() : select.value;
             if (select.value === "__NEW__" && !categoriaFinale) return alert("Scrivi il nome della nuova categoria!");
 
@@ -366,25 +410,25 @@
         function aggiornaSelectManutenzioneCatalogo() {
             let select = document.getElementById('select-modifica-voce'); if(!select) return; select.innerHTML = "";
             let optG1 = document.createElement('optgroup'); optG1.label = "FRUTTI";
-            catalogoFrutti.forEach(f => { let opt = document.createElement('option'); opt.value = "frutto|" + f[1]; opt.innerText = `[${f[0]}] ${f[1]}`; optG1.appendChild(opt); }); select.appendChild(optG1);
+            catalogoFrutti.forEach(f => { if(Array.isArray(f) && f[1]) { let opt = document.createElement('option'); opt.value = "frutto|" + f[1]; opt.innerText = `[${f[0]||'Varie'}] ${f[1]}`; optG1.appendChild(opt); } }); select.appendChild(optG1);
             let optG2 = document.createElement('optgroup'); optG2.label = "MATERIALE CANTIERE";
-            catalogoMateriali.forEach(m => { let opt = document.createElement('option'); opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0] || 'Varie'}] ${m[1]}`; optG2.appendChild(opt); }); select.appendChild(optG2);
+            catalogoMateriali.forEach(m => { if(Array.isArray(m) && m[1]) { let opt = document.createElement('option'); opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0] || 'Varie'}] ${m[1]}`; optG2.appendChild(opt); } }); select.appendChild(optG2);
         }
 
         function rinominaVoceCatalogo() {
-            let selectVal = document.getElementById('select-modifica-voce').value; if(!selectVal) return;
-            let parti = selectVal.split("|"); let tipo = parti[0]; let vecchioNome = parti[1];
+            let select = document.getElementById('select-modifica-voce'); if(!select || !select.value) return;
+            let parti = select.value.split("|"); let tipo = parti[0]; let vecchioNome = parti[1];
             let nuovoNome = prompt(`Modifica il nome per:\n${vecchioNome}`, vecchioNome);
             if (!nuovoNome || nuovoNome.trim() === "" || nuovoNome.trim() === vecchioNome) return;
             nuovoNome = nuovoNome.trim();
 
             if (tipo === 'frutto') {
-                catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; }); ordinaCatalogoFrutti(catalogoFrutti);
-                for (let cant in db) { for (let stz in db[cant]._stanze) { if (db[cant]._stanze[stz][vecchioNome] !== undefined) { db[cant]._stanze[stz][nuovoNome] = db[cant]._stanze[stz][vecchioNome]; delete db[cant]._stanze[stz][vecchioNome]; } } }
+                catalogoFrutti.forEach(f => { if(Array.isArray(f) && f[1] === vecchioNome) f[1] = nuovoNome; }); ordinaCatalogoFrutti(catalogoFrutti);
+                for (let cant in db) { if(db[cant]._stanze) { for (let stz in db[cant]._stanze) { if (db[cant]._stanze[stz][vecchioNome] !== undefined) { db[cant]._stanze[stz][nuovoNome] = db[cant]._stanze[stz][vecchioNome]; delete db[cant]._stanze[stz][vecchioNome]; } } } }
                 if (conteggioTemporaneo[vecchioNome] !== undefined) { conteggioTemporaneo[nuovoNome] = conteggioTemporaneo[vecchioNome]; delete conteggioTemporaneo[vecchioNome]; }
                 salvaNelStorage(); renderingListaFrutti();
             } else {
-                catalogoMateriali.forEach(m => { if(m[1] === vecchioNome) m[1] = nuovoNome; }); ordinaCatalogoMateriali(catalogoMateriali);
+                catalogoMateriali.forEach(m => { if(Array.isArray(m) && m[1] === vecchioNome) m[1] = nuovoNome; }); ordinaCatalogoMateriali(catalogoMateriali);
                 for (let cant in db) { if (db[cant]._materiale_generale && db[cant]._materiale_generale[vecchioNome] !== undefined) { db[cant]._materiale_generale[nuovoNome] = db[cant]._materiale_generale[vecchioNome]; delete db[cant]._materiale_generale[vecchioNome]; } }
                 if (materialiTemporanei[vecchioNome] !== undefined) { materialiTemporanei[nuovoNome] = materialiTemporanei[vecchioNome]; delete materialiTemporanei[vecchioNome]; }
                 salvaNelStorage(); renderingListaMateriali();
@@ -392,16 +436,16 @@
         }
 
         function eliminaVoceCatalogo() {
-            let selectVal = document.getElementById('select-modifica-voce').value; if(!selectVal) return;
-            let parti = selectVal.split("|"); let tipo = parti[0]; let nome = parti[1];
+            let select = document.getElementById('select-modifica-voce'); if(!select || !select.value) return;
+            let parti = select.value.split("|"); let tipo = parti[0]; let nome = parti[1];
 
             if (confirm(`Cancellare "${nome}" dal catalogo globale?`)) {
                 if (tipo === 'frutto') {
-                    catalogoFrutti = catalogoFrutti.filter(f => f[1] !== nome);
-                    for (let cant in db) { for (let stz in db[cant]._stanze) { delete db[cant]._stanze[stz][nome]; } }
+                    catalogoFrutti = catalogoFrutti.filter(f => Array.isArray(f) && f[1] !== nome);
+                    for (let cant in db) { if(db[cant]._stanze) { for (let stz in db[cant]._stanze) { delete db[cant]._stanze[stz][nome]; } } }
                     delete conteggioTemporaneo[nome]; salvaNelStorage(); renderingListaFrutti();
                 } else {
-                    catalogoMateriali = catalogoMateriali.filter(m => m[1] !== nome);
+                    catalogoMateriali = catalogoMateriali.filter(m => Array.isArray(m) && m[1] !== nome);
                     for (let cant in db) { if (db[cant]._materiale_generale) delete db[cant]._materiale_generale[nome]; }
                     delete materialiTemporanei[nome]; salvaNelStorage(); renderingListaMateriali();
                 }
@@ -417,34 +461,234 @@
             cantieri.forEach(c => { let opt = document.createElement('option'); opt.value = c; opt.innerText = c; select.appendChild(opt); });
         }
 
-        function creaCantiere(e) {
-            if (e && e.preventDefault) e.preventDefault();
+        function creaCantiere() {
             if (bloccoDoppioClicCantiere) return; bloccoDoppioClicCantiere = true; setTimeout(() => { bloccoDoppioClicCantiere = false; }, 400);
 
-            const inputField = document.getElementById('nuovo-cantiere-nome'); const nome = inputField.value.trim();
+            const inputField = document.getElementById('nuovo-cantiere-nome'); if(!inputField) return;
+            const nome = inputField.value.trim();
             if(!nome) return alert("Inserisci un nome valido!"); if(db[nome]) return alert("Questo cantiere esiste già!");
             
             db[nome] = { "_materiale_generale": {}, "_stanze": {} }; salvaNelStorage(); aggiornaSelectCantieri();
-            document.getElementById('cantiere-select').value = nome; inputField.value = ""; inputField.blur(); caricaCantiere();
+            const selectEl = document.getElementById('cantiere-select'); if(selectEl) selectEl.value = nome;
+            inputField.value = ""; inputField.blur(); caricaCantiere();
         }
 
         function caricaCantiere() {
-            cantiereCorrente = document.getElementById('cantiere-select').value;
+            const selectEl = document.getElementById('cantiere-select'); if(!selectEl) return;
+            cantiereCorrente = selectEl.value;
             const secStanze = document.getElementById('sec-stanze'); const secRiepilogo = document.getElementById('sec-riepilogo'); const secMateriale = document.getElementById('sec-materiale-generale');
             
             if(!cantiereCorrente || !db[cantiereCorrente]) {
-                if(secStanze) secStanze.style.display = "none"; if(secRiepilogo) secRiepilogo.style.display = "none"; if(secMateriale) secMateriale.style.display = "none"; document.getElementById('sec-conteggio').style.display = "none"; return;
+                if(secStanze) secStanze.style.display = "none"; if(secRiepilogo) secRiepilogo.style.display = "none"; if(secMateriale) secMateriale.style.display = "none"; let sf = document.getElementById('sec-conteggio'); if(sf) sf.style.display = "none"; return;
             }
 
+            if(!db[cantiereCorrente]._materiale_generale) db[cantiereCorrente]._materiale_generale = {};
+            if(!db[cantiereCorrente]._stanze) db[cantiereCorrente]._stanze = {};
+
             document.getElementById('nome-cantiere-titolo').innerText = cantiereCorrente;
-            secStanze.style.display = "block"; secRiepilogo.style.display = "block"; secMateriale.style.display = "block";
-            document.getElementById('sec-conteggio').style.display = "none"; document.getElementById('output-box').style.display = "none";
+            if(secStanze) secStanze.style.display = "block"; if(secRiepilogo) secRiepilogo.style.display = "block"; if(secMateriale) secMateriale.style.display = "block";
+            let sf = document.getElementById('sec-conteggio'); if(sf) sf.style.display = "none"; let ob = document.getElementById('output-box'); if(ob) ob.style.display = "none";
 
             materialiTemporanei = {};
-            catalogoMateriali.forEach(m => { materialiTemporanei[m[1]] = db[cantiereCorrente]._materiale_generale[m[1]] || "0"; });
+            catalogoMateriali.forEach(m => { if(Array.isArray(m) && m[1]) materials_ref = m[1]; materialiTemporanei[m[1]] = db[cantiereCorrente]._materiale_generale[m[1]] || "0"; });
             renderingListaMateriali(); aggiornaListaStanze();
         }
 
         function eliminaCantiereCorrente() {
             if(!cantiereCorrente) return;
-            if(confirm(`Eliminare definitivamente il cantiere "${cantiereCor
+            if(confirm(`Eliminare definitivamente il cantiere "${cantiereCorrente}"?`)) { delete db[cantiereCorrente]; salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere(); }
+        }
+
+        function renderingListaMateriali() {
+            const container = document.getElementById('lista-materiali-generali'); if(!container) return; container.innerHTML = "";
+            let ultimaCategoria = ""; ordinaCatalogoMateriali(catalogoMateriali);
+
+            catalogoMateriali.forEach(m => {
+                if(!Array.isArray(m) || !m[1]) return;
+                let categoria = m[0] || "Varie"; let nomeCompleto = m[1];
+                if(categoria !== ultimaCategoria) {
+                    let catDiv = document.createElement('div'); catDiv.className = "category-row"; catDiv.innerText = `${categoria}`; container.appendChild(catDiv); ultimaCategoria = categoria;
+                }
+
+                let valore = materialiTemporanei[nomeCompleto] !== undefined ? materialiTemporanei[nomeCompleto] : "0";
+                let badgeColore = ottieniTagColore(nomeCompleto); let idPulito = generaIdSicuro(nomeCompleto);
+                
+                let nomeVisualizzato = nomeCompleto;
+                if (categoria.toLowerCase().includes("cordine")) {
+                    let parti = nomeCompleto.split(" "); nomeVisualizzato = parti[parti.length - 1]; 
+                    if(nomeVisualizzato.toLowerCase().includes("terra")) nomeVisualizzato = "Terra";
+                }
+                
+                let card = document.createElement('div'); card.className = "list-row";
+                card.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:12px; flex-grow:1;">
+                        ${badgeColore}
+                        <span class="row-nome">${nomeVisualizzato}</span>
+                    </div>
+                    <div class="controls-layout">
+                        <button type="button" class="btn-stepper" onclick="cambiaQtaMateriale('${nomeCompleto.replace(/'/g, "\\'")}', -1)">−</button>
+                        <span class="valore-stepper" onclick="ModificaLiberaMateriale('${nomeCompleto.replace(/'/g, "\\'")}')" id="mat-${idPulito}">${valore}</span>
+                        <button type="button" class="btn-stepper" onclick="cambiaQtaMateriale('${nomeCompleto.replace(/'/g, "\\'")}', 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function cambiaQtaMateriale(nome, cambio) {
+            let valAttuale = materialiTemporanei[nome] || "0"; let num = parseInt(valAttuale) || 0; let nuovo = num + cambio; if(nuovo < 0) nuovo = 0;
+            materialiTemporanei[nome] = nuovo.toString(); let el = document.getElementById(`mat-${generaIdSicuro(nome)}`); if(el) el.innerText = nuovo;
+        }
+
+        function ModificaLiberaMateriale(nome) {
+            let attuale = materialiTemporanei[nome] || "0"; let risp = prompt(`Quantità per:\n${nome}`, attuale);
+            if(risp !== null) { materialiTemporanei[nome] = risp.trim() === "" ? "0" : risp.trim(); let el = document.getElementById(`mat-${generaIdSicuro(nome)}`); if(el) el.innerText = materialiTemporanei[nome]; }
+        }
+
+        function salvaMaterialeGenerale() {
+            if(!cantiereCorrente || !db[cantiereCorrente]) return;
+            db[cantiereCorrente]._materiale_generale = {};
+            for(let m in materialiTemporanei) { if(materialiTemporanei[m] !== "0" && materialiTemporanei[m] !== "") { db[cantiereCorrente]._materiale_generale[m] = materialiTemporanei[m]; } }
+            salvaNelStorage(); toggleCollapsible('content-mat');
+        }
+
+        function aggiornaListaStanze() {
+            const container = document.getElementById('lista-stanze-salvate'); if(!container) return; container.innerHTML = "";
+            const stanze = Object.keys(db[cantiereCorrente]._stanze || {});
+            
+            if(stanze.length === 0) { container.innerHTML = "<p style='color:var(--text-muted); padding:10px 0;'>Nessuna stanza inserita.</p>"; return; }
+            stanze.forEach(s => {
+                let div = document.createElement('div'); div.className = "stanza-item";
+                div.innerHTML = `
+                    <span onclick="apriStanza('${s.replace(/'/g, "\\'")}')" style="flex-grow:1; cursor:pointer; font-size: 1.1rem;">${s}</span>
+                    <button type="button" onclick="eliminaStanza('${s.replace(/'/g, "\\'")}')" class="btn-secondary" style="border:none; color: var(--text-muted);">Elimina</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function creaStanza() {
+            const input = document.getElementById('nuova-stanza-nome'); if(!input) return;
+            const nome = input.value.trim();
+            if(!nome) return alert("Inserisci un nome valido!"); if(db[cantiereCorrente]._stanze[nome]) return alert("Questa stanza esiste già!");
+            db[cantiereCorrente]._stanze[nome] = {}; salvaNelStorage(); input.value = ""; input.blur(); aggiornaListaStanze(); apriStanza(nome);
+        }
+
+        function eliminaStanza(nomeStanza) {
+            if(confirm(`Eliminare la stanza "${nomeStanza}"?`)) { delete db[cantiereCorrente]._stanze[nomeStanza]; salvaNelStorage(); aggiornaListaStanze(); if(stanzaCorrente === nomeStanza) { let sc = document.getElementById('sec-conteggio'); if(sc) sc.style.display = "none"; } }
+        }
+
+        function apriStanza(nomeStanza) {
+            stanzaCorrente = nomeStanza; document.getElementById('titolo-conteggio-stanza').innerText = `Stanza: ${nomeStanza}`;
+            let sc = document.getElementById('sec-conteggio'); if(sc) sc.style.display = "block";
+            let cf = document.getElementById('content-frutti'); if(cf) cf.classList.add('active');
+            
+            conteggioTemporaneo = {}; 
+            catalogoFrutti.forEach(f => { if(Array.isArray(f) && f[1]) conteggioTemporaneo[f[1]] = db[cantiereCorrente]._stanze[stanzaCorrente][f[1]] || 0; });
+            renderingListaFrutti(); let secCont = document.getElementById('sec-conteggio'); if(secCont) secCont.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderingListaFrutti() {
+            const container = document.getElementById('lista-frutti-conteggio'); if(!container) return; container.innerHTML = "";
+            let ultimaCategoria = ""; ordinaCatalogoFrutti(catalogoFrutti);
+
+            catalogoFrutti.forEach(f => {
+                if(!Array.isArray(f) || !f[1]) return;
+                let category = f[0] || "Varie"; let nome = f[1];
+                if(category !== ultimaCategoria) {
+                    let catDiv = document.createElement('div'); catDiv.className = "category-row"; catDiv.innerText = `${category}`; container.appendChild(catDiv); ultimaCategoria = category;
+                }
+
+                let qta = conteggioTemporaneo[nome] || 0; let idPulito = generaIdSicuro(nome);
+                
+                let card = document.createElement('div'); card.className = "list-row";
+                card.innerHTML = `
+                    <div style="flex-grow:1; padding-right:10px;">
+                        <span class="row-nome">${nome}</span>
+                    </div>
+                    <div class="controls-layout">
+                        <button type="button" class="btn-stepper" onclick="cambiaQta('${nome.replace(/'/g, "\\'")}', -1)">−</button>
+                        <span class="valore-stepper" id="val-${idPulito}">${qta}</span>
+                        <button type="button" class="btn-stepper" onclick="cambiaQta('${nome.replace(/'/g, "\\'")}', 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function cambiaQta(nome, cambio) {
+            let nuovaQta = (conteggioTemporaneo[nome] || 0) + cambio; if(nuovaQta < 0) nuovaQta = 0;
+            conteggioTemporaneo[nome] = nuovaQta; let el = document.getElementById(`val-${generaIdSicuro(nome)}`); if(el) el.innerText = nuovaQta;
+        }
+
+        function salvaConteggioStanza() {
+            if(!cantiereCorrente || !stanzaCorrente) return;
+            db[cantiereCorrente]._stanze[stanzaCorrente] = {};
+            catalogoFrutti.forEach(f => { if(Array.isArray(f) && f[1]) { let nome = f[1]; if(conteggioTemporaneo[nome] > 0) db[cantiereCorrente]._stanze[stanzaCorrente][nome] = conteggioTemporaneo[nome]; } });
+            salvaNelStorage(); let cf = document.getElementById('content-frutti'); if(cf) cf.classList.remove('active'); let ss = document.getElementById('sec-stanze'); if(ss) ss.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let testoRiepilogoGlobale = "";
+
+        function generaRiepilogoTesto() {
+            if(!cantiereCorrente || !db[cantiereCorrente]) return; let cantiere = db[cantiereCorrente]; let totaleGenerale = {}; let totalePezzi = 0;
+            let testo = `CONTA FRUTTI\nCantiere: *${cantiereCorrente.toUpperCase()}*\n\n`;
+            testo += `=========================\nMATERIALE GENERALE CANTIERE:\n=========================\n`;
+            let matGen = cantiere._materiale_generale || {}; let ciSonoMat = false;
+            for(let m in matGen) { if(matGen[m] !== "0" && matGen[m] !== "") { testo += `▪️ *${m}*: ${matGen[m]}\n`; ciSonoMat = true; } }
+            if(!ciSonoMat) testo += `_Nessun materiale generale registrato_\n`;
+
+            testo += `\n=========================\nTOTALE FRUTTI PER TIPO:\n=========================\n`;
+            if(cantiere._stanze) {
+                for (let s in cantiere._stanze) { for (let f in cantiere._stanze[s]) { let qta = cantiere._stanze[s][f]; totaleGenerale[f] = (totaleGenerale[f] || 0) + qta; totalePezzi += qta; } }
+            }
+            for (let f in totaleGenerale) { testo += `▪️ *${f}*: ${totaleGenerale[f]}\n`; }
+            testo += `\nTotale pezzi frutti: ${totalePezzi}\n\n`;
+
+            testo += `=========================\nDETTAGLIO STANZA PER STANZA:\n=========================\n`;
+            if(cantiere._stanze) {
+                for (let s in cantiere._stanze) {
+                    testo += `\n*${s}:*\n`; let fruttiInStanza = [];
+                    for (let f in cantiere._stanze[s]) { fruttiInStanza.push(`  - ${f}: ${cantiere._stanze[s][f]}`); }
+                    testo += fruttiInStanza.length > 0 ? fruttiInStanza.join("\n") + "\n" : "  (Nessun frutto inserito)\n";
+                }
+            }
+
+            let pacchettoBackup = { db: db, cat_frutti: catalogoFrutti, cat_mat: catalogoMateriali };
+            let stringaBackup = btoa(unescape(encodeURIComponent(JSON.stringify(pacchettoBackup))));
+            testo += `\n\nCodice di backup:\n[BACKUP-START]${stringaBackup}[BACKUP-END]`;
+
+            testoRiepilogoGlobale = testo; document.getElementById('output').innerText = testo;
+            let ob = document.getElementById('output-box'); if(ob) { ob.style.display = "block"; ob.scrollIntoView({ behavior: 'smooth' }); }
+        }
+
+        function inviaWhatsApp() {
+            if(!testoRiepilogoGlobale) return; let url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(testoRiepilogoGlobale); window.open(url, '_blank');
+        }
+
+        function ripristinaDaBackup() {
+            let ins = document.getElementById('backup-string-input'); if(!ins) return;
+            let inputString = ins.value.trim(); if(!inputString) return alert("Incolla prima il codice!");
+            try {
+                let startToken = "[BACKUP-START]"; let endToken = "[BACKUP-END]";
+                if(inputString.includes(startToken) && inputString.includes(endToken)) { inputString = inputString.split(startToken)[1].split(endToken)[0].trim(); }
+                let datiDecodificati = JSON.parse(decodeURIComponent(escape(atob(inputString))));
+                if(datiDecodificati.db) {
+                    if(confirm("Ripristinare i dati sovrascrivendo quelli attuali?")) {
+                        db = datiDecodificati.db; catalogoFrutti = datiDecodificati.cat_frutti || STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = datiDecodificati.cat_mat || STRUTTURA_MATERIALE_INIZIALE;
+                        salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere(); ins.value = ""; alert("Backup ripristinato! 🎉");
+                    }
+                }
+            } catch(e) { alert("Errore nel ripristino del backup."); }
+        }
+
+        function resetTotaleApplicazione() {
+            if(confirm("Resettare l'applicazione per sbloccare l'interfaccia? (Perderai i dati non salvati tramite stringa di backup)")) {
+                localStorage.clear(); db = {}; catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
+                salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
+                alert("Applicazione resettata e allineata correttamente! ⚡");
+            }
+        }
+    </script>
+</body>
+</html>
