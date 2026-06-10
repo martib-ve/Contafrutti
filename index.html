@@ -4,20 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>⚡ Conta Frutti Cantiere</title>
+    
+    <link class="apple-touch-icon" rel="apple-touch-icon" href="https://img.icons8.com/fluid/512/flash-on.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluid/512/flash-on.png">
+
     <style>
         :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --text-color: #e0e0e0;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --border: #333;
-            --input-bg: #2d2d2d;
-        }
-
-        [data-theme="light"] {
             --bg-color: #f8fafc;
             --surface-color: #ffffff;
             --text-color: #0f172a;
@@ -25,182 +17,213 @@
             --primary-hover: #1d4ed8;
             --success: #16a34a;
             --danger: #dc2626;
-            --border: #e2e8f0;
+            --border: #cbd5e1;
             --input-bg: #f1f5f9;
+            --category-bg: #e2e8f0;
+            --category-text: #334155;
         }
 
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-color: #f1f5f9;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --border: #334155;
+            --input-bg: #1e293b;
+            --category-bg: #334155;
+            --category-text: #f1f5f9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
         body { 
             background-color: var(--bg-color); 
             color: var(--text-color); 
-            margin: 0; 
-            padding: 10px; 
+            padding: 15px; 
             padding-bottom: 80px; 
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        h1, h2, h3 { margin-top: 0; }
+        header { 
+            margin-bottom: 20px; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        h1 { font-size: 1.5rem; display: flex; align-items: center; gap: 8px; }
+        h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--primary); }
         
         .card { 
-            background: var(--surface-color); 
-            border-radius: 12px; 
+            background-color: var(--surface-color); 
             padding: 15px; 
+            border-radius: 8px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
             margin-bottom: 15px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            border: 1px solid var(--border);
+            border: 1px solid var(--border); 
         }
 
-        input, select, button { 
+        input, select, textarea { 
             width: 100%; 
-            padding: 12px; 
+            padding: 10px; 
             margin-bottom: 10px; 
-            border-radius: 8px; 
             border: 1px solid var(--border); 
-            background: var(--input-bg); 
+            border-radius: 6px; 
+            background-color: var(--bg-color); 
             color: var(--text-color); 
-            font-size: 16px;
+            font-size: 1rem;
         }
 
         button { 
-            background: var(--primary); 
-            color: white; 
+            padding: 10px 15px; 
             border: none; 
-            font-weight: bold; 
-            cursor: pointer; 
-        }
-        
-        button:hover { background: var(--primary-hover); }
-        button.btn-success { background: var(--success); }
-        button.btn-danger { background: var(--danger); }
-        
-        .flex-row { display: flex; gap: 10px; }
-        .flex-row input, .flex-row select { margin-bottom: 0; }
-        .flex-row button { width: auto; white-space: nowrap; margin-bottom: 0; }
-
-        /* Lista Elementi */
-        .category-row { 
-            background: var(--primary); 
+            border-radius: 6px; 
+            background-color: var(--primary); 
             color: white; 
-            padding: 8px; 
-            border-radius: 4px; 
+            font-weight: 600; 
+            font-size: 1rem; 
+            cursor: pointer; 
+            transition: background 0.1s;
+        }
+        button:hover { background-color: var(--primary-hover); }
+        button.btn-success { background-color: var(--success); }
+        button.btn-danger { background-color: var(--danger); }
+        button.btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text-color); }
+
+        .flex-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+        .flex-row input, .flex-row select { margin-bottom: 0; }
+        .flex-row button { white-space: nowrap; }
+
+        /* Tabelle e Liste Minimal */
+        .category-row { 
+            background-color: var(--category-bg); 
+            color: var(--category-text); 
+            padding: 6px 12px; 
             font-weight: bold; 
-            text-align: center; 
+            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
             margin-top: 15px; 
-            margin-bottom: 10px; 
+            margin-bottom: 5px; 
+            border-radius: 4px;
         }
 
         .frutto-row { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 10px 0; 
+            padding: 8px 4px; 
             border-bottom: 1px solid var(--border); 
         }
         
-        .frutto-info { display: flex; align-items: center; gap: 8px; flex-grow: 1; line-height: 1.2; }
-        .frutto-name { font-size: 15px; }
+        .frutto-info { display: flex; align-items: center; gap: 12px; }
+        .frutto-name { font-size: 1rem; }
         
-        .counter-controls { display: flex; align-items: center; gap: 15px; }
+        .counter-controls { display: flex; align-items: center; gap: 12px; }
         .btn-count { 
-            width: 40px; 
-            height: 40px; 
+            width: 36px; 
+            height: 36px; 
             border-radius: 50%; 
-            font-size: 24px; 
+            font-size: 1.3rem; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             padding: 0; 
         }
         .count-val { 
-            font-size: 22px; 
+            font-size: 1.2rem; 
             font-weight: bold; 
-            min-width: 30px; 
+            min-width: 35px; 
             text-align: center; 
-            cursor: pointer;
-            padding: 5px;
             background: var(--input-bg);
+            padding: 4px 8px;
             border-radius: 6px;
+            cursor: pointer;
         }
 
-        /* Stanze List */
+        /* Liste Stanze */
         .stanza-item { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 12px; 
-            background: var(--input-bg); 
-            border-radius: 8px; 
-            margin-bottom: 8px; 
+            padding: 10px; 
+            border-bottom: 1px solid var(--border); 
         }
-        .stanza-item button { width: auto; padding: 6px 12px; margin: 0; font-size: 14px; }
+        .stanza-item:last-child { border-bottom: none; }
+        .stanza-item span { font-weight: 500; font-size: 1.1rem; cursor: pointer; flex-grow: 1; }
 
-        /* Collapsible */
+        /* Collapsible Minimal */
         .collapsible-header { 
-            background: var(--primary); 
-            color: white; 
-            padding: 15px; 
-            border-radius: 8px; 
             cursor: pointer; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            font-weight: bold;
+            font-weight: bold; 
+            color: var(--primary);
+            padding: 4px 0;
         }
-        .collapsible-content { display: none; padding-top: 15px; }
+        .collapsible-content { display: none; margin-top: 10px; }
         .collapsible-content.active { display: block; }
 
         /* Modal */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-            background: rgba(0,0,0,0.8); display: none; 
-            justify-content: center; align-items: center; z-index: 1000; padding: 20px; 
+            background: rgba(0,0,0,0.5); display: none; 
+            justify-content: center; align-items: center; z-index: 1000; padding: 15px; 
         }
         .modal-content { 
-            background: var(--surface-color); padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid var(--border);
+            background: var(--surface-color); padding: 20px; border-radius: 8px; width: 100%; max-width: 400px; border: 1px solid var(--border);
         }
 
-        /* Colori Cavi */
-        .color-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; border: 1px solid #fff; }
-        .dot-nero { background: #000; }
-        .dot-blu { background: #2563eb; }
-        .dot-marrone { background: #8B4513; }
-        .dot-grigio { background: #808080; }
-        .dot-rosso { background: #ef4444; }
-        .dot-viola { background: #8b5cf6; }
-        .dot-bianco { background: #fff; border: 1px solid #ccc; }
-        .dot-terra-g { background: #eab308; border-radius: 14px 0 0 14px; width: 7px; border-right: none;}
-        .dot-terra-v { background: #22c55e; border-radius: 0 14px 14px 0; width: 7px; border-left: none;}
+        /* PALLINE COLORE MAXI (24px) */
+        .color-dot { 
+            width: 24px; 
+            height: 24px; 
+            border-radius: 50%; 
+            display: inline-block; 
+            vertical-align: middle;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.15);
+        }
+        .dot-nero { background-color: #1e1e1e; border: 1px solid #475569; }
+        .dot-blu { background-color: #2563eb; }
+        .dot-marrone { background-color: #78350f; }
+        .dot-grigio { background-color: #64748b; }
+        .dot-rosso { background-color: #ef4444; }
+        .dot-viola { background-color: #a855f7; }
+        .dot-bianco { background-color: #ffffff; border: 1px solid #cbd5e1; }
+        /* Gradiente unico per Giallo/Verde */
+        .dot-terra { background: linear-gradient(90deg, #eab308 50%, #22c55e 50%); }
 
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        #output { white-space: pre-wrap; font-family: monospace; background: var(--input-bg); padding: 10px; border-radius: 8px; font-size: 14px;}
+        #output { white-space: pre-wrap; font-family: monospace; background: var(--input-bg); padding: 12px; border-radius: 6px; font-size: 0.9rem; margin-top: 10px; border: 1px solid var(--border); }
     </style>
 </head>
 <body data-theme="dark">
 
-    <div class="top-bar">
-        <h2>⚡ Conta Frutti</h2>
-        <div style="display: flex; gap: 10px;">
-            <button onclick="toggleTema()" id="btn-tema" style="width: auto; padding: 8px 12px; margin: 0; font-size: 14px;">☀️ Chiaro</button>
-            <button onclick="resetTotaleApplicazione()" class="btn-danger" style="width: auto; padding: 8px 12px; margin: 0; font-size: 14px;">🔄 Reset App</button>
+    <header>
+        <h1>⚡ Conta Frutti</h1>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="toggleTema()" id="btn-tema" class="btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">☀️ Chiaro</button>
+            <button onclick="resetTotaleApplicazione()" class="btn-danger" style="padding: 6px 12px; font-size: 0.9rem;">🔄 Reset</button>
         </div>
-    </div>
+    </header>
 
-    <!-- SEZIONE GESTIONE CANTIERE -->
     <div class="card">
-        <h3>1. Seleziona / Crea Cantiere</h3>
+        <h3>🏗️ Gestione Cantiere</h3>
         <select id="cantiere-select" onchange="caricaCantiere()"></select>
         <div class="flex-row">
-            <input type="text" id="nuovo-cantiere-nome" placeholder="Nome Nuovo Cantiere...">
+            <input type="text" id="nuovo-cantiere-nome" placeholder="Nuovo cantiere...">
             <button onclick="creaCantiere(event)" class="btn-success">Crea</button>
         </div>
-        <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="margin-top: 10px;">🗑 Elimina Cantiere Attuale</button>
+        <button onclick="eliminaCantiereCorrente()" class="btn-danger" style="width: 100%; margin-top: 5px; padding: 8px;">🗑 Elimina Cantiere Corrente</button>
     </div>
 
-    <!-- TITOLO CANTIERE ATTIVO -->
-    <h2 id="nome-cantiere-titolo" style="text-align: center; color: var(--primary); margin: 20px 0;"></h2>
+    <h2 id="nome-cantiere-titolo" style="text-align: center; margin: 15px 0; font-size: 1.4rem; color: var(--primary);"></h2>
 
-    <!-- SEZIONE MATERIALE GENERALE (Tubi, Cavi...) -->
     <div class="card" id="sec-materiale-generale" style="display:none;">
         <div class="collapsible-header" onclick="toggleCollapsible('content-mat')">
             <span>📦 Materiale Generale (Cavi, Tubi...)</span>
@@ -208,87 +231,97 @@
         </div>
         <div id="content-mat" class="collapsible-content">
             <div id="lista-materiali-generali"></div>
-            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="margin-top:20px; padding: 15px;">⬇️ Chiudi Pannello Materiale</button>
+            <button onclick="salvaMaterialeGenerale()" class="btn-success" style="width:100%; margin-top:15px;">⬇️ Chiudi Pannello Materiale</button>
         </div>
     </div>
 
-    <!-- SEZIONE GESTIONE STANZE -->
     <div class="card" id="sec-stanze" style="display:none;">
-        <h3>2. Stanze del Cantiere</h3>
+        <h3>📍 Stanze del Cantiere</h3>
         <div class="flex-row">
             <input type="text" id="nuova-stanza-nome" placeholder="Es. Cucina, Bagno...">
             <button onclick="creaStanza()" class="btn-success">Aggiungi</button>
         </div>
-        <div id="lista-stanze-salvate" style="margin-top: 15px;"></div>
+        <div id="lista-stanze-salvate" style="margin-top: 10px;"></div>
     </div>
 
-    <!-- SEZIONE CONTEGGIO SPECIFICO STANZA -->
     <div class="card" id="sec-conteggio" style="display:none; border: 2px solid var(--primary);">
-        <h3 id="titolo-conteggio-stanza" style="color: var(--primary); text-align: center;"></h3>
+        <h3 id="titolo-conteggio-stanza" style="text-align: center; margin-bottom: 15px;"></h3>
         <div id="content-frutti" class="collapsible-content active">
             <div id="lista-frutti-conteggio"></div>
-            <button onclick="salvaConteggioStanza()" class="btn-success" style="margin-top:20px; padding: 15px;">⬇️ Chiudi Stanza e Torna alla Lista</button>
+            <button onclick="salvaConteggioStanza()" class="btn-success" style="width:100%; margin-top:20px; padding: 12px;">⬇️ Chiudi Stanza e Salva</button>
         </div>
     </div>
 
-    <!-- SEZIONE GESTIONE CATALOGO GLOBALE -->
     <div class="card">
-        <h3>⚙️ Personalizza Cataloghi (Globale)</h3>
+        <h3>⚙️ Modifica Cataloghi Globali</h3>
         
-        <label>Aggiungi Nuovo Frutto/Comando:</label>
+        <label style="font-size:0.9rem; font-weight:500;">Aggiungi Frutto/Comando:</label>
         <div class="flex-row">
-            <input type="text" id="nuovo-frutto-nome" placeholder="Es. Sensore Presenza...">
+            <input type="text" id="nuovo-frutto-nome" placeholder="Es. Presa USB...">
             <button onclick="apriModalAggiunta('frutto')" class="btn-success">Aggiungi</button>
         </div>
 
-        <label style="margin-top:15px; display:block;">Aggiungi Nuovo Materiale/Cavo:</label>
+        <label style="font-size:0.9rem; font-weight:500; margin-top:10px; display:block;">Aggiungi Materiale/Cavo:</label>
         <div class="flex-row">
-            <input type="text" id="nuovo-materiale-nome" placeholder="Es. Cavo Allarme...">
+            <input type="text" id="nuovo-materiale-nome" placeholder="Es. FG16 3G2.5...">
             <button onclick="apriModalAggiunta('materiale')" class="btn-success">Aggiungi</button>
         </div>
 
-        <label style="margin-top:15px; display:block;">Modifica/Elimina Voce Esistente:</label>
+        <label style="font-size:0.9rem; font-weight:500; margin-top:10px; display:block;">Modifica / Elimina Voce:</label>
         <select id="select-modifica-voce"></select>
         <div class="flex-row">
-            <button onclick="rinominaVoceCatalogo()">✏️ Rinomina</button>
-            <button onclick="eliminaVoceCatalogo()" class="btn-danger">🗑 Elimina</button>
+            <button onclick="rinominaVoceCatalogo()" style="width:50%;">✏️ Rinomina</button>
+            <button onclick="eliminaVoceCatalogo()" class="btn-danger" style="width:50%;">🗑 Elimina</button>
         </div>
     </div>
 
-    <!-- SEZIONE RIEPILOGO E BACKUP -->
     <div class="card" id="sec-riepilogo" style="display:none;">
-        <h3>📄 Riepilogo e Condivisione</h3>
-        <button onclick="generaRiepilogoTesto()">Genera Riepilogo Testuale</button>
+        <h3>📄 Riepilogo e Invia</h3>
+        <button onclick="generaRiepilogoTesto()" style="width: 100%;">Genera Riepilogo Testuale</button>
         
-        <div id="output-box" style="display:none; margin-top:15px;">
+        <div id="output-box" style="display:none;">
             <div id="output"></div>
-            <button onclick="inviaWhatsApp()" class="btn-success" style="margin-top:10px;">🟢 Invia su WhatsApp</button>
+            <button onclick="inviaWhatsApp()" class="btn-success" style="width:100%; margin-top:10px; padding: 12px; font-size:1.1rem;">🟢 Invia su WhatsApp</button>
         </div>
     </div>
 
     <div class="card">
         <h3>💾 Ripristino Dati (Backup)</h3>
-        <p style="font-size:12px; color:#888;">Incolla qui il codice [BACKUP-START]...[BACKUP-END] ricevuto su WhatsApp per ricaricare un cantiere e i tuoi cataloghi.</p>
-        <textarea id="backup-string-input" rows="3" style="width:100%; padding:10px; border-radius:8px; background:var(--input-bg); color:var(--text-color); border:1px solid var(--border); margin-bottom:10px;" placeholder="Incolla codice qui..."></textarea>
-        <button onclick="ripristinaDaBackup()">📥 Ripristina da Codice</button>
+        <textarea id="backup-string-input" rows="2" placeholder="Incolla il codice [BACKUP-START]...[BACKUP-END] ricevuto per caricare i dati..."></textarea>
+        <button onclick="ripristinaDaBackup()" style="width:100%;">📥 Ripristina da Codice</button>
     </div>
 
-    <!-- MODAL SCELTA CATEGORIA -->
     <div class="modal-overlay" id="modal-categoria">
         <div class="modal-content">
             <h3 id="modal-titolo">Seleziona Categoria</h3>
             <select id="modal-select-cat" onchange="gestisciCambioModalSelect()"></select>
-            <input type="text" id="modal-nuova-cat-input" placeholder="Nome nuova categoria..." style="display:none; margin-top:10px;">
+            <input type="text" id="modal-nuova-cat-input" placeholder="Nome nuova categoria..." style="display:none;">
             
-            <div class="flex-row" style="margin-top:20px;">
-                <button onclick="chiudiModalAggiunta()" class="btn-danger">Annulla</button>
-                <button onclick="confermaAggiuntaElemento()" class="btn-success">Conferma</button>
+            <div class="flex-row" style="margin-top:15px;">
+                <button onclick="chiudiModalAggiunta()" class="btn-danger" style="width:50%;">Annulla</button>
+                <button onclick="confermaAggiuntaElemento()" class="btn-success" style="width:50%;">Conferma</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT (LOGICA APP + AUTO-SAVE) -->
     <script>
+        // Ordinamenti Fissi richiesti
+        const ORDINE_CATEGORIE_FRUTTI = [
+            "Supporti e Scatole",
+            "Comandi",
+            "Prese energia e dati",
+            "Centralino",
+            "Varie"
+        ];
+        
+        const ORDINE_CATEGORIE_MATERIALE = [
+            "Cordine 1.5 mm²",
+            "Cordine 2.5 mm²",
+            "Cordine 4 mm²",
+            "Tubi e Corrugati",
+            "Materiale Consumo"
+        ];
+
         // Cataloghi Iniziali Standard
         const STRUTTURA_FRUTTI_INIZIALE = [
             ["Supporti e Scatole", "Supporto / Scatola 503"],
@@ -344,7 +377,7 @@
             ["Materiale Consumo", "Fascette Cablaggio Varie"]
         ];
 
-        // Variabili Globali
+        // Variabili Stato
         let catalogoFrutti = JSON.parse(localStorage.getItem('cf_v8_cat_frutti')) || STRUTTURA_FRUTTI_INIZIALE;
         let catalogoMateriali = JSON.parse(localStorage.getItem('cf_v8_cat_mat')) || STRUTTURA_MATERIALE_INIZIALE;
         let db = JSON.parse(localStorage.getItem('cf_v8_db')) || {};
@@ -366,7 +399,6 @@
             aggiornaSelectManutenzioneCatalogo();
         };
 
-        // GESTIONE TEMA
         function inizializzaTema() {
             let temaSalvato = localStorage.getItem('cf_tema') || 'dark';
             document.body.setAttribute('data-theme', temaSalvato);
@@ -385,7 +417,6 @@
             document.getElementById('btn-tema').innerText = tema === 'dark' ? "☀️ Chiaro" : "🌙 Scuro";
         }
 
-        // SALVATAGGIO
         function salvaNelStorage() {
             localStorage.setItem('cf_v8_db', JSON.stringify(db));
             localStorage.setItem('cf_v8_cat_frutti', JSON.stringify(catalogoFrutti));
@@ -414,7 +445,6 @@
             salvaNelStorage();
         }
 
-        // UTILITY UI
         function toggleCollapsible(id) {
             const el = document.getElementById(id);
             const ind = document.getElementById('indicator-' + id);
@@ -433,42 +463,51 @@
 
         function ottieniTagColore(nomeFlusso) {
             let nome = nomeFlusso.toLowerCase();
-            if (nome.includes("giallo/verde") || nome.includes("terra")) {
-                return '<span class="color-dot dot-terra-g"></span><span class="color-dot dot-terra-v"></span>';
-            }
+            if (nome.includes("giallo/verde") || nome.includes("terra")) return '<span class="color-dot dot-terra"></span>';
             if (nome.includes("nero")) return '<span class="color-dot dot-nero"></span>';
             if (nome.includes("blu")) return '<span class="color-dot dot-blu"></span>';
             if (nome.includes("marrone")) return '<span class="color-dot dot-marrone"></span>';
             if (nome.includes("grigio")) return '<span class="color-dot dot-grigio"></span>';
             if (nome.includes("rosso")) return '<span class="color-dot dot-rosso"></span>';
             if (nome.includes("viola")) return '<span class="color-dot dot-viola"></span>';
+            if (nome.includes("bianco")) return '<span class="color-dot dot-bianco"></span>';
             return '';
         }
 
-        function ordinaCatalogo(catalogo) {
+        function getIndiceCategoria(cat, arrayOrdine) {
+            let idx = arrayOrdine.indexOf(cat);
+            return idx === -1 ? 999 : idx;
+        }
+
+        function ordinaCatalogoFrutti(catalogo) {
             catalogo.sort((a, b) => {
-                let catA = a[0] ? a[0].toLowerCase() : "";
-                let catB = b[0] ? b[0].toLowerCase() : "";
-                let aE_Cordina = catA.includes("cordina") || catA.includes("cavi");
-                let bE_Cordina = catB.includes("cordina") || catB.includes("cavi");
-                if (aE_Cordina && !bE_Cordina) return -1;
-                if (!aE_Cordina && bE_Cordina) return 1;
-                if (a[0] !== b[0]) return a[0].localeCompare(b[0]);
+                let idxA = getIndiceCategoria(a[0], ORDINE_CATEGORIE_FRUTTI);
+                let idxB = getIndiceCategoria(b[0], ORDINE_CATEGORIE_FRUTTI);
+                if(idxA !== idxB) return idxA - idxB;
+                return a[1].localeCompare(b[1]);
+            });
+        }
+        
+        function ordinaCatalogoMateriali(catalogo) {
+            catalogo.sort((a, b) => {
+                let idxA = getIndiceCategoria(a[0], ORDINE_CATEGORIE_MATERIALE);
+                let idxB = getIndiceCategoria(b[0], ORDINE_CATEGORIE_MATERIALE);
+                if(idxA !== idxB) return idxA - idxB;
                 return a[1].localeCompare(b[1]);
             });
         }
 
-        // GESTIONE CATALOGHI E MODALI
+        // GESTIONE AGGIUNTE E MODAL
         function apriModalAggiunta(tipo) {
             tipoAggiuntaCorrente = tipo;
             let inputNome = document.getElementById(tipo === 'frutto' ? 'nuovo-frutto-nome' : 'nuovo-materiale-nome');
             let nome = inputNome.value.trim();
-            if (!nome) return alert("Inserisci prima il nome del componente!");
+            if (!nome) return alert("Inserisci il nome del componente!");
 
-            if (tipo === 'frutto' && catalogoFrutti.some(f => f[1].toLowerCase() === nome.toLowerCase())) return alert("Questo frutto esiste già nel catalogo!");
-            if (tipo === 'materiale' && catalogoMateriali.some(m => m[1].toLowerCase() === nome.toLowerCase())) return alert("Questo materiale esiste già nel catalogo!");
+            if (tipo === 'frutto' && catalogoFrutti.some(f => f[1].toLowerCase() === nome.toLowerCase())) return alert("Esiste già nel catalogo!");
+            if (tipo === 'materiale' && catalogoMateriali.some(m => m[1].toLowerCase() === nome.toLowerCase())) return alert("Esiste già nel catalogo!");
 
-            document.getElementById('modal-titolo').innerText = tipo === 'frutto' ? "Seleziona Categoria Frutto" : "Seleziona Categoria Materiale";
+            document.getElementById('modal-titolo').innerText = tipo === 'frutto' ? "Categoria Frutto" : "Categoria Materiale";
             
             let selectCat = document.getElementById('modal-select-cat');
             selectCat.innerHTML = "";
@@ -480,13 +519,10 @@
             });
 
             categorieEsistenti.forEach(cat => {
-                let opt = document.createElement('option');
-                opt.value = cat; opt.innerText = cat;
-                selectCat.appendChild(opt);
+                let opt = document.createElement('option'); opt.value = cat; opt.innerText = cat; selectCat.appendChild(opt);
             });
 
-            let optNuova = document.createElement('option');
-            optNuova.value = "__NEW__"; optNuova.innerText = "[ + Crea Nuova Categoria ]";
+            let optNuova = document.createElement('option'); optNuova.value = "__NEW__"; optNuova.innerText = "[ + Nuova Categoria... ]";
             selectCat.appendChild(optNuova);
 
             document.getElementById('modal-nuova-cat-input').style.display = "none";
@@ -498,8 +534,7 @@
             let select = document.getElementById('modal-select-cat');
             let inputNuova = document.getElementById('modal-nuova-cat-input');
             if (select.value === "__NEW__") {
-                inputNuova.style.display = "block";
-                inputNuova.focus();
+                inputNuova.style.display = "block"; inputNuova.focus();
             } else {
                 inputNuova.style.display = "none";
             }
@@ -512,20 +547,15 @@
         function confermaAggiuntaElemento() {
             let select = document.getElementById('modal-select-cat');
             let inputNuova = document.getElementById('modal-nuova-cat-input');
-            let categoriaFinale = "";
+            let categoriaFinale = select.value === "__NEW__" ? inputNuova.value.trim() : select.value;
 
-            if (select.value === "__NEW__") {
-                categoriaFinale = inputNuova.value.trim();
-                if (!categoriaFinale) return alert("Scrivi il nome della nuova categoria!");
-            } else {
-                categoriaFinale = select.value;
-            }
+            if (!categoriaFinale) return alert("Inserisci una categoria valida!");
 
             if (tipoAggiuntaCorrente === 'frutto') {
                 let inputNome = document.getElementById('nuovo-frutto-nome');
                 let nome = inputNome.value.trim();
                 catalogoFrutti.push([categoriaFinale, nome]);
-                ordinaCatalogo(catalogoFrutti);
+                ordinaCatalogoFrutti(catalogoFrutti);
                 conteggioTemporaneo[nome] = 0;
                 inputNome.value = "";
                 salvaNelStorage();
@@ -534,7 +564,7 @@
                 let inputNome = document.getElementById('nuovo-materiale-nome');
                 let nome = inputNome.value.trim();
                 catalogoMateriali.push([categoriaFinale, nome]);
-                ordinaCatalogo(catalogoMateriali);
+                ordinaCatalogoMateriali(catalogoMateriali);
                 materialiTemporanei[nome] = "0";
                 inputNome.value = "";
                 salvaNelStorage();
@@ -550,17 +580,13 @@
 
             let optG1 = document.createElement('optgroup'); optG1.label = "FRUTTI";
             catalogoFrutti.forEach(f => {
-                let opt = document.createElement('option');
-                opt.value = "frutto|" + f[1]; opt.innerText = `[${f[0]}] ${f[1]}`;
-                optG1.appendChild(opt);
+                let opt = document.createElement('option'); opt.value = "frutto|" + f[1]; opt.innerText = `[${f[0]}] ${f[1]}`; optG1.appendChild(opt);
             });
             select.appendChild(optG1);
 
             let optG2 = document.createElement('optgroup'); optG2.label = "MATERIALE CANTIERE";
             catalogoMateriali.forEach(m => {
-                let opt = document.createElement('option');
-                opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0] || 'Varie'}] ${m[1]}`;
-                optG2.appendChild(opt);
+                let opt = document.createElement('option'); opt.value = "materiale|" + m[1]; opt.innerText = `[${m[0] || 'Varie'}] ${m[1]}`; optG2.appendChild(opt);
             });
             select.appendChild(optG2);
         }
@@ -577,7 +603,7 @@
 
             if (tipo === 'frutto') {
                 catalogoFrutti.forEach(f => { if(f[1] === vecchioNome) f[1] = nuovoNome; });
-                ordinaCatalogo(catalogoFrutti);
+                ordinaCatalogoFrutti(catalogoFrutti);
                 for (let cant in db) {
                     for (let stz in db[cant]._stanze) {
                         if (db[cant]._stanze[stz][vecchioNome] !== undefined) {
@@ -594,7 +620,7 @@
                 if(stanzaCorrente) renderingListaFrutti();
             } else {
                 catalogoMateriali.forEach(m => { if(m[1] === vecchioNome) m[1] = nuovoNome; });
-                ordinaCatalogo(catalogoMateriali);
+                ordinaCatalogoMateriali(catalogoMateriali);
                 for (let cant in db) {
                     if (db[cant]._materiale_generale && db[cant]._materiale_generale[vecchioNome] !== undefined) {
                         db[cant]._materiale_generale[nuovoNome] = db[cant]._materiale_generale[vecchioNome];
@@ -608,7 +634,6 @@
                 salvaNelStorage();
                 if(cantiereCorrente) renderingListaMateriali();
             }
-            alert("Voce corretta con successo!");
         }
 
         function eliminaVoceCatalogo() {
@@ -617,7 +642,7 @@
             let parti = selectVal.split("|");
             let tipo = parti[0]; let nome = parti[1];
 
-            if (confirm(`Cancellare la voce "${nome}" dal catalogo globale?`)) {
+            if (confirm(`Cancellare "${nome}" dal catalogo globale?`)) {
                 if (tipo === 'frutto') {
                     catalogoFrutti = catalogoFrutti.filter(f => f[1] !== nome);
                     for (let cant in db) {
@@ -638,17 +663,15 @@
             }
         }
 
-        // CANTIERI
+        // SEZIONE CANTIERI
         let bloccoDoppioClicCantiere = false;
 
         function aggiornaSelectCantieri() {
             const select = document.getElementById('cantiere-select');
-            if(!select) return;
-            select.innerHTML = "";
+            if(!select) return; select.innerHTML = "";
             const cantieri = Object.keys(db);
             if(cantieri.length === 0) {
-                select.innerHTML = "<option value=''>-- Nessun Cantiere --</option>";
-                return;
+                select.innerHTML = "<option value=''>-- Nessun Cantiere --</option>"; return;
             }
             cantieri.forEach(c => {
                 let opt = document.createElement('option'); opt.value = c; opt.innerText = c; select.appendChild(opt);
@@ -663,15 +686,14 @@
 
             const inputField = document.getElementById('nuovo-cantiere-nome');
             const nome = inputField.value.trim();
-            if(!nome) return alert("Inserisci un nome valido per il cantiere!");
-            if(db[nome]) return alert("Un cantiere con questo nome esiste già!");
+            if(!nome) return alert("Inserisci un nome valido!");
+            if(db[nome]) return alert("Questo cantiere esiste già!");
             
             db[nome] = { "_materiale_generale": {}, "_stanze": {} };
             salvaNelStorage();
             aggiornaSelectCantieri();
             document.getElementById('cantiere-select').value = nome;
-            inputField.value = "";
-            inputField.blur();
+            inputField.value = ""; inputField.blur();
             caricaCantiere();
         }
 
@@ -715,17 +737,14 @@
             if(!cantiereCorrente) return;
             if(confirm(`Eliminare definitivamente il cantiere "${cantiereCorrente}"?`)) {
                 delete db[cantiereCorrente];
-                salvaNelStorage();
-                aggiornaSelectCantieri();
-                caricaCantiere();
+                salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
             }
         }
 
-        // MATERIALI
+        // RENDERING MATERIALI (MINIMAL + PULIZIA SCRITTA CORDINA)
         function renderingListaMateriali() {
             const container = document.getElementById('lista-materiali-generali');
-            if(!container) return;
-            container.innerHTML = "";
+            if(!container) return; container.innerHTML = "";
             let ultimaCategoria = "";
 
             catalogoMateriali.forEach(m => {
@@ -735,7 +754,7 @@
                 if(categoria !== ultimaCategoria) {
                     let catDiv = document.createElement('div');
                     catDiv.className = "category-row";
-                    catDiv.innerText = `— ${categoria} —`;
+                    catDiv.innerText = categoria;
                     container.appendChild(catDiv);
                     ultimaCategoria = categoria;
                 }
@@ -744,12 +763,18 @@
                 let badgeColore = ottieniTagColore(nome);
                 let idPulito = generaIdSicuro(nome);
                 
+                // PULIZIA MINIMALISTA: Togliamo "Cordina 1.5 " o "Cordina 2.5 " lasciando solo il colore se la categoria lo descrive già
+                let nomeVisualizzato = nome;
+                if (categoria.toLowerCase().includes("cordine") || categoria.toLowerCase().includes("cavi")) {
+                    nomeVisualizzato = nome.replace(/^(Cordina|Cordine)\s+\d+(\.\d+)?\s*(mm²)?\s*/i, "");
+                }
+
                 let row = document.createElement('div');
                 row.className = "frutto-row";
                 row.innerHTML = `
                     <div class="frutto-info">
                         ${badgeColore}
-                        <span class="frutto-name">${nome}</span>
+                        <span class="frutto-name">${nomeVisualizzato}</span>
                     </div>
                     <div class="counter-controls">
                         <button type="button" class="btn-count btn-danger" onclick="cambiaQtaMateriale('${nome}', -1)">-</button>
@@ -769,19 +794,17 @@
             materialiTemporanei[nome] = nuovo.toString();
             let el = document.getElementById(`mat-${generaIdSicuro(nome)}`);
             if(el) el.innerText = nuovo;
-            
-            autoSalvaMaterialeGenerale(); // Auto-save
+            autoSalvaMaterialeGenerale();
         }
 
         function ModificaLiberaMateriale(nome) {
             let attuale = materialiTemporanei[nome] || "0";
-            let risp = prompt(`Quantità (in mt o pz) per:\n${nome}`, attuale);
+            let risp = prompt(`Quantità per:\n${nome}`, attuale);
             if(risp !== null) {
                 materialiTemporanei[nome] = risp.trim() === "" ? "0" : risp.trim();
                 let el = document.getElementById(`mat-${generaIdSicuro(nome)}`);
                 if(el) el.innerText = materialiTemporanei[nome];
-                
-                autoSalvaMaterialeGenerale(); // Auto-save
+                autoSalvaMaterialeGenerale();
             }
         }
 
@@ -789,23 +812,21 @@
             toggleCollapsible('content-mat');
         }
 
-        // STANZE
+        // GESTIONE STANZE
         function aggiornaListaStanze() {
             const container = document.getElementById('lista-stanze-salvate');
-            if(!container) return;
-            container.innerHTML = "";
+            if(!container) return; container.innerHTML = "";
             const stanze = Object.keys(db[cantiereCorrente]._stanze || {});
             
             if(stanze.length === 0) {
-                container.innerHTML = "<p style='color:#64748b; font-style:italic;'>Nessuna stanza inserita.</p>";
-                return;
+                container.innerHTML = "<p style='color:#64748b; font-style:italic; padding: 10px 4px;'>Nessuna stanza inserita.</p>"; return;
             }
             stanze.forEach(s => {
                 let div = document.createElement('div');
                 div.className = "stanza-item";
                 div.innerHTML = `
-                    <span onclick="apriStanza('${s}')" style="flex-grow:1; cursor:pointer; font-weight:bold; font-size:18px;">📍 ${s}</span>
-                    <button onclick="eliminaStanza('${s}')" class="btn-danger">🗑 Elimina</button>
+                    <span onclick="apriStanza('${s}')">📍 ${s}</span>
+                    <button onclick="eliminaStanza('${s}')" class="btn-danger" style="padding: 4px 10px; font-size:0.9rem;">🗑</button>
                 `;
                 container.appendChild(div);
             });
@@ -814,29 +835,25 @@
         function creaStanza() {
             const input = document.getElementById('nuova-stanza-nome');
             const nome = input.value.trim();
-            if(!nome) return alert("Inserisci un nome valido per la stanza");
-            if(db[cantiereCorrente]._stanze[nome]) return alert("Questa stanza esiste già in questo cantiere");
+            if(!nome) return alert("Nome stanza non valido!");
+            if(db[cantiereCorrente]._stanze[nome]) return alert("Stanza già esistente!");
             
             db[cantiereCorrente]._stanze[nome] = {};
-            salvaNelStorage();
-            input.value = "";
-            input.blur();
-            aggiornaListaStanze();
-            apriStanza(nome);
+            salvaNelStorage(); input.value = ""; input.blur();
+            aggiornaListaStanze(); apriStanza(nome);
         }
 
-        function eliminaStanza(nomeStanza) {
+        function物理 eliminaStanza(nomeStanza) {
             if(confirm(`Eliminare la stanza "${nomeStanza}"?`)) {
                 delete db[cantiereCorrente]._stanze[nomeStanza];
-                salvaNelStorage();
-                aggiornaListaStanze();
+                salvaNelStorage(); aggiornaListaStanze();
                 if(stanzaCorrente === nomeStanza) document.getElementById('sec-conteggio').style.display = "none";
             }
         }
 
         function apriStanza(nomeStanza) {
             stanzaCorrente = nomeStanza;
-            document.getElementById('titolo-conteggio-stanza').innerText = `Conteggio: ${nomeStanza}`;
+            document.getElementById('titolo-conteggio-stanza').innerText = `📍 Conteggio: ${nomeStanza}`;
             document.getElementById('sec-conteggio').style.display = "block";
             document.getElementById('content-frutti').classList.add('active');
 
@@ -848,11 +865,10 @@
             document.getElementById('sec-conteggio').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // FRUTTI
+        // RENDERING FRUTTI
         function renderingListaFrutti() {
             const container = document.getElementById('lista-frutti-conteggio');
-            if(!container) return;
-            container.innerHTML = "";
+            if(!container) return; container.innerHTML = "";
             let ultimaCategoria = "";
 
             catalogoFrutti.forEach(f => {
@@ -862,7 +878,7 @@
                 if(category !== ultimaCategoria) {
                     let catDiv = document.createElement('div');
                     catDiv.className = "category-row";
-                    catDiv.innerText = `— ${category} —`;
+                    catDiv.innerText = category;
                     container.appendChild(catDiv);
                     ultimaCategoria = category;
                 }
@@ -889,16 +905,16 @@
             conteggioTemporaneo[nome] = nuovaQta;
             let el = document.getElementById(`val-${generaIdSicuro(nome)}`);
             if(el) el.innerText = nuovaQta;
-            
-            autoSalvaConteggioStanza(); // Auto-save
+            autoSalvaConteggioStanza();
         }
 
         function salvaConteggioStanza() {
             document.getElementById('content-frutti').classList.remove('active');
+            document.getElementById('sec-conteggio').style.display = "none";
             document.getElementById('sec-stanze').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // OUTPUT E BACKUP
+        // EXPORT BACKUP & WHATSAPP
         let testoRiepilogoGlobale = "";
 
         function generaRiepilogoTesto() {
@@ -916,36 +932,33 @@
             let ciSonoMat = false;
             for(let m in matGen) {
                 if(matGen[m] !== "0" && matGen[m] !== "") {
-                    testo += `▪️ *${m}*: ${matGen[m]}\n`;
-                    ciSonoMat = true;
+                    testo += `▪️ *${m}*: ${matGen[m]}\n`; ciSonoMat = true;
                 }
             }
-            if(!ciSonoMat) testo += `_Nessun materiale generale registrato_\n`;
+            if(!ciSonoMat) testo += `_Nessun materiale generale_\n`;
 
             testo += `\n=========================\n`;
-            testo += `TOTALE FRUTTI PER TIPO:\n`;
+            testo += `TOTALE FRUTTI DA ORDINARE:\n`;
             testo += `=========================\n`;
 
             for (let s in cantiere._stanze) {
                 for (let f in cantiere._stanze[s]) {
                     let qta = cantiere._stanze[s][f];
                     if (qta > 0) {
-                        totaleGenerale[f] = (totaleGenerale[f] || 0) + qta;
-                        totalePezzi += qta;
+                        totaleGenerale[f] = (totaleGenerale[f] || 0) + qta; totalePezzi += qta;
                     }
                 }
             }
 
             let ciSonoFrutti = false;
             for (let f in totaleGenerale) {
-                testo += `▪️ *${f}*: ${totaleGenerale[f]}\n`;
-                ciSonoFrutti = true;
+                testo += `▪️ *${f}*: ${totaleGenerale[f]}\n`; ciSonoFrutti = true;
             }
             if(!ciSonoFrutti) testo += `_Nessun frutto registrato_\n`;
             else testo += `\n*Totale pezzi frutti: ${totalePezzi}*\n\n`;
 
             testo += `=========================\n`;
-            testo += `DETTAGLIO STANZA PER STANZA:\n`;
+            testo += `DETTAGLIO PER STANZA:\n`;
             testo += `=========================\n`;
             for (let s in cantiere._stanze) {
                 testo += `\n*${s}:*\n`;
@@ -961,7 +974,7 @@
             let pacchettoBackup = { db: db, cat_frutti: catalogoFrutti, cat_mat: catalogoMateriali };
             let stringaBackup = btoa(unescape(encodeURIComponent(JSON.stringify(pacchettoBackup))));
             
-            testo += `\n\nCodice di backup (copialo per intero se vuoi ripristinarlo in futuro):\n`;
+            testo += `\n\nCodice di backup:\n`;
             testo += `[BACKUP-START]${stringaBackup}[BACKUP-END]`;
 
             testoRiepilogoGlobale = testo;
@@ -978,39 +991,34 @@
 
         function ripristinaDaBackup() {
             let inputString = document.getElementById('backup-string-input').value.trim();
-            if(!inputString) return alert("Incolla prima il codice!");
+            if(!inputString) return alert("Incolla il codice prima!");
             try {
-                let startToken = "[BACKUP-START]";
-                let endToken = "[BACKUP-END]";
+                let startToken = "[BACKUP-START]"; let endToken = "[BACKUP-END]";
                 if(inputString.includes(startToken) && inputString.includes(endToken)) {
                     inputString = inputString.split(startToken)[1].split(endToken)[0].trim();
                 }
                 let datiDecodificati = JSON.parse(decodeURIComponent(escape(atob(inputString))));
                 if(datiDecodificati.db) {
-                    if(confirm("Ripristinare i dati sovrascrivendo quelli attuali?")) {
+                    if(confirm("Sovrascrivere i dati attuali con questo backup?")) {
                         db = datiDecodificati.db;
                         catalogoFrutti = datiDecodificati.cat_frutti || STRUTTURA_FRUTTI_INIZIALE;
                         catalogoMateriali = datiDecodificati.cat_mat || STRUTTURA_MATERIALE_INIZIALE;
-                        salvaNelStorage();
-                        aggiornaSelectCantieri();
-                        caricaCantiere();
+                        salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
                         document.getElementById('backup-string-input').value = "";
-                        alert("Backup ripristinato! 🎉");
+                        alert("Dati ripristinati correttamente! 🎉");
                     }
-                } else {
-                    alert("Codice non valido o danneggiato.");
                 }
             } catch(e) {
-                alert("Errore nel ripristino. Verifica di aver incollato tutto il codice correttamente.");
+                alert("Errore nel ripristino. Codice errato o parziale.");
             }
         }
 
         function resetTotaleApplicazione() {
-            if(confirm("⚠ ATTENZIONE: Questo cancellerà tutti i cantieri salvati e ripristinerà i cataloghi di base. Vuoi continuare? (Assicurati di esserti mandato un backup su WhatsApp!)")) {
+            if(confirm("Cancellare definitivamente tutti i cantieri e ripristinare i cataloghi di fabbrica?")) {
                 localStorage.clear();
                 db = {}; catalogoFrutti = STRUTTURA_FRUTTI_INIZIALE; catalogoMateriali = STRUTTURA_MATERIALE_INIZIALE;
                 salvaNelStorage(); aggiornaSelectCantieri(); caricaCantiere();
-                alert("Applicazione azzerata correttamente!");
+                alert("Applicazione azzerata!");
             }
         }
     </script>
