@@ -3,108 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conta Frutti Pro</title>
+    <title>Conta Frutti PRO</title>
     <style>
-        :root { --bg-body: #000; --bg-input: #111; --text-main: #fff; --text-muted: #777; --border: #222; --accent: #fff; }
-        [data-theme="light"] { --bg-body: #fff; --bg-input: #f4f4f4; --text-main: #000; --text-muted: #888; --border: #ddd; --accent: #000; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-body); color: var(--text-main); padding: 15px; padding-bottom: 80px; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .section { margin-bottom: 25px; }
-        select, input { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; }
-        .btn-tab { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-main); font-weight: 600; flex: 1; }
-        .btn-active { background: var(--accent); color: var(--bg-body); }
-        .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .stepper { display: flex; align-items: center; gap: 15px; }
-        .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; }
+        :root { --bg: #000; --text: #fff; --border: #333; --accent: #fff; }
+        [data-theme="light"] { --bg: #fff; --text: #000; --border: #ccc; --accent: #000; }
+        * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 20px; }
+        
+        .section-title { font-weight: 800; padding: 15px 0; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
+        .content-area { display: none; padding: 15px 0; }
+        .content-area.open { display: block; }
+        
+        .cat-title { font-size: 0.7rem; font-weight: 900; color: #888; margin-top: 15px; text-transform: uppercase; }
+        .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222; }
+        
+        button { padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; }
+        input { width: 100%; padding: 10px; background: #111; border: 1px solid var(--border); color: #fff; border-radius: 6px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Conta Frutti</h1>
-    <button onclick="toggleTema()" style="background:none; border:none; color:var(--text-main);">☀️/🌙</button>
-</header>
+    <header style="display:flex; justify-content:space-between; margin-bottom:20px;">
+        <h1 style="font-size: 1.2rem;">CANTIERE</h1>
+        <button onclick="toggleTema()">☀️/🌙</button>
+    </header>
 
-<div class="section">
-    <select id="cantiere-select" onchange="caricaCantiere()"></select>
-    <div style="display:flex; gap:10px;">
-        <button id="tab-frutti" class="btn-tab btn-active" onclick="mostraTab('frutti')">Stanze</button>
-        <button id="tab-materiali" class="btn-tab" onclick="mostraTab('materiali')">Materiali</button>
-    </div>
-</div>
-
-<div id="view-frutti">
     <div class="section">
-        <div id="lista-stanze"></div>
-        <div style="display:flex; gap:10px;">
-            <input type="text" id="nuova-stanza" placeholder="Nome stanza...">
-            <button onclick="creaStanza()" style="width:50px; background:var(--accent); border:none; border-radius:8px;">+</button>
+        <div class="section-title" onclick="toggleSection('mat-content')">MATERIALE GENERALE <span>▼</span></div>
+        <div id="mat-content" class="content-area">
+            <div id="lista-materiali"></div>
         </div>
     </div>
-    <div id="sec-conteggio" class="section" style="display:none;">
-        <h2 id="titolo-stanza" style="font-size:0.9rem; margin-bottom:10px;"></h2>
-        <div id="lista-frutti"></div>
+
+    <div class="section">
+        <div class="section-title" onclick="toggleSection('stanze-content')">STANZE <span>▼</span></div>
+        <div id="stanze-content" class="content-area">
+            <div id="lista-stanze"></div>
+            <div style="margin-top: 20px;">
+                <input type="text" id="nuova-stanza" placeholder="NOME NUOVA STANZA...">
+                <button onclick="creaStanza()" style="width:100%; font-weight:bold;">AGGIUNGI STANZA</button>
+            </div>
+        </div>
     </div>
-</div>
 
-<div id="view-materiali" class="section" style="display:none;">
-    <div id="lista-materiali"></div>
-</div>
+    <div class="section">
+        <div class="section-title" onclick="toggleSection('manutenzione-content')" style="font-size: 0.8rem; color: #888;">MANUTENZIONE CATALOGO <span>▼</span></div>
+        <div id="manutenzione-content" class="content-area">
+            <button onclick="resetData()" style="color:red; width:100%;">RIPRISTINA DATI</button>
+        </div>
+    </div>
 
-<script>
-    let db = JSON.parse(localStorage.getItem('data')) || { "Cantiere 1": { stanze: {}, materiali: {} } };
-    let cantiere = Object.keys(db)[0];
-    let stanza = "";
+    <script>
+        // Logica base
+        function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
+        function toggleTema() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
+        
+        function creaStanza() {
+            let nome = document.getElementById('nuova-stanza').value;
+            if(nome) {
+                // Inserire qui logica di salvataggio
+                alert("Stanza " + nome + " aggiunta!");
+                document.getElementById('nuova-stanza').value = "";
+            }
+        }
 
-    function save() { localStorage.setItem('data', JSON.stringify(db)); }
-    
-    function toggleTema() {
-        let t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', t);
-    }
-
-    function mostraTab(t) {
-        document.getElementById('view-frutti').style.display = t === 'frutti' ? 'block' : 'none';
-        document.getElementById('view-materiali').style.display = t === 'materiali' ? 'block' : 'none';
-        document.getElementById('tab-frutti').className = 'btn-tab ' + (t === 'frutti' ? 'btn-active' : '');
-        document.getElementById('tab-materiali').className = 'btn-tab ' + (t === 'materiali' ? 'btn-active' : '');
-    }
-
-    function caricaCantiere() {
-        cantiere = document.getElementById('cantiere-select').value;
-        renderStanze(); renderMateriali();
-    }
-
-    function creaStanza() {
-        let n = document.getElementById('nuova-stanza').value;
-        if(n) { db[cantiere].stanze[n] = {}; save(); renderStanze(); document.getElementById('nuova-stanza').value = ""; }
-    }
-
-    function renderStanze() {
-        let l = document.getElementById('lista-stanze'); l.innerHTML = "";
-        Object.keys(db[cantiere].stanze).forEach(s => {
-            l.innerHTML += `<div class="row" onclick="apriStanza('${s}')">${s} <span>></span></div>`;
-        });
-    }
-
-    function apriStanza(s) {
-        stanza = s;
-        document.getElementById('sec-conteggio').style.display = 'block';
-        document.getElementById('titolo-stanza').innerText = "Stanza: " + s;
-        // Qui dovresti generare la lista frutti basata sul tuo catalogo
-    }
-
-    function renderMateriali() {
-        let l = document.getElementById('lista-materiali'); l.innerHTML = "";
-        // Esempio logica rendering materiali con autosalvataggio
-        // l.innerHTML += `<div class="row">... <button onclick="modifica('Mat1', 1)">+</button></div>`
-    }
-
-    // Inizializzazione select cantieri
-    let s = document.getElementById('cantiere-select');
-    Object.keys(db).forEach(c => s.innerHTML += `<option>${c}</option>`);
-    caricaCantiere();
-</script>
+        function resetData() { if(confirm("Cancellare tutto?")) localStorage.clear(); location.reload(); }
+    </script>
 </body>
 </html>
