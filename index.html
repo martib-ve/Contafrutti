@@ -10,17 +10,19 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg-body); color: var(--text-main); padding: 15px; padding-bottom: 80px; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .section { margin-bottom: 10px; }
+        .section { margin-bottom: 15px; }
         select, input { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; }
         .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .stepper { display: flex; align-items: center; gap: 15px; }
         .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; }
         
-        /* Nuovi stili per la gerarchia a tendina */
+        /* Stili per la gerarchia a tendina */
         .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
         .titolo-secondario { font-weight: 700; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px dashed var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); text-transform: uppercase; }
         .contenuto-espandibile { display: none; padding: 10px 0 15px 0; }
         .contenuto-espandibile.open { display: block; }
+        
+        .btn-danger { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ff4444; background: transparent; color: #ff4444; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -32,6 +34,10 @@
 
 <div class="section">
     <select id="cantiere-select" onchange="caricaCantiere()"></select>
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="nuovo-cantiere" placeholder="NOME NUOVO CANTIERE...">
+        <button onclick="aggiungiCantiere()" style="width:50px; background:var(--accent); color:var(--bg-body); border:none; border-radius:8px; font-weight:bold; font-size: 1.2rem;">+</button>
+    </div>
 </div>
 
 <div class="section">
@@ -68,7 +74,9 @@
 <div class="section">
     <div class="titolo-principale" onclick="toggle('manutenzione')" style="font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border);">MANUTENZIONE CATALOGO <span>▼</span></div>
     <div id="manutenzione" class="contenuto-espandibile">
-        <p style="color: var(--text-muted); font-size: 0.8rem;">Opzioni di ripristino o modifica voci...</p>
+        <div style="padding: 10px 0;">
+            <button onclick="resetData()" class="btn-danger">RIPRISTINA TUTTI I DATI</button>
+        </div>
     </div>
 </div>
 
@@ -83,19 +91,41 @@
         document.documentElement.setAttribute('data-theme', t);
     }
 
-    // Nuova funzione per gestire le tendine
     function toggle(id) {
         document.getElementById(id).classList.toggle('open');
     }
 
+    // Popola il menu a tendina dei cantieri
+    function aggiornaSelectCantieri() {
+        let s = document.getElementById('cantiere-select');
+        s.innerHTML = "";
+        Object.keys(db).forEach(c => s.innerHTML += `<option value="${c}">${c}</option>`);
+        s.value = cantiere;
+    }
+
+    function aggiungiCantiere() {
+        let n = document.getElementById('nuovo-cantiere').value.trim();
+        if(n) {
+            if(!db[n]) {
+                db[n] = { stanze: {}, materiali: {} };
+                cantiere = n;
+                save();
+                aggiornaSelectCantieri();
+                caricaCantiere();
+                document.getElementById('nuovo-cantiere').value = "";
+            } else {
+                alert("Questo cantiere esiste già!");
+            }
+        }
+    }
+
     function caricaCantiere() {
         cantiere = document.getElementById('cantiere-select').value;
-        renderStanze(); 
-        // renderMateriali(); // Da riattivare con la tua logica
+        renderStanze();
     }
 
     function creaStanza() {
-        let n = document.getElementById('nuova-stanza').value;
+        let n = document.getElementById('nuova-stanza').value.trim();
         if(n) { 
             db[cantiere].stanze[n] = {}; 
             save(); 
@@ -104,13 +134,13 @@
         }
     }
 
-    // Modificata per creare stanze espandibili
     function renderStanze() {
         let l = document.getElementById('lista-stanze'); 
         l.innerHTML = "";
         
+        if (!db[cantiere] || !db[cantiere].stanze) return;
+
         Object.keys(db[cantiere].stanze).forEach(s => {
-            // Crea un ID sicuro per l'HTML togliendo gli spazi dal nome della stanza
             let safeId = "stanza-" + s.replace(/\s+/g, '-');
             
             l.innerHTML += `
@@ -122,9 +152,15 @@
         });
     }
 
-    // Inizializzazione select cantieri
-    let s = document.getElementById('cantiere-select');
-    Object.keys(db).forEach(c => s.innerHTML += `<option>${c}</option>`);
+    function resetData() {
+        if(confirm("Sei sicuro di voler cancellare TUTTI i cantieri e i dati salvati? Questa azione non può essere annullata.")) {
+            localStorage.removeItem('data');
+            location.reload();
+        }
+    }
+
+    // Inizializzazione dell'applicazione
+    aggiornaSelectCantieri();
     caricaCantiere();
 </script>
 </body>
