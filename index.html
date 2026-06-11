@@ -69,7 +69,7 @@
 <div class="section">
     <div class="titolo-principale" onclick="toggle('riepilogo-sez'); generaRiepilogo();">RIEPILOGO CANTIERE <span>▼</span></div>
     <div id="riepilogo-sez" class="contenuto-espandibile">
-        <textarea id="testo-riepilogo" rows="10" readonly style="font-family:monospace; font-size:0.9rem; resize:none;"></textarea>
+        <textarea id="testo-riepilogo" rows="12" readonly style="font-family:monospace; font-size:0.9rem; resize:none;"></textarea>
         <div style="display:flex; gap:10px; margin-top:5px;">
             <button onclick="copiaRiepilogo()" style="flex:1;">COPIA TESTO</button>
             <button onclick="inviaWhatsApp()" class="btn-accent" style="flex:1; background:#25D366; color:#fff;">INVIA WHATSAPP</button>
@@ -81,7 +81,7 @@
     <div class="titolo-principale" onclick="toggle('manutenzione')" style="font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border);">MANUTENZIONE APPLICAZIONE <span>▼</span></div>
     <div id="manutenzione" class="contenuto-espandibile">
         
-        <div class="titolo-secondario" onclick="toggle('sub-man-cantiere')">⚙️ Gestione Cantiere <span>▼</span></div>
+        <div class="titolo-secondario" onclick="toggle('sub-man-cantiere')">Gestione Cantiere <span>▼</span></div>
         <div id="sub-man-cantiere" class="contenuto-espandibile">
             <div class="box-manutenzione">
                 <div class="label-manutenzione">Rinomina Cantiere Corrente</div>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <div class="titolo-secondario" onclick="toggle('sub-man-materiale')">📦 Catalogo Materiale Generale <span>▼</span></div>
+        <div class="titolo-secondario" onclick="toggle('sub-man-materiale')">Catalogo Materiale Generale <span>▼</span></div>
         <div id="sub-man-materiale" class="contenuto-espandibile">
             <div class="box-manutenzione">
                 <div class="label-manutenzione">Inserisci Nuova Voce</div>
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <div class="titolo-secondario" onclick="toggle('sub-man-stanze')">🏠 Stanze e Catalogo Frutti <span>▼</span></div>
+        <div class="titolo-secondario" onclick="toggle('sub-man-stanze')">Stanze e Catalogo Frutti <span>▼</span></div>
         <div id="sub-man-stanze" class="contenuto-espandibile">
             <div class="box-manutenzione">
                 <div class="label-manutenzione">Modifica Nome Stanza Esistente in Cantiere</div>
@@ -160,7 +160,7 @@
             </div>
         </div>
 
-        <div class="titolo-secondario" onclick="toggle('sub-man-backup')">💾 Backup e Reset Sistema <span>▼</span></div>
+        <div class="titolo-secondario" onclick="toggle('sub-man-backup')">Backup e Reset Sistema <span>▼</span></div>
         <div id="sub-man-backup" class="contenuto-espandibile">
             <div class="box-manutenzione">
                 <div class="label-manutenzione">Esporta / Importa</div>
@@ -174,7 +174,7 @@
 </div>
 
 <script>
-    // --- STRUTTURA DATI DI DEFAULT CORRETTA ---
+    // --- STRUTTURA DATI DI DEFAULT ---
     const catalogoInizialeMateriali = {
         "Cordine 1.5 mm²": [
             { label: "Marrone", color: "#8B4513" },
@@ -185,7 +185,8 @@
             { label: "Bianco", color: "#fff" },
             { label: "Rosso", color: "#ff0000" },
             { label: "Viola", color: "#800080" },
-            { label: "Arancione", color: "#ffa500" }
+            { label: "Arancione", color: "#ffa500" },
+            { label: "Rosa", color: "#ffc0cb" }
         ],
         "Cordine 2.5 mm²": [
             { label: "Marrone", color: "#8B4513" },
@@ -230,6 +231,15 @@
         };
         db.cantieri[nomeIniziale] = { stanze: {}, materiali: {} };
         localStorage.setItem('contafrutti_db', JSON.stringify(db));
+    }
+
+    // Forza l'inserimento della cordina rosa se non presente nel db locale esistente
+    if (db.catalogoMateriali && db.catalogoMateriali["Cordine 1.5 mm²"]) {
+        const haRosa = db.catalogoMateriali["Cordine 1.5 mm²"].some(i => i.label === "Rosa");
+        if (!haRosa) {
+            db.catalogoMateriali["Cordine 1.5 mm²"].push({ label: "Rosa", color: "#ffc0cb" });
+            localStorage.setItem('contafrutti_db', JSON.stringify(db));
+        }
     }
 
     let cantiere = Object.keys(db.cantieri)[0] || "";
@@ -350,14 +360,15 @@
         });
     }
 
-    function eliminaStanza(s) {
-        if(confirm(`Eliminare la stanza ${s}?`)) { delete db.cantieri[cantiere].stanze[s]; save(); renderStanze(); popolaTutteLeSelectManutenzione(); }
-    }
+    function自动_eliminaStanza(s) { delete db.cantieri[cantiere].stanze[s]; save(); renderStanze(); popolaTutteLeSelectManutenzione(); }
+    function eliminaStanza(s) { if(confirm(`Eliminare la stanza ${s}?`)) { automatic_eliminaStanza(s); } }
 
-    // --- RIEPILOGO ---
+    // --- RIEPILOGO CUMULATIVO ---
     function generaRiepilogo() {
         let txt = `RIEPILOGO CANTIERE: ${cantiere.toUpperCase()}\n`;
         txt += `==================================\n\n`;
+        
+        // PARTE 1: MATERIALE GENERALE (Cordine, Corrugati, ecc.)
         txt += `--- MATERIALE GENERALE ---\n`;
         let haMateriale = false;
         if(db.cantieri[cantiere].materiali) {
@@ -368,7 +379,38 @@
         }
         if(!haMateriale) txt += `Nessun materiale inserito.\n`;
 
-        txt += `\n--- CONTEGGIO STANZE ---\n`;
+        // PARTE 2: TOTALE CUMULATIVO FRUTTI (IL TOTALE DI TUTTO IL CANTIERE)
+        txt += `\n--- TOTALE MATERIALE STANZE (ORDINE COMPLESSIVO) ---\n`;
+        let totaliFrutti = {};
+        Object.keys(db.cantieri[cantiere].stanze).forEach(s => {
+            Object.keys(db.cantieri[cantiere].stanze[s]).forEach(fru => {
+                let qta = db.cantieri[cantiere].stanze[s][fru] || 0;
+                if(qta > 0) {
+                    if(!totaliFrutti[fru]) totaliFrutti[fru] = 0;
+                    totaliFrutti[fru] += qta;
+                }
+            });
+        });
+        
+        let haTotati = false;
+        // Seguiamo l'ordine del catalogo per mostrare i totali puliti per categoria
+        Object.keys(db.catalogoFrutti).forEach(categoria => {
+            let catHeaderStampato = false;
+            db.catalogoFrutti[categoria].forEach(voce => {
+                if(totaliFrutti[voce] && totaliFrutti[voce] > 0) {
+                    if(!catHeaderStampato) {
+                        txt += `[${categoria.toUpperCase()}]\n`;
+                        catHeaderStampato = true;
+                    }
+                    txt += `  • ${voce}: ${totaliFrutti[voce]}\n`;
+                    haTotati = true;
+                }
+            });
+        });
+        if(!haTotati) txt += `Nessun frutto totalizzato.\n`;
+
+        // PARTE 3: DETTAGLIO STANZA PER STANZA
+        txt += `\n--- DETTAGLIO STANZA PER STANZA ---\n`;
         let haStanze = false;
         Object.keys(db.cantieri[cantiere].stanze).forEach(s => {
             let stanzaTxt = "";
@@ -379,6 +421,7 @@
             if(stanzaTxt !== "") { txt += `* STANZA: ${s.toUpperCase()}\n` + stanzaTxt; haStanze = true; }
         });
         if(!haStanze) txt += `Nessun frutto contato nelle stanze.\n`;
+        
         document.getElementById('testo-riepilogo').value = txt;
         return txt;
     }
@@ -402,7 +445,6 @@
         }
     }
 
-    // --- POPOLAMENTO STRUTTURATO SELECT MANUTENZIONE ---
     function popolaTutteLeSelectManutenzione() {
         let selStanza = document.getElementById('select-rinomina-stanza'); selStanza.innerHTML = "";
         Object.keys(db.cantieri[cantiere].stanze).forEach(s => selStanza.innerHTML += `<option value="${s}">${s}</option>`);
@@ -489,7 +531,7 @@
         let voce = document.getElementById('del-mat-voce').value;
         if(!voce) return;
 
-        if(confirm(`Vuoi rimuovere "${voce}" definitivamente dal catalogo materiali? (Verrà persa anche nei conteggi cantieri)`)) {
+        if(confirm(`Vuoi rimuovere "${voce}" definitivamente dal catalogo materiali?`)) {
             db.catalogoMateriali[gruppo] = db.catalogoMateriali[gruppo].filter(i => i.label !== voce);
             Object.keys(db.cantieri).forEach(c => {
                 if(db.cantieri[c].materiali) delete db.cantieri[c].materiali[voce];
@@ -545,12 +587,10 @@
         let voce = document.getElementById('del-fru-voce').value;
         if(!voce) return;
 
-        if(confirm(`Vuoi rimuovere "${voce}" dal catalogo frutti? (Verrà cancellata anche da tutte le stanze dei cantieri)`)) {
+        if(confirm(`Vuoi rimuovere "${voce}" dal catalogo frutti?`)) {
             db.catalogoFrutti[gruppo] = db.catalogoFrutti[gruppo].filter(i => i !== voce);
             Object.keys(db.cantieri).forEach(c => {
-                Object.keys(db.cantieri[c].stanze).forEach(s => {
-                    delete db.cantieri[c].stanze[s][voce];
-                });
+                Object.keys(db.cantieri[c].stanze).forEach(s => { delete db.cantieri[c].stanze[s][voce]; });
             });
             save(); caricaCantiere(); alert("Frutto eliminato!");
         }
