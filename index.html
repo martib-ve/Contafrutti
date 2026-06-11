@@ -11,19 +11,24 @@
         body { background: var(--bg-body); color: var(--text-main); padding: 15px; padding-bottom: 80px; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .section { margin-bottom: 15px; }
-        select, input { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; }
+        select, input, textarea { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; font-size: 1rem; }
         .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .stepper { display: flex; align-items: center; gap: 15px; }
         .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; cursor: pointer; }
         .qta-val { font-size: 1.2rem; font-weight: bold; min-width: 30px; text-align: center; }
         
-        /* Stili per la gerarchia a tendina */
-        .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
+        /* Stili Gerarchia */
+        .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; margin-top: 10px; }
         .titolo-secondario { font-weight: 700; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px dashed var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); text-transform: uppercase; }
         .contenuto-espandibile { display: none; padding: 10px 0 15px 0; }
         .contenuto-espandibile.open { display: block; }
         
-        .btn-danger { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ff4444; background: transparent; color: #ff4444; font-weight: bold; cursor: pointer; }
+        /* Pallini Colorati Cordine */
+        .color-dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 10px; vertical-align: middle; border: 1px solid #444; }
+        
+        button { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-main); font-weight: bold; cursor: pointer; }
+        .btn-danger { border-color: #ff4444; color: #ff4444; }
+        .btn-accent { background: var(--accent); color: var(--bg-body); border: none; }
     </style>
 </head>
 <body>
@@ -37,7 +42,7 @@
     <select id="cantiere-select" onchange="caricaCantiere()"></select>
     <div style="display:flex; gap:10px;">
         <input type="text" id="nuovo-cantiere" placeholder="NOME NUOVO CANTIERE...">
-        <button onclick="aggiungiCantiere()" style="width:50px; background:var(--accent); color:var(--bg-body); border:none; border-radius:8px; font-weight:bold; font-size: 1.2rem;">+</button>
+        <button onclick="aggiungiCantiere()" class="btn-accent" style="width:50px;">+</button>
     </div>
 </div>
 
@@ -54,7 +59,18 @@
         <div id="lista-stanze"></div>
         <div style="display:flex; gap:10px; margin-top:20px; border-top: 1px solid var(--border); padding-top: 15px;">
             <input type="text" id="nuova-stanza" placeholder="NOME NUOVA STANZA...">
-            <button onclick="creaStanza()" style="width:50px; background:var(--accent); color:var(--bg-body); border:none; border-radius:8px; font-weight:bold; font-size: 1.2rem;">+</button>
+            <button onclick="creaStanza()" class="btn-accent" style="width:50px;">+</button>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="titolo-principale" onclick="toggle('riepilogo-sez'); generaRiepilogo();">RIEPILOGO CANTIERE <span>▼</span></div>
+    <div id="riepilogo-sez" class="contenuto-espandibile">
+        <textarea id="testo-riepilogo" rows="10" readonly style="font-family:monospace; font-size:0.9rem; resize:none;"></textarea>
+        <div style="display:flex; gap:10px; margin-top:5px;">
+            <button onclick="copiaRiepilogo()" style="flex:1;">COPIA TESTO</button>
+            <button onclick="inviaWhatsApp()" class="btn-accent" style="flex:1; background:#25D366; color:#fff;">INVIA WHATSAPP</button>
         </div>
     </div>
 </div>
@@ -62,18 +78,58 @@
 <div class="section">
     <div class="titolo-principale" onclick="toggle('manutenzione')" style="font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border);">MANUTENZIONE CATALOGO <span>▼</span></div>
     <div id="manutenzione" class="contenuto-espandibile">
-        <div style="padding: 10px 0;">
-            <button onclick="resetData()" class="btn-danger">RIPRISTINA TUTTI I DATI</button>
+        
+        <div style="border: 1px solid var(--border); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+            <p style="font-size:0.8rem; font-weight:bold; margin-bottom:5px; color:var(--text-muted)">CORREGGI NOME STANZA</p>
+            <select id="select-rinomina-stanza" style="margin-bottom:5px;"></select>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="nuovo-nome-stanza" placeholder="Nuovo nome corretto..." style="margin-bottom:0;">
+                <button onclick="rinominaStanza()">SALVA</button>
+            </div>
         </div>
+
+        <div style="border: 1px solid var(--border); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+            <p style="font-size:0.8rem; font-weight:bold; margin-bottom:5px; color:var(--text-muted)">BACKUP DATI (IMPORTA / ESPORTA)</p>
+            <button onclick="esportaBackup()" style="width:100%; margin-bottom:5px;">COPIA CODICE DI BACKUP</button>
+            <button onclick="importaBackup()" style="width:100%;">CARICA CODICE DI BACKUP</button>
+        </div>
+
+        <button onclick="resetData()" class="btn-danger" style="width:100%;">RIPRISTINA TUTTI I DATI</button>
     </div>
 </div>
 
 <script>
-    // --- CATALOGO PRECARICATO ---
+    // --- CATALOGO STRUTTURATO CON COLORI ---
     const catalogoMateriali = {
-        "Cordine": ["Cordina 1.5mm² Nero", "Cordina 1.5mm² Blu", "Cordina 1.5mm² G/V", "Cordina 2.5mm² Nero", "Cordina 2.5mm² Blu", "Cordina 2.5mm² G/V", "Cordina 4mm²"],
-        "Tubi e Corrugati": ["Tubo 20mm", "Tubo 25mm", "Tubo 32mm"],
-        "Materiale Consumo": ["Morsetti", "Nastro Isolante", "Fascette"]
+        "Cordine 1.5 mm²": [
+            { id: "C15-Nero", label: "Nero", color: "#000" },
+            { id: "C15-Blu", label: "Blu", color: "#00f" },
+            { id: "C15-GV", label: "Giallo/Verde", color: "linear-gradient(135deg, #fff200 50%, #00a651 50%)" },
+            { id: "C15-Marrone", label: "Marrone", color: "#8B4513" },
+            { id: "C15-Grigio", label: "Grigio", color: "#808080" }
+        ],
+        "Cordine 2.5 mm²": [
+            { id: "C25-Nero", label: "Nero", color: "#000" },
+            { id: "C25-Blu", label: "Blu", color: "#00f" },
+            { id: "C25-GV", label: "Giallo/Verde", color: "linear-gradient(135deg, #fff200 50%, #00a651 50%)" },
+            { id: "C25-Marrone", label: "Marrone", color: "#8B4513" },
+            { id: "C25-Grigio", label: "Grigio", color: "#808080" }
+        ],
+        "Cordine 4 mm²": [
+            { id: "C40-Nero", label: "Nero", color: "#000" },
+            { id: "C40-Blu", label: "Blu", color: "#00f" },
+            { id: "C40-GV", label: "Giallo/Verde", color: "linear-gradient(135deg, #fff200 50%, #00a651 50%)" }
+        ],
+        "Tubi e Corrugati": [
+            { id: "Tubo-20", label: "Tubo Ø 20mm" },
+            { id: "Tubo-25", label: "Tubo Ø 25mm" },
+            { id: "Tubo-32", label: "Tubo Ø 32mm" }
+        ],
+        "Materiale Consumo": [
+            { id: "Morsetti", label: "Morsetti" },
+            { id: "Nastro", label: "Nastro Isolante" },
+            { id: "Fascette", label: "Fascette" }
+        ]
     };
 
     const catalogoFrutti = {
@@ -83,22 +139,15 @@
         "Centralino": ["Magnetotermico", "Differenziale", "Scatola Centralino"]
     };
 
-    // --- INIZIALIZZAZIONE DATI ---
     let db = JSON.parse(localStorage.getItem('data')) || { "Cantiere 1": { stanze: {}, materiali: {} } };
     let cantiere = Object.keys(db)[0];
 
     function save() { localStorage.setItem('data', JSON.stringify(db)); }
-    
-    function toggleTema() {
-        let t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', t);
-    }
-
+    function toggleTema() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
     function toggle(id) { document.getElementById(id).classList.toggle('open'); }
 
     function aggiornaSelectCantieri() {
-        let s = document.getElementById('cantiere-select');
-        s.innerHTML = "";
+        let s = document.getElementById('cantiere-select'); s.innerHTML = "";
         Object.keys(db).forEach(c => s.innerHTML += `<option value="${c}">${c}</option>`);
         s.value = cantiere;
     }
@@ -106,65 +155,56 @@
     function aggiungiCantiere() {
         let n = document.getElementById('nuovo-cantiere').value.trim();
         if(n && !db[n]) {
-            db[n] = { stanze: {}, materiali: {} };
-            cantiere = n;
-            save();
-            aggiornaSelectCantieri();
-            caricaCantiere();
+            db[n] = { stanze: {}, materiali: {} }; cantiere = n; save();
+            aggiornaSelectCantieri(); caricaCantiere();
             document.getElementById('nuovo-cantiere').value = "";
         }
     }
 
     function caricaCantiere() {
         cantiere = document.getElementById('cantiere-select').value;
-        if (!db[cantiere].materiali) db[cantiere].materiali = {}; // Retrocompatibilità
-        renderMateriali();
-        renderStanze();
+        if (!db[cantiere].materiali) db[cantiere].materiali = {};
+        renderMateriali(); renderStanze(); popolaSelectManutenzione();
     }
 
     // --- LOGICA MATERIALI ---
-    function modificaMateriale(voce, quantita) {
-        if (!db[cantiere].materiali[voce]) db[cantiere].materiali[voce] = 0;
-        db[cantiere].materiali[voce] += quantita;
-        if (db[cantiere].materiali[voce] < 0) db[cantiere].materiali[voce] = 0;
+    function modificaMateriale(id, quantita) {
+        if (!db[cantiere].materiali[id]) db[cantiere].materiali[id] = 0;
+        db[cantiere].materiali[id] += quantita;
+        if (db[cantiere].materiali[id] < 0) db[cantiere].materiali[id] = 0;
         save();
-        document.getElementById(`qta-mat-${voce.replace(/\s+/g, '-')}`).innerText = db[cantiere].materiali[voce];
+        document.getElementById(`qta-mat-${id}`).innerText = db[cantiere].materiali[id];
     }
 
     function renderMateriali() {
-        let container = document.getElementById('render-materiali');
-        container.innerHTML = "";
-
+        let container = document.getElementById('render-materiali'); container.innerHTML = "";
         Object.keys(catalogoMateriali).forEach((categoria, index) => {
             let safeCatId = "cat-mat-" + index;
             let htmlCat = `<div class="titolo-secondario" onclick="toggle('${safeCatId}')">${categoria} <span>▼</span></div>
                            <div id="${safeCatId}" class="contenuto-espandibile">`;
             
-            catalogoMateriali[categoria].forEach(voce => {
-                let qta = db[cantiere].materiali[voce] || 0;
-                let safeVoceId = voce.replace(/\s+/g, '-');
+            catalogoMateriali[categoria].forEach(item => {
+                let qta = db[cantiere].materiali[item.id] || 0;
+                let colorDotSpan = item.color ? `<span class="color-dot" style="background:${item.color}"></span>` : '';
                 htmlCat += `
                     <div class="row">
-                        <span style="font-size:0.9rem;">${voce}</span>
+                        <span style="font-size:0.9rem;">${colorDotSpan}${item.label}</span>
                         <div class="stepper">
-                            <button class="btn-step" onclick="modificaMateriale('${voce}', -1)">-</button>
-                            <span class="qta-val" id="qta-mat-${safeVoceId}">${qta}</span>
-                            <button class="btn-step" onclick="modificaMateriale('${voce}', 1)">+</button>
+                            <button class="btn-step" onclick="modificaMateriale('${item.id}', -1)">-</button>
+                            <span class="qta-val" id="qta-mat-${item.id}">${qta}</span>
+                            <button class="btn-step" onclick="modificaMateriale('${item.id}', 1)">+</button>
                         </div>
                     </div>`;
             });
-            htmlCat += `</div>`;
-            container.innerHTML += htmlCat;
+            htmlCat += `</div>`; container.innerHTML += htmlCat;
         });
     }
 
-    // --- LOGICA STANZE E FRUTTI ---
+    // --- LOGICA STANZE ---
     function creaStanza() {
         let n = document.getElementById('nuova-stanza').value.trim();
         if(n && !db[cantiere].stanze[n]) { 
-            db[cantiere].stanze[n] = {}; 
-            save(); 
-            renderStanze(); 
+            db[cantiere].stanze[n] = {}; save(); renderStanze(); popolaSelectManutenzione();
             document.getElementById('nuova-stanza').value = ""; 
         }
     }
@@ -174,49 +214,127 @@
         db[cantiere].stanze[stanza][voce] += quantita;
         if (db[cantiere].stanze[stanza][voce] < 0) db[cantiere].stanze[stanza][voce] = 0;
         save();
-        document.getElementById(`qta-fru-${stanza.replace(/\s+/g, '-')}-${voce.replace(/\s+/g, '-')}`).innerText = db[cantiere].stanze[stanza][voce];
+        let safeStr = stanza.replace(/\s+/g, '-') + "-" + voce.replace(/\s+/g, '-');
+        document.getElementById(`qta-fru-${safeStr}`).innerText = db[cantiere].stanze[stanza][voce];
     }
 
     function renderStanze() {
-        let l = document.getElementById('lista-stanze'); 
-        l.innerHTML = "";
-        
+        let l = document.getElementById('lista-stanze'); l.innerHTML = "";
         Object.keys(db[cantiere].stanze).forEach(s => {
             let safeStanzaId = "stanza-" + s.replace(/\s+/g, '-');
             let htmlStanza = `<div class="titolo-secondario" onclick="toggle('${safeStanzaId}')">${s.toUpperCase()} <span>▼</span></div>
                               <div id="${safeStanzaId}" class="contenuto-espandibile">`;
             
-            // Genera i frutti per questa stanza
             Object.keys(catalogoFrutti).forEach(categoria => {
-                htmlStanza += `<div style="font-size:0.7rem; color:var(--text-muted); margin-top:10px; font-weight:bold;">${categoria.toUpperCase()}</div>`;
-                
+                htmlStanza += `<div style="font-size:0.7rem; color:var(--text-muted); margin-top:10px; font-weight:bold; text-transform:uppercase;">${categoria}</div>`;
                 catalogoFrutti[categoria].forEach(voce => {
                     let qta = db[cantiere].stanze[s][voce] || 0;
-                    let safeVoceId = voce.replace(/\s+/g, '-');
+                    let safeStr = s.replace(/\s+/g, '-') + "-" + voce.replace(/\s+/g, '-');
                     htmlStanza += `
-                        <div class="row" style="border-bottom:none; padding:8px 0;">
+                        <div class="row" style="border-bottom:none; padding:6px 0;">
                             <span style="font-size:0.9rem;">${voce}</span>
                             <div class="stepper">
                                 <button class="btn-step" onclick="modificaFrutto('${s}', '${voce}', -1)">-</button>
-                                <span class="qta-val" id="qta-fru-${safeStanzaId.replace('stanza-','')}-${safeVoceId}">${qta}</span>
+                                <span class="qta-val" id="qta-fru-${safeStr}">${qta}</span>
                                 <button class="btn-step" onclick="modificaFrutto('${s}', '${voce}', 1)">+</button>
                             </div>
                         </div>`;
                 });
             });
-            
-            htmlStanza += `</div>`;
+            htmlStanza += `<button onclick="eliminaStanza('${s}')" class="btn-danger" style="padding:6px; font-size:0.8rem; margin-top:15px; width:100%;">ELIMINA QUESTA STANZA</button></div>`;
             l.innerHTML += htmlStanza;
         });
     }
 
-    function resetData() {
-        if(confirm("Sei sicuro di voler cancellare TUTTI i cantieri e i dati salvati?")) {
-            localStorage.removeItem('data');
-            location.reload();
+    function eliminaStanza(s) {
+        if(confirm(`Eliminare la stanza ${s} e tutti i suoi conteggi?`)) { delete db[cantiere].stanze[s]; save(); renderStanze(); popolaSelectManutenzione(); }
+    }
+
+    // --- LOGICA RIEPILOGO ---
+    function generaRiepilogo() {
+        let txt = `RIEPILOGO CANTIERE: ${cantiere.toUpperCase()}\n`;
+        txt += `==================================\n\n`;
+        
+        txt += `--- MATERIALE GENERALE ---\n`;
+        let haMateriale = false;
+        Object.keys(catalogoMateriali).forEach(cat => {
+            catalogoMateriali[cat].forEach(item => {
+                let qta = db[cantiere].materiali[item.id] || 0;
+                if(qta > 0) { txt += `- [${cat}] ${item.label}: ${qta}\n`; haMateriale = true; }
+            });
+        });
+        if(!haMateriale) txt += `Nessun materiale inserito.\n`;
+
+        txt += `\n--- CONTEGGIO STANZE ---\n`;
+        let haStanze = false;
+        Object.keys(db[cantiere].stanze).forEach(s => {
+            let stanzaTxt = "";
+            Object.keys(db[cantiere].stanze[s]).forEach(fru => {
+                let qta = db[cantiere].stanze[s][fru] || 0;
+                if(qta > 0) stanzaTxt += `  . ${fru}: ${qta}\n`;
+            });
+            if(stanzaTxt !== "") { txt += `* STANZA: ${s.toUpperCase()}\n` + stanzaTxt; haStanze = true; }
+        });
+        if(!haStanze) txt += `Nessun frutto contato nelle stanze.\n`;
+        
+        document.getElementById('testo-riepilogo').value = txt;
+        return txt;
+    }
+
+    function copiaRiepilogo() {
+        let t = document.getElementById('testo-riepilogo'); t.select(); t.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(t.value); alert("Riepilogo copiato negli appunti!");
+    }
+
+    function inviaWhatsApp() {
+        let txt = encodeURIComponent(generaRiepilogo());
+        window.open(`https://api.whatsapp.com/send?text=${txt}`, '_blank');
+    }
+
+    // --- MANUTENZIONE & UTILITY ---
+    function popolaSelectManutenzione() {
+        let sel = document.getElementById('select-rinomina-stanza'); sel.innerHTML = "";
+        if(!db[cantiere] || !db[cantiere].stanze) return;
+        Object.keys(db[cantiere].stanze).forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+    }
+
+    function rinominaStanza() {
+        let vecchia = document.getElementById('select-rinomina-stanza').value;
+        let nuova = document.getElementById('nuovo-nome-stanza').value.trim();
+        if(vecchia && nuova) {
+            db[cantiere].stanze[nuova] = db[cantiere].stanze[vecchia];
+            delete db[cantiere].stanze[vecchia]; save();
+            renderStanze(); popolaSelectManutenzione();
+            document.getElementById('nuovo-nome-stanza').value = "";
+            alert("Stanza rinominata con successo!");
         }
     }
 
+    function esportaBackup() {
+        let str = btoa(JSON.stringify(db));
+        navigator.clipboard.writeText(str);
+        alert("Codice di backup copiato negli appunti! Conservalo in un posto sicuro.");
+    }
+
+    function importaBackup() {
+        let codice = prompt("Incolla qui il codice di backup precedentemente salvato:");
+        if(codice) {
+            try {
+                let decodificato = JSON.parse(atob(codice));
+                if(confirm("Caricando questo backup sovrascriverai tutti i dati correnti. Continuare?")) {
+                    db = decodificato; save(); location.reload();
+                }
+            } catch(e) { alert("Codice di backup non valido o corrotto!"); }
+        }
+    }
+
+    function resetData() {
+        if(confirm("Attenzione! Cancellerai DEFINITIVAMENTE tutti i cantieri, stanze e materiali salvati. Continuare?")) {
+            localStorage.removeItem('data'); location.reload();
+        }
+    }
+
+    // Avvio
     aggiornaSelectCantieri();
     caricaCantiere();
 </script>
