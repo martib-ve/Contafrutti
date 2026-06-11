@@ -17,13 +17,11 @@
         .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; cursor: pointer; }
         .qta-val { font-size: 1.2rem; font-weight: bold; min-width: 30px; text-align: center; }
         
-        /* Stili Gerarchia */
         .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; margin-top: 10px; }
         .titolo-secondario { font-weight: 700; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px dashed var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); text-transform: uppercase; }
         .contenuto-espandibile { display: none; padding: 10px 0 15px 0; }
         .contenuto-espandibile.open { display: block; }
         
-        /* Pallini Colorati Cordine */
         .color-dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; margin-right: 10px; vertical-align: middle; border: 1px solid #444; }
         
         button { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-input); color: var(--text-main); font-weight: bold; cursor: pointer; }
@@ -174,7 +172,6 @@
 </div>
 
 <script>
-    // --- STRUTTURA DATI DI DEFAULT ---
     const catalogoInizialeMateriali = {
         "Cordine 1.5 mm²": [
             { label: "Marrone", color: "#8B4513" },
@@ -233,7 +230,6 @@
         localStorage.setItem('contafrutti_db', JSON.stringify(db));
     }
 
-    // Forza l'inserimento della cordina rosa se non presente nel db locale esistente
     if (db.catalogoMateriali && db.catalogoMateriali["Cordine 1.5 mm²"]) {
         const haRosa = db.catalogoMateriali["Cordine 1.5 mm²"].some(i => i.label === "Rosa");
         if (!haRosa) {
@@ -271,11 +267,11 @@
     function caricaCantiere() {
         if(!cantiere && Object.keys(db.cantieri).length > 0) cantiere = Object.keys(db.cantieri)[0];
         if(!cantiere) return;
-        document.getElementById('rinomina-cantiere-input').value = cantiere;
+        let rinominaInput = document.getElementById('rinomina-cantiere-input');
+        if(rinominaInput) rinominaInput.value = cantiere;
         renderMateriali(); renderStanze(); popolaTutteLeSelectManutenzione();
     }
 
-    // --- LOGICA MATERIALI ---
     function modificaMateriale(label, quantita) {
         if (!db.cantieri[cantiere].materiali) db.cantieri[cantiere].materiali = {};
         if (!db.cantieri[cantiere].materiali[label]) db.cantieri[cantiere].materiali[label] = 0;
@@ -312,7 +308,6 @@
         });
     }
 
-    // --- LOGICA STANZE ---
     function creaStanza() {
         let n = document.getElementById('nuova-stanza').value.trim();
         if(n && !db.cantieri[cantiere].stanze[n]) { 
@@ -355,20 +350,21 @@
                         </div>`;
                 });
             });
-            htmlStanza += `<button onclick="eliminaStanza('${s}')" class="btn-danger" style="padding:6px; font-size:0.8rem; margin-top:15px; width:100%;">ELIMINA QUESTA STANZA DA QUESTO CANTIERE</button></div>`;
+            htmlStanza += `<button onclick="eliminaStanza('${s}')" class="btn-danger" style="padding:6px; font-size:0.8rem; margin-top:15px; width:100%;">ELIMINA QUESTA STANZA</button></div>`;
             l.innerHTML += htmlStanza;
         });
     }
 
-    function自动_eliminaStanza(s) { delete db.cantieri[cantiere].stanze[s]; save(); renderStanze(); popolaTutteLeSelectManutenzione(); }
-    function eliminaStanza(s) { if(confirm(`Eliminare la stanza ${s}?`)) { automatic_eliminaStanza(s); } }
+    function eliminaStanza(s) { 
+        if(confirm(`Eliminare la stanza ${s}?`)) { 
+            delete db.cantieri[cantiere].stanze[s]; save(); renderStanze(); popolaTutteLeSelectManutenzione(); 
+        } 
+    }
 
-    // --- RIEPILOGO CUMULATIVO ---
     function generaRiepilogo() {
         let txt = `RIEPILOGO CANTIERE: ${cantiere.toUpperCase()}\n`;
         txt += `==================================\n\n`;
         
-        // PARTE 1: MATERIALE GENERALE (Cordine, Corrugati, ecc.)
         txt += `--- MATERIALE GENERALE ---\n`;
         let haMateriale = false;
         if(db.cantieri[cantiere].materiali) {
@@ -379,7 +375,6 @@
         }
         if(!haMateriale) txt += `Nessun materiale inserito.\n`;
 
-        // PARTE 2: TOTALE CUMULATIVO FRUTTI (IL TOTALE DI TUTTO IL CANTIERE)
         txt += `\n--- TOTALE MATERIALE STANZE (ORDINE COMPLESSIVO) ---\n`;
         let totaliFrutti = {};
         Object.keys(db.cantieri[cantiere].stanze).forEach(s => {
@@ -392,8 +387,7 @@
             });
         });
         
-        let haTotati = false;
-        // Seguiamo l'ordine del catalogo per mostrare i totali puliti per categoria
+        let haTotali = false;
         Object.keys(db.catalogoFrutti).forEach(categoria => {
             let catHeaderStampato = false;
             db.catalogoFrutti[categoria].forEach(voce => {
@@ -403,13 +397,12 @@
                         catHeaderStampato = true;
                     }
                     txt += `  • ${voce}: ${totaliFrutti[voce]}\n`;
-                    haTotati = true;
+                    haTotali = true;
                 }
             });
         });
-        if(!haTotati) txt += `Nessun frutto totalizzato.\n`;
+        if(!haTotali) txt += `Nessun frutto totalizzato.\n`;
 
-        // PARTE 3: DETTAGLIO STANZA PER STANZA
         txt += `\n--- DETTAGLIO STANZA PER STANZA ---\n`;
         let haStanze = false;
         Object.keys(db.cantieri[cantiere].stanze).forEach(s => {
@@ -435,7 +428,6 @@
         window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(generaRiepilogo())}`, '_blank');
     }
 
-    // --- MANUTENZIONE STRUTTURATA ---
     function rinominaCantiere() {
         let nuovo = document.getElementById('rinomina-cantiere-input').value.trim();
         if(nuovo && nuovo !== cantiere && !db.cantieri[nuovo]) {
@@ -446,23 +438,29 @@
     }
 
     function popolaTutteLeSelectManutenzione() {
-        let selStanza = document.getElementById('select-rinomina-stanza'); selStanza.innerHTML = "";
-        Object.keys(db.cantieri[cantiere].stanze).forEach(s => selStanza.innerHTML += `<option value="${s}">${s}</option>`);
+        let selStanza = document.getElementById('select-rinomina-stanza'); if(selStanza) selStanza.innerHTML = "";
+        Object.keys(db.cantieri[cantiere].stanze).forEach(s => { if(selStanza) selStanza.innerHTML += `<option value="${s}">${s}</option>`; });
 
-        let gAddMat = document.getElementById('add-mat-gruppo'); gAddMat.innerHTML = "";
-        let gModMat = document.getElementById('mod-mat-gruppo'); gModMat.innerHTML = "";
-        let gDelMat = document.getElementById('del-mat-gruppo'); gDelMat.innerHTML = "";
+        let gAddMat = document.getElementById('add-mat-gruppo'); if(gAddMat) gAddMat.innerHTML = "";
+        let gModMat = document.getElementById('mod-mat-gruppo'); if(gModMat) gModMat.innerHTML = "";
+        let gDelMat = document.getElementById('del-mat-gruppo'); if(gDelMat) gDelMat.innerHTML = "";
+        
         Object.keys(db.catalogoMateriali).forEach(g => {
             let opt = `<option value="${g}">${g}</option>`;
-            gAddMat.innerHTML += opt; gModMat.innerHTML += opt; gDelMat.innerHTML += opt;
+            if(gAddMat) gAddMat.innerHTML += opt; 
+            if(gModMat) gModMat.innerHTML += opt; 
+            if(gDelMat) gDelMat.innerHTML += opt;
         });
 
-        let gAddFru = document.getElementById('add-fru-gruppo'); gAddFru.innerHTML = "";
-        let gModFru = document.getElementById('mod-fru-gruppo'); gModFru.innerHTML = "";
-        let gDelFru = document.getElementById('del-fru-gruppo'); gDelFru.innerHTML = "";
+        let gAddFru = document.getElementById('add-fru-gruppo'); if(gAddFru) gAddFru.innerHTML = "";
+        let gModFru = document.getElementById('mod-fru-gruppo'); if(gModFru) gModFru.innerHTML = "";
+        let gDelFru = document.getElementById('del-fru-gruppo'); if(gDelFru) gDelFru.innerHTML = "";
+        
         Object.keys(db.catalogoFrutti).forEach(g => {
             let opt = `<option value="${g}">${g}</option>`;
-            gAddFru.innerHTML += opt; gModFru.innerHTML += opt; gDelFru.innerHTML += opt;
+            if(gAddFru) gAddFru.innerHTML += opt; 
+            if(gModFru) gModFru.innerHTML += opt; 
+            if(gDelFru) gDelFru.innerHTML += opt;
         });
 
         popolaVociModificaMat(); popolaVociDelMat();
@@ -482,17 +480,20 @@
         }
     }
 
-    // --- FUNZIONI CATALOGO MATERIALI ---
     function popolaVociModificaMat() {
-        let g = document.getElementById('mod-mat-gruppo').value;
-        let v = document.getElementById('mod-mat-voce'); v.innerHTML = "";
+        let gruppoEl = document.getElementById('mod-mat-gruppo');
+        if(!gruppoEl) return;
+        let g = gruppoEl.value;
+        let v = document.getElementById('mod-mat-voce'); if(!v) return; v.innerHTML = "";
         if(g && db.catalogoMateriali[g]) {
             db.catalogoMateriali[g].forEach(item => v.innerHTML += `<option value="${item.label}">${item.label}</option>`);
         }
     }
     function popolaVociDelMat() {
-        let g = document.getElementById('del-mat-gruppo').value;
-        let v = document.getElementById('del-mat-voce'); v.innerHTML = "";
+        let gruppoEl = document.getElementById('del-mat-gruppo');
+        if(!gruppoEl) return;
+        let g = gruppoEl.value;
+        let v = document.getElementById('del-mat-voce'); if(!v) return; v.innerHTML = "";
         if(g && db.catalogoMateriali[g]) {
             db.catalogoMateriali[g].forEach(item => v.innerHTML += `<option value="${item.label}">${item.label}</option>`);
         }
@@ -540,17 +541,20 @@
         }
     }
 
-    // --- FUNZIONI CATALOGO FRUTTI ---
     function popolaVociModificaFru() {
-        let g = document.getElementById('mod-fru-gruppo').value;
-        let v = document.getElementById('mod-fru-voce'); v.innerHTML = "";
+        let gruppoEl = document.getElementById('mod-fru-gruppo');
+        if(!gruppoEl) return;
+        let g = gruppoEl.value;
+        let v = document.getElementById('mod-fru-voce'); if(!v) return; v.innerHTML = "";
         if(g && db.catalogoFrutti[g]) {
             db.catalogoFrutti[g].forEach(item => v.innerHTML += `<option value="${item}">${item}</option>`);
         }
     }
     function popolaVociDelFru() {
-        let g = document.getElementById('del-fru-gruppo').value;
-        let v = document.getElementById('del-fru-voce'); v.innerHTML = "";
+        let gruppoEl = document.getElementById('del-fru-gruppo');
+        if(!gruppoEl) return;
+        let g = gruppoEl.value;
+        let v = document.getElementById('del-fru-voce'); if(!v) return; v.innerHTML = "";
         if(g && db.catalogoFrutti[g]) {
             db.catalogoFrutti[g].forEach(item => v.innerHTML += `<option value="${item}">${item}</option>`);
         }
@@ -606,21 +610,19 @@
         }
     }
 
-    // --- BACKUP E RESET ---
     function esportaBackup() {
         navigator.clipboard.writeText(btoa(unescape(encodeURIComponent(JSON.stringify(db))))); alert("Codice Backup copiato!");
     }
+    function imports_Backup(codice) { db = JSON.parse(decodeURIComponent(escape(atob(codice)))); save(); location.reload(); }
     function importaBackup() {
         let codice = prompt("Incolla qui il codice:");
-        if(codice) {
-            try { db = JSON.parse(decodeURIComponent(escape(atob(codice)))); save(); location.reload(); } catch(e) { alert("Codice errato o non valido!"); }
-        }
+        if(codice) { try { imports_Backup(codice); } catch(e) { alert("Codice errato o non valido!"); } }
     }
     function resetData() {
         if(confirm("Cancellare tutto definitivamente? Perderai tutti i cantieri salvati e i cataloghi personalizzati.")) { localStorage.removeItem('contafrutti_db'); location.reload(); }
     }
 
-    // Inizializzazione
+    // Inizializzazione stabile
     aggiornaSelectCantieri();
     caricaCantiere();
 </script>
