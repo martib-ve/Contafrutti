@@ -3,71 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Conta Frutti PRO</title>
+    <title>Conta Frutti Pro</title>
     <style>
-        :root { --bg: #000; --text: #fff; --border: #333; --accent: #fff; }
-        [data-theme="light"] { --bg: #fff; --text: #000; --border: #ccc; --accent: #000; }
-        * { box-sizing: border-box; font-family: -apple-system, sans-serif; }
-        body { background: var(--bg); color: var(--text); padding: 20px; }
+        :root { --bg-body: #000; --bg-input: #111; --text-main: #fff; --text-muted: #777; --border: #222; --accent: #fff; }
+        [data-theme="light"] { --bg-body: #fff; --bg-input: #f4f4f4; --text-main: #000; --text-muted: #888; --border: #ddd; --accent: #000; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-body); color: var(--text-main); padding: 15px; padding-bottom: 80px; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section { margin-bottom: 10px; }
+        select, input { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; }
+        .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .stepper { display: flex; align-items: center; gap: 15px; }
+        .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; }
         
-        .section-title { font-weight: 800; padding: 15px 0; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
-        .content-area { display: none; padding: 15px 0; }
-        .content-area.open { display: block; }
-        
-        .cat-title { font-size: 0.7rem; font-weight: 900; color: #888; margin-top: 15px; text-transform: uppercase; }
-        .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222; }
-        
-        button { padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; }
-        input { width: 100%; padding: 10px; background: #111; border: 1px solid var(--border); color: #fff; border-radius: 6px; margin-bottom: 10px; }
+        /* Nuovi stili per la gerarchia a tendina */
+        .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
+        .titolo-secondario { font-weight: 700; font-size: 0.9rem; padding: 12px 0; border-bottom: 1px dashed var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); text-transform: uppercase; }
+        .contenuto-espandibile { display: none; padding: 10px 0 15px 0; }
+        .contenuto-espandibile.open { display: block; }
     </style>
 </head>
 <body>
 
-    <header style="display:flex; justify-content:space-between; margin-bottom:20px;">
-        <h1 style="font-size: 1.2rem;">CANTIERE</h1>
-        <button onclick="toggleTema()">☀️/🌙</button>
-    </header>
+<header>
+    <h1>Conta Frutti</h1>
+    <button onclick="toggleTema()" style="background:none; border:none; color:var(--text-main); font-size: 1.2rem;">☀️/🌙</button>
+</header>
 
-    <div class="section">
-        <div class="section-title" onclick="toggleSection('mat-content')">MATERIALE GENERALE <span>▼</span></div>
-        <div id="mat-content" class="content-area">
-            <div id="lista-materiali"></div>
-        </div>
-    </div>
+<div class="section">
+    <select id="cantiere-select" onchange="caricaCantiere()"></select>
+</div>
 
-    <div class="section">
-        <div class="section-title" onclick="toggleSection('stanze-content')">STANZE <span>▼</span></div>
-        <div id="stanze-content" class="content-area">
-            <div id="lista-stanze"></div>
-            <div style="margin-top: 20px;">
-                <input type="text" id="nuova-stanza" placeholder="NOME NUOVA STANZA...">
-                <button onclick="creaStanza()" style="width:100%; font-weight:bold;">AGGIUNGI STANZA</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <div class="section-title" onclick="toggleSection('manutenzione-content')" style="font-size: 0.8rem; color: #888;">MANUTENZIONE CATALOGO <span>▼</span></div>
-        <div id="manutenzione-content" class="content-area">
-            <button onclick="resetData()" style="color:red; width:100%;">RIPRISTINA DATI</button>
-        </div>
-    </div>
-
-    <script>
-        // Logica base
-        function toggleSection(id) { document.getElementById(id).classList.toggle('open'); }
-        function toggleTema() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'); }
+<div class="section">
+    <div class="titolo-principale" onclick="toggle('mat-generale')">MATERIALE GENERALE <span>▼</span></div>
+    <div id="mat-generale" class="contenuto-espandibile">
         
-        function creaStanza() {
-            let nome = document.getElementById('nuova-stanza').value;
-            if(nome) {
-                // Inserire qui logica di salvataggio
-                alert("Stanza " + nome + " aggiunta!");
-                document.getElementById('nuova-stanza').value = "";
-            }
-        }
+        <div class="titolo-secondario" onclick="toggle('cat-cordine')">CORDINE <span>▼</span></div>
+        <div id="cat-cordine" class="contenuto-espandibile">
+            <div class="row">Es. Cordina 1.5mm <span>...</span></div>
+        </div>
+        
+        <div class="titolo-secondario" onclick="toggle('cat-tubi')">TUBI E CORRUGATI <span>▼</span></div>
+        <div id="cat-tubi" class="contenuto-espandibile">
+            <div class="row">Es. Tubo 20mm <span>...</span></div>
+        </div>
 
-        function resetData() { if(confirm("Cancellare tutto?")) localStorage.clear(); location.reload(); }
-    </script>
+    </div>
+</div>
+
+<div class="section">
+    <div class="titolo-principale" onclick="toggle('stanze-generale')">STANZE <span>▼</span></div>
+    <div id="stanze-generale" class="contenuto-espandibile">
+        
+        <div id="lista-stanze"></div>
+        
+        <div style="display:flex; gap:10px; margin-top:20px; border-top: 1px solid var(--border); padding-top: 15px;">
+            <input type="text" id="nuova-stanza" placeholder="NOME NUOVA STANZA...">
+            <button onclick="creaStanza()" style="width:50px; background:var(--accent); color:var(--bg-body); border:none; border-radius:8px; font-weight:bold; font-size: 1.2rem;">+</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="section">
+    <div class="titolo-principale" onclick="toggle('manutenzione')" style="font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border);">MANUTENZIONE CATALOGO <span>▼</span></div>
+    <div id="manutenzione" class="contenuto-espandibile">
+        <p style="color: var(--text-muted); font-size: 0.8rem;">Opzioni di ripristino o modifica voci...</p>
+    </div>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('data')) || { "Cantiere 1": { stanze: {}, materiali: {} } };
+    let cantiere = Object.keys(db)[0];
+
+    function save() { localStorage.setItem('data', JSON.stringify(db)); }
+    
+    function toggleTema() {
+        let t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+    }
+
+    // Nuova funzione per gestire le tendine
+    function toggle(id) {
+        document.getElementById(id).classList.toggle('open');
+    }
+
+    function caricaCantiere() {
+        cantiere = document.getElementById('cantiere-select').value;
+        renderStanze(); 
+        // renderMateriali(); // Da riattivare con la tua logica
+    }
+
+    function creaStanza() {
+        let n = document.getElementById('nuova-stanza').value;
+        if(n) { 
+            db[cantiere].stanze[n] = {}; 
+            save(); 
+            renderStanze(); 
+            document.getElementById('nuova-stanza').value = ""; 
+        }
+    }
+
+    // Modificata per creare stanze espandibili
+    function renderStanze() {
+        let l = document.getElementById('lista-stanze'); 
+        l.innerHTML = "";
+        
+        Object.keys(db[cantiere].stanze).forEach(s => {
+            // Crea un ID sicuro per l'HTML togliendo gli spazi dal nome della stanza
+            let safeId = "stanza-" + s.replace(/\s+/g, '-');
+            
+            l.innerHTML += `
+                <div class="titolo-secondario" onclick="toggle('${safeId}')">${s.toUpperCase()} <span>▼</span></div>
+                <div id="${safeId}" class="contenuto-espandibile">
+                    <div class="row" style="color:var(--text-muted); font-size:0.8rem;">[Contatori per ${s}]</div>
+                </div>
+            `;
+        });
+    }
+
+    // Inizializzazione select cantieri
+    let s = document.getElementById('cantiere-select');
+    Object.keys(db).forEach(c => s.innerHTML += `<option>${c}</option>`);
+    caricaCantiere();
+</script>
 </body>
 </html>
