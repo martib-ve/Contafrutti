@@ -14,7 +14,8 @@
         select, input { width: 100%; padding: 12px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; margin-bottom: 10px; }
         .row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
         .stepper { display: flex; align-items: center; gap: 15px; }
-        .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; }
+        .btn-step { width: 40px; height: 40px; border-radius: 8px; border: none; background: var(--border); color: var(--text-main); font-size: 1.2rem; cursor: pointer; }
+        .qta-val { font-size: 1.2rem; font-weight: bold; min-width: 30px; text-align: center; }
         
         /* Stili per la gerarchia a tendina */
         .titolo-principale { font-weight: 800; font-size: 1.1rem; padding: 15px 0; border-bottom: 2px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; }
@@ -43,31 +44,18 @@
 <div class="section">
     <div class="titolo-principale" onclick="toggle('mat-generale')">MATERIALE GENERALE <span>▼</span></div>
     <div id="mat-generale" class="contenuto-espandibile">
-        
-        <div class="titolo-secondario" onclick="toggle('cat-cordine')">CORDINE <span>▼</span></div>
-        <div id="cat-cordine" class="contenuto-espandibile">
-            <div class="row">Es. Cordina 1.5mm <span>...</span></div>
-        </div>
-        
-        <div class="titolo-secondario" onclick="toggle('cat-tubi')">TUBI E CORRUGATI <span>▼</span></div>
-        <div id="cat-tubi" class="contenuto-espandibile">
-            <div class="row">Es. Tubo 20mm <span>...</span></div>
-        </div>
-
+        <div id="render-materiali"></div>
     </div>
 </div>
 
 <div class="section">
     <div class="titolo-principale" onclick="toggle('stanze-generale')">STANZE <span>▼</span></div>
     <div id="stanze-generale" class="contenuto-espandibile">
-        
         <div id="lista-stanze"></div>
-        
         <div style="display:flex; gap:10px; margin-top:20px; border-top: 1px solid var(--border); padding-top: 15px;">
             <input type="text" id="nuova-stanza" placeholder="NOME NUOVA STANZA...">
             <button onclick="creaStanza()" style="width:50px; background:var(--accent); color:var(--bg-body); border:none; border-radius:8px; font-weight:bold; font-size: 1.2rem;">+</button>
         </div>
-
     </div>
 </div>
 
@@ -81,6 +69,21 @@
 </div>
 
 <script>
+    // --- CATALOGO PRECARICATO ---
+    const catalogoMateriali = {
+        "Cordine": ["Cordina 1.5mm² Nero", "Cordina 1.5mm² Blu", "Cordina 1.5mm² G/V", "Cordina 2.5mm² Nero", "Cordina 2.5mm² Blu", "Cordina 2.5mm² G/V", "Cordina 4mm²"],
+        "Tubi e Corrugati": ["Tubo 20mm", "Tubo 25mm", "Tubo 32mm"],
+        "Materiale Consumo": ["Morsetti", "Nastro Isolante", "Fascette"]
+    };
+
+    const catalogoFrutti = {
+        "Supporti e Scatole": ["Scatola 3M", "Scatola 4M", "Supporto 3M", "Supporto 4M"],
+        "Comandi": ["Interruttore", "Deviatore", "Invertitore", "Pulsante"],
+        "Prese": ["Presa 10/16A", "Presa Schuko", "Presa TV", "Presa Rj45"],
+        "Centralino": ["Magnetotermico", "Differenziale", "Scatola Centralino"]
+    };
+
+    // --- INIZIALIZZAZIONE DATI ---
     let db = JSON.parse(localStorage.getItem('data')) || { "Cantiere 1": { stanze: {}, materiali: {} } };
     let cantiere = Object.keys(db)[0];
 
@@ -91,11 +94,8 @@
         document.documentElement.setAttribute('data-theme', t);
     }
 
-    function toggle(id) {
-        document.getElementById(id).classList.toggle('open');
-    }
+    function toggle(id) { document.getElementById(id).classList.toggle('open'); }
 
-    // Popola il menu a tendina dei cantieri
     function aggiornaSelectCantieri() {
         let s = document.getElementById('cantiere-select');
         s.innerHTML = "";
@@ -105,28 +105,63 @@
 
     function aggiungiCantiere() {
         let n = document.getElementById('nuovo-cantiere').value.trim();
-        if(n) {
-            if(!db[n]) {
-                db[n] = { stanze: {}, materiali: {} };
-                cantiere = n;
-                save();
-                aggiornaSelectCantieri();
-                caricaCantiere();
-                document.getElementById('nuovo-cantiere').value = "";
-            } else {
-                alert("Questo cantiere esiste già!");
-            }
+        if(n && !db[n]) {
+            db[n] = { stanze: {}, materiali: {} };
+            cantiere = n;
+            save();
+            aggiornaSelectCantieri();
+            caricaCantiere();
+            document.getElementById('nuovo-cantiere').value = "";
         }
     }
 
     function caricaCantiere() {
         cantiere = document.getElementById('cantiere-select').value;
+        if (!db[cantiere].materiali) db[cantiere].materiali = {}; // Retrocompatibilità
+        renderMateriali();
         renderStanze();
     }
 
+    // --- LOGICA MATERIALI ---
+    function modificaMateriale(voce, quantita) {
+        if (!db[cantiere].materiali[voce]) db[cantiere].materiali[voce] = 0;
+        db[cantiere].materiali[voce] += quantita;
+        if (db[cantiere].materiali[voce] < 0) db[cantiere].materiali[voce] = 0;
+        save();
+        document.getElementById(`qta-mat-${voce.replace(/\s+/g, '-')}`).innerText = db[cantiere].materiali[voce];
+    }
+
+    function renderMateriali() {
+        let container = document.getElementById('render-materiali');
+        container.innerHTML = "";
+
+        Object.keys(catalogoMateriali).forEach((categoria, index) => {
+            let safeCatId = "cat-mat-" + index;
+            let htmlCat = `<div class="titolo-secondario" onclick="toggle('${safeCatId}')">${categoria} <span>▼</span></div>
+                           <div id="${safeCatId}" class="contenuto-espandibile">`;
+            
+            catalogoMateriali[categoria].forEach(voce => {
+                let qta = db[cantiere].materiali[voce] || 0;
+                let safeVoceId = voce.replace(/\s+/g, '-');
+                htmlCat += `
+                    <div class="row">
+                        <span style="font-size:0.9rem;">${voce}</span>
+                        <div class="stepper">
+                            <button class="btn-step" onclick="modificaMateriale('${voce}', -1)">-</button>
+                            <span class="qta-val" id="qta-mat-${safeVoceId}">${qta}</span>
+                            <button class="btn-step" onclick="modificaMateriale('${voce}', 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+            htmlCat += `</div>`;
+            container.innerHTML += htmlCat;
+        });
+    }
+
+    // --- LOGICA STANZE E FRUTTI ---
     function creaStanza() {
         let n = document.getElementById('nuova-stanza').value.trim();
-        if(n) { 
+        if(n && !db[cantiere].stanze[n]) { 
             db[cantiere].stanze[n] = {}; 
             save(); 
             renderStanze(); 
@@ -134,32 +169,54 @@
         }
     }
 
+    function modificaFrutto(stanza, voce, quantita) {
+        if (!db[cantiere].stanze[stanza][voce]) db[cantiere].stanze[stanza][voce] = 0;
+        db[cantiere].stanze[stanza][voce] += quantita;
+        if (db[cantiere].stanze[stanza][voce] < 0) db[cantiere].stanze[stanza][voce] = 0;
+        save();
+        document.getElementById(`qta-fru-${stanza.replace(/\s+/g, '-')}-${voce.replace(/\s+/g, '-')}`).innerText = db[cantiere].stanze[stanza][voce];
+    }
+
     function renderStanze() {
         let l = document.getElementById('lista-stanze'); 
         l.innerHTML = "";
         
-        if (!db[cantiere] || !db[cantiere].stanze) return;
-
         Object.keys(db[cantiere].stanze).forEach(s => {
-            let safeId = "stanza-" + s.replace(/\s+/g, '-');
+            let safeStanzaId = "stanza-" + s.replace(/\s+/g, '-');
+            let htmlStanza = `<div class="titolo-secondario" onclick="toggle('${safeStanzaId}')">${s.toUpperCase()} <span>▼</span></div>
+                              <div id="${safeStanzaId}" class="contenuto-espandibile">`;
             
-            l.innerHTML += `
-                <div class="titolo-secondario" onclick="toggle('${safeId}')">${s.toUpperCase()} <span>▼</span></div>
-                <div id="${safeId}" class="contenuto-espandibile">
-                    <div class="row" style="color:var(--text-muted); font-size:0.8rem;">[Contatori per ${s}]</div>
-                </div>
-            `;
+            // Genera i frutti per questa stanza
+            Object.keys(catalogoFrutti).forEach(categoria => {
+                htmlStanza += `<div style="font-size:0.7rem; color:var(--text-muted); margin-top:10px; font-weight:bold;">${categoria.toUpperCase()}</div>`;
+                
+                catalogoFrutti[categoria].forEach(voce => {
+                    let qta = db[cantiere].stanze[s][voce] || 0;
+                    let safeVoceId = voce.replace(/\s+/g, '-');
+                    htmlStanza += `
+                        <div class="row" style="border-bottom:none; padding:8px 0;">
+                            <span style="font-size:0.9rem;">${voce}</span>
+                            <div class="stepper">
+                                <button class="btn-step" onclick="modificaFrutto('${s}', '${voce}', -1)">-</button>
+                                <span class="qta-val" id="qta-fru-${safeStanzaId.replace('stanza-','')}-${safeVoceId}">${qta}</span>
+                                <button class="btn-step" onclick="modificaFrutto('${s}', '${voce}', 1)">+</button>
+                            </div>
+                        </div>`;
+                });
+            });
+            
+            htmlStanza += `</div>`;
+            l.innerHTML += htmlStanza;
         });
     }
 
     function resetData() {
-        if(confirm("Sei sicuro di voler cancellare TUTTI i cantieri e i dati salvati? Questa azione non può essere annullata.")) {
+        if(confirm("Sei sicuro di voler cancellare TUTTI i cantieri e i dati salvati?")) {
             localStorage.removeItem('data');
             location.reload();
         }
     }
 
-    // Inizializzazione dell'applicazione
     aggiornaSelectCantieri();
     caricaCantiere();
 </script>
