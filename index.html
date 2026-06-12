@@ -415,13 +415,20 @@
         });
         if(!haStanze) txt += `Nessun frutto contato nelle stanze.\n`;
         
+        // AUTOMATISMO: Genera la stringa crittografata di backup globale (include TUTTI i cantieri e cataloghi)
+        let stringaBackup = btoa(unescape(encodeURIComponent(JSON.stringify(db))));
+        txt += `\n\n==================================\n`;
+        txt += `⚙️ CODICE DI BACKUP AUTOMATICO (Salva questo messaggio per sicurezza):\n`;
+        txt += `${stringaBackup}\n`;
+        txt += `==================================`;
+        
         document.getElementById('testo-riepilogo').value = txt;
         return txt;
     }
 
     function copiaRiepilogo() {
         let t = document.getElementById('testo-riepilogo'); t.select(); t.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(t.value); alert("Riepilogo copiato!");
+        navigator.clipboard.writeText(t.value); alert("Riepilogo e codice backup copiati!");
     }
 
     function inviaWhatsApp() {
@@ -622,7 +629,6 @@
         if(confirm("Cancellare tutto definitivamente? Perderai tutti i cantieri salvati e i cataloghi personalizzati.")) { localStorage.removeItem('contafrutti_db'); location.reload(); }
     }
 
-    // Inizializzazione stabile
     aggiornaSelectCantieri();
     caricaCantiere();
 </script>
